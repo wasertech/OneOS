@@ -8,9 +8,9 @@ This part aims to ease the creation of a dataset to train a NLU OS.
 
 # [Training](Trainer/)
 
-Efficiently train/fine-tunine a custom LLM for the system.
+Efficiently train/fine-tune a custom LLM for the system.
 
-# [Inferance API](InferenceAPI/)
+# [InferanceAPI](InferanceAPI/)
 
 Serve a large language model.
 
