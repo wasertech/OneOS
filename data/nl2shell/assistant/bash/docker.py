@@ -292,3 +292,7 @@ _docker_data.append({
         },
     ]
 })
+
+
+def get_docker_examples():
+    return _docker_data
