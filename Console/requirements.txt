@@ -1,0 +1,9 @@
+sentence_transformers
+langchain
+prompt_toolkit
+chromadb
+duckduckgo-search
+wikipedia
+pexpect
+rich
+halo
