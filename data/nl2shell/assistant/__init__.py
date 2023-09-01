@@ -33,13 +33,13 @@ Given the following user query, the results of your actions and the state of the
     -   'action': Next action to answer the user query. Can be any of [{_TOOL_NAMES_}].
     -   'action_input': Input of the action.
 
-    Or you can directly answer with plain text.
+    Or you can directly answer with plain text. If you do so, you must use {_LANG_} to answer.
 
 Use the following conversation to answer appropriately the user query. If empty it means that the user query is the first in conversation.
 
 If you have already taken some actions, use what you observed from them to answer the user. If empty it means that you have not taken any action yet.
 
-User does not see your actions. If you got the answer to the query in a previous action taken, you need to make a sentence in plain text for the user to see it."""
+User does not see your actions. If you got the answer to the query in a previous action taken, you need to make a sentence in plain text ({_LANG_}) for the user to see it."""
 
 _TEMPLATE_FORMAT_ = """# System
 
@@ -155,8 +155,8 @@ def convert_dataset_to_text(dataset):
 
     for conversation in dataset:
         _sys, _inst = conversation.get('system', ""), conversation.get('instruction', "")
-        system = _SYSTEM_PROMPT_ if not _sys or len(_sys) > 0 else _sys
-        instruction =  _INSTRUCTION_PROMPT_ if not _inst or len(_inst) > 0 else _inst
+        system = _SYSTEM_PROMPT_ if not _sys or len(_sys) < 0 else _sys
+        instruction =  _INSTRUCTION_PROMPT_ if not _inst or len(_inst) < 0 else _inst
 
         history = []
         _scratchpad = []

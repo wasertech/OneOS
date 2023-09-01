@@ -6,15 +6,15 @@ from nl2shell.assistant.bash.ls import get_ls_data
 from nl2shell.assistant.bash.pwd import get_pwd_data
 from nl2shell.assistant.bash.cat import get_cat_examples
 
-def get_bash_examples():
+def get_bash_examples(langs=['en_US', 'fr_FR']):
     data = []
     data.extend(get_nl2shell_english_examples())
     #data.extend(get_nl2shell_french_examples())
-    #data.extend(get_date_examples())
-    #data.extend(get_cd_examples())
-    #data.extend(get_ls_data())
-    #data.extend(get_pwd_data())
-    #data.extend(get_cat_examples())
+    data.extend(get_date_examples())
+    data.extend(get_cd_examples())
+    data.extend(get_ls_data())
+    data.extend(get_pwd_data())
+    data.extend(get_cat_examples())
     return data
 
 

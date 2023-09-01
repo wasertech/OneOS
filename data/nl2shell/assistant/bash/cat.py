@@ -1,3 +1,13 @@
+system_prompt = {
+    'en': "Welcome to the Bash Assistant. You can ask me to do things like 'show me the content of file1.txt'.",
+    'fr': "Bienvenue dans l'assistant Bash. Vous pouvez me demander de faire des choses comme 'montre-moi le contenu du fichier1.txt'."
+}
+
+intruction_prompt = {
+    'en': "Please ask me to do something.",
+    'fr': "Veuillez me demander de faire quelque chose."
+}
+
 cat_examples = {
     'user_ask': {
         'en': [
@@ -74,8 +84,8 @@ def get_cat_examples():
         assistant_reply_en = cat_examples['assistant_response']['en'][i].format(file_name=file_name, file_content=file_content)
         assistant_reply_fr = cat_examples['assistant_response']['fr'][i].format(file_name=file_name, file_content=file_content)
         data.append({
-            'system': "",
-            'instruction': "",
+            'system': system_prompt.get('en', ""),
+            'instruction': intruction_prompt.get('en', ""),
             'conversation': [
                 { 'role': "human", 'message': user_ask_en },
                 { 'role': "assistant", 'message': assistant_reply_en,  'scratchpad': [
@@ -86,8 +96,8 @@ def get_cat_examples():
             ]
         })
         data.append({
-            'system': "",
-            'instruction': "",
+            'system': system_prompt.get('fr', ""),
+            'instruction': intruction_prompt.get('fr', ""),
             'conversation': [
                 { 'role': "human", 'message': user_ask_fr },
                 { 'role': "assistant", 'message': assistant_reply_fr,  'scratchpad': [
