@@ -26,8 +26,3 @@ EN_LANGS = [
 ]
 
 LANGS.extend(EN_LANGS)
-
-
-SYSTEM_PROMPT = """
-
-"""

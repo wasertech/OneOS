@@ -1,12 +1,14 @@
-system_prompt = {
-    'en': "Welcome to the Bash Assistant. You can ask me to do things like 'show me the content of file1.txt'.",
-    'fr': "Bienvenue dans l'assistant Bash. Vous pouvez me demander de faire des choses comme 'montre-moi le contenu du fichier1.txt'."
+# Set prompts
+# Leave empty to use default values
+system_prompt = intruction_prompt= {
+    'en': "",
+    'fr': ""
 }
 
-intruction_prompt = {
-    'en': "Please ask me to do something.",
-    'fr': "Veuillez me demander de faire quelque chose."
-}
+# intruction_prompt = {
+#     'en': "",
+#     'fr': ""
+# }
 
 cat_examples = {
     'user_ask': {
@@ -63,6 +65,7 @@ cat_examples = {
     }
 }
 
+# Add some fake file examples here
 file_data = {
     'file1.txt': 'This is the content of file1.txt.',
     'file2.txt': 'Welcome to file2.txt. Have a nice day!',

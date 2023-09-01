@@ -1,6 +1,6 @@
 from nl2shell.assistant.bash.en2shell import get_nl2shell_english_examples
 from translator import Translator
-
+from functools import lru_cache
 
 translator = Translator("eng_Latn", "fra_Latn", model_id="Helsinki-NLP/opus-mt-en-fr", max_length=2048)
 # data = [
@@ -24,13 +24,17 @@ translator = Translator("eng_Latn", "fra_Latn", model_id="Helsinki-NLP/opus-mt-e
 #     }
 # ] 
 
+@lru_cache(maxsize=128)
+def translate(utterance):
+    return translator.translate(utterance)
+
 def get_nl2shell_french_examples():
     data = get_nl2shell_english_examples()
     _data = []
 
     for example in data:
         try:
-            example['conversation'][0]['message'] = translator.translate(example['conversation'][0]['message'])
+            example['conversation'][0]['message'] = translate(example['conversation'][0]['message'])
             _data.append(example)
         except Exception as e:
             print(f"Error: {e}")

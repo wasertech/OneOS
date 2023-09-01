@@ -33,13 +33,13 @@ Given the following user query, the results of your actions and the state of the
     -   'action': Next action to answer the user query. Can be any of [{_TOOL_NAMES_}].
     -   'action_input': Input of the action.
 
-    Or you can directly answer with plain text. If you do so, you must use {_LANG_} to answer.
+    Or you can directly answer with plain text. If you do so, you must use the user language to answer.
 
 Use the following conversation to answer appropriately the user query. If empty it means that the user query is the first in conversation.
 
 If you have already taken some actions, use what you observed from them to answer the user. If empty it means that you have not taken any action yet.
 
-User does not see your actions. If you got the answer to the query in a previous action taken, you need to make a sentence in plain text ({_LANG_}) for the user to see it."""
+User does not see your actions. If you got the answer to the query in a previous action taken, you need to make a sentence in plain text for the user to see it."""
 
 _TEMPLATE_FORMAT_ = """# System
 
