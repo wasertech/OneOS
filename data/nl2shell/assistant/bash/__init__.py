@@ -23,6 +23,7 @@ from nl2shell.assistant.bash.cp import get_cp_examples
 # from nl2shell.assistant.bash.join import get_join_examples
 # from nl2shell.assistant.bash.touch import get_touch_examples
 from nl2shell.assistant.bash.mkdir import get_mkdir_examples
+from nl2shell.assistant.bash.md import get_md_examples
 # from nl2shell.assistant.bash.rmdir import get_rmdir_examples
 # from nl2shell.assistant.bash.chmod import get_chmod_examples
 # from nl2shell.assistant.bash.chown import get_chown_examples
@@ -74,6 +75,10 @@ def get_bash_examples(langs=['en_US', 'fr_FR']):
     # data.extend(get_ls_data())
     # data.extend(get_pwd_data())
     # data.extend(get_cat_examples())
+    # data.extend(get_mkdir_examples())
+    # data.extend(get_md_examples())
+    # data.extend(get_cp_examples())
+    # data.extend(get_mv_examples())
     data.extend(get_git_examples())
     data.extend(get_docker_examples())
     return data
