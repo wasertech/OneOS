@@ -42,19 +42,24 @@ _greets.append({
     'final_answer': "Ravis de vous revoir si tôt!\nNe devriez-vous pas dormir à cette heure si tardive?\nQui qu'il en soit, je suis à votre entière disposition."
 })
 
-greet_examples.append(
-    {
-        'system': system_prompt.get('en', ""),
-        'instruction': intruction_prompt.get('en', ""),
-        'conversation': [
-            { 'role': "human", 'message': _SYS_GREET_MSG.format(env="LANG=en_US.UTF-8") },
-            { 'role': "assistant", 'message': "Hello, how can I help you?",  'scratchpad': [
-                    { 'action': 'final_answer', 'action_input': "Hello, how can I help you?", 'observation': "" },
+
+for greet in _greets:
+    environ = _env.format(**greet['env'])
+    answer = greet.get('final_answer')
+    if answer:
+        greet_examples.append(
+            {
+                'system': system_prompt.get('en', ""),
+                'instruction': intruction_prompt.get('en', ""),
+                'conversation': [
+                    { 'role': "human", 'message': _SYS_GREET_MSG.format(env=environ) },
+                    { 'role': "assistant", 'message': answer,  'scratchpad': [
+                            { 'action': 'final_answer', 'action_input': answer, 'observation': "" },
+                        ]
+                    },
                 ]
-            },
-        ]
-    }
-)
+            }
+        )
 
 def get_greet_examples():
     pass
