@@ -450,5 +450,5 @@ for _lang in _LANGS:
 
 
 
-def get_cp_cmd():
+def get_cp_examples():
     return stories

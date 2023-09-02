@@ -442,5 +442,5 @@ for _lang in _LANGS:
 
 
 
-def get_mv_cmd():
+def get_mv_examples():
     return stories

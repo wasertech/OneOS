@@ -6,8 +6,8 @@ from nl2shell.assistant.bash.ls import get_ls_data
 from nl2shell.assistant.bash.pwd import get_pwd_data
 from nl2shell.assistant.bash.cat import get_cat_examples
 # from nl2shell.assistant.bash.rm import get_rm_examples
-# from nl2shell.assistant.bash.mv import get_mv_examples
-# from nl2shell.assistant.bash.cp import get_cp_examples
+from nl2shell.assistant.bash.mv import get_mv_examples
+from nl2shell.assistant.bash.cp import get_cp_examples
 # from nl2shell.assistant.bash.grep import get_grep_examples
 # from nl2shell.assistant.bash.find import get_find_examples
 # from nl2shell.assistant.bash.sed import get_sed_examples
@@ -60,6 +60,7 @@ from nl2shell.assistant.bash.mkdir import get_mkdir_examples
 # from nl2shell.assistant.bash.unalias import get_unalias_examples
 # from nl2shell.assistant.bash.which import get_which_examples
 # from nl2shell.assistant.bash.ssh import get_ssh_examples
+# from nl2shell.assistant.bash.chsh import get_chsh_examples
 from nl2shell.assistant.bash.git import get_git_examples
 from nl2shell.assistant.bash.docker import get_docker_examples
 
