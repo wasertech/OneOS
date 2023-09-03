@@ -152,7 +152,9 @@ py_compute_examples.append({
         { 'role': "human", 'message': """See the sales_data.csv file?
 Calculate the total revenue for each product and find the one that generated the most.
 Also calculates the total units sold by product and finds the most sold.""" },
-    { 'role': "assistant", 'message': """### Product Sales Report
+        { 
+            'role': "assistant", 
+            'message': """### Product Sales Report
 #### Total Revenue by Product
 Product A generated a total revenue of $21,000.
 Product B generated a total revenue of $14,250.
@@ -163,8 +165,9 @@ Product A had a total of 420 units sold.
 Product B had a total of 285 units sold.
 The product with the highest number of units sold is Product A with 420 units sold.
 
-This report summarizes the sales performance of the two products, highlighting their total revenue and units sold. Product A emerges as the leader in both categories, generating the highest revenue and selling the most units.   """, 'scratchpad': [
-        { 'action': "Bash", 'action_input': "cat sales_data.csv", 'observation': """Date,Product,Units Sold,Revenue
+This report summarizes the sales performance of the two products, highlighting their total revenue and units sold. Product A emerges as the leader in both categories, generating the highest revenue and selling the most units.""",
+            'scratchpad': [
+                { 'action': "Bash", 'action_input': "cat sales_data.csv", 'observation': """Date,Product,Units Sold,Revenue
 2023-01-01,Product A,100,5000
 2023-01-01,Product B,75,3750
 2023-01-02,Product A,120,6000
@@ -173,8 +176,8 @@ This report summarizes the sales performance of the two products, highlighting t
 2023-01-03,Product B,60,3000
 2023-01-04,Product A,110,5500
 2023-01-04,Product B,70,3500"""},
-        { 'action': "Bash", 'action_input': "pip install -U --no-input pandas" },
-        { 'action': "Python", 'action_input': """import pandas as pd
+                { 'action': "Bash", 'action_input': "pip install -U --no-input pandas" },
+                { 'action': "Python", 'action_input': """import pandas as pd
 df = pd.read_csv("sales_data.csv")
 revenue_by_product = df.groupby("Product")["Revenue"].sum()
 product_with_highest_revenue = revenue_by_product.idxmax()
@@ -199,7 +202,7 @@ Product A    420
 Product B    285
 Name: Units Sold, dtype: int64
 The product with the highest units sold is Product A with 420 units sold."""},
-    { 'action': 'final_answer', 'action_input': """### Product Sales Report
+                { 'action': 'final_answer', 'action_input': """### Product Sales Report
 #### Total Revenue by Product
 Product A generated a total revenue of $21,000.
 Product B generated a total revenue of $14,250.
@@ -211,7 +214,8 @@ Product B had a total of 285 units sold.
 The product with the highest number of units sold is Product A with 420 units sold.
 
 This report summarizes the sales performance of the two products, highlighting their total revenue and units sold. Product A emerges as the leader in both categories, generating the highest revenue and selling the most units.""" },
-    ]}
+        ]}
+    ]
 })
 
 # matlotlib
