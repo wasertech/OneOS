@@ -1,5 +1,5 @@
 from nl2shell.assistant.bash.en2shell import get_nl2shell_english_examples
-from nl2shell.assistant.bash.fr2shell import get_nl2shell_french_examples
+# from nl2shell.assistant.bash.fr2shell import get_nl2shell_french_examples
 from nl2shell.assistant.bash.date import get_date_examples
 from nl2shell.assistant.bash.cd import get_cd_examples
 from nl2shell.assistant.bash.ls import get_ls_data
@@ -68,19 +68,21 @@ from nl2shell.assistant.bash.docker import get_docker_examples
 
 def get_bash_examples(langs=['en_US', 'fr_FR']):
     data = []
-    # data.extend(get_nl2shell_english_examples())
+
+    data.extend(get_nl2shell_english_examples())
     # data.extend(get_nl2shell_french_examples())
-    # data.extend(get_date_examples())
-    # data.extend(get_cd_examples())
-    # data.extend(get_ls_data())
-    # data.extend(get_pwd_data())
-    # data.extend(get_cat_examples())
-    # data.extend(get_mkdir_examples())
-    # data.extend(get_md_examples())
-    # data.extend(get_cp_examples())
-    # data.extend(get_mv_examples())
+    data.extend(get_date_examples())
+    data.extend(get_cd_examples())
+    data.extend(get_ls_data())
+    data.extend(get_pwd_data())
+    data.extend(get_cat_examples())
+    data.extend(get_mkdir_examples())
+    data.extend(get_md_examples())
+    data.extend(get_cp_examples())
+    data.extend(get_mv_examples())
     data.extend(get_git_examples())
     data.extend(get_docker_examples())
+
     return data
 
 

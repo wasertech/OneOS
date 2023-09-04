@@ -1,11 +1,11 @@
 # Set prompts
 # Leave empty to use default values
-system_prompt = intruction_prompt = {
+system_prompt = instruction_prompt = {
     'en': "",
     'fr': ""
 }
 
-# intruction_prompt = {
+# instruction_prompt = {
 #     'en': "",
 #     'fr': ""
 # }
@@ -148,7 +148,7 @@ Donc, la longueur du troisième côté de votre triangle rectangle est d'environ
 
 py_compute_examples.append({
     'system': system_prompt.get('en', ""),
-    'intruction': intruction_prompt.get('en', ""),
+    'instruction': instruction_prompt.get('en', ""),
     'conversation': [
         { 'role': "human", 'message': """See the sales_data.csv file?
 Calculate the total revenue for each product and find the one that generated the most.
@@ -234,7 +234,7 @@ for example in _examples:
     py_compute_examples.append(
         {
             'system': system_prompt.get(lang, ""),
-            'instruction': intruction_prompt.get(lang, ""),
+            'instruction': instruction_prompt.get(lang, ""),
             'conversation': [
                 { 'role': "human", 'message': py_compute_command },
                 { 
@@ -258,7 +258,7 @@ for example in _numpy_examples:
     py_compute_examples.append(
         {
             'system': system_prompt.get(lang, ""),
-            'instruction': intruction_prompt.get(lang, ""),
+            'instruction': instruction_prompt.get(lang, ""),
             'conversation': [
                 { 'role': "human", 'message': py_compute_command },
                 {

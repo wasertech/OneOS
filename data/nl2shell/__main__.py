@@ -1,16 +1,14 @@
 
 from nl2shell import LANGS
-from nl2shell.assistant.bash import get_bash_examples
-from nl2shell.assistant.conversational import get_conversational_examples
+from nl2shell.assistant import get_assistant_text_data
 
 if __name__ == "__main__":
-    data = []
     
-    data.extend(get_bash_examples(langs=LANGS))
-    data.extend(get_conversational_examples(langs=LANGS)
+    text_data = get_assistant_text_data()
 
+    # for text_data in text_data:
+    #     print(text_data)
+    #     print()
+    #     print()
+    #     print()
 
-    for d in data:
-        print()
-        print(d)
-        print()

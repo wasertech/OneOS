@@ -1,5 +1,21 @@
 import json
 # import datasets
+from nl2shell.assistant.bash import get_bash_examples
+from nl2shell.assistant.python import get_python_examples
+from nl2shell.assistant.conversational import get_conversational_examples
+from nl2shell.assistant.search import get_search_examples
+from nl2shell.assistant.wikipedia import get_wikipedia_examples
+
+def get_assistant_data(langs=['en_US', 'fr_FR']):
+    data = []
+    
+    data.extend(get_conversational_examples(langs=langs))
+    data.extend(get_bash_examples(langs=langs))
+    data.extend(get_python_examples(langs=langs))
+    data.extend(get_search_examples(langs=langs))
+    data.extend(get_wikipedia_examples(langs=langs))
+    
+    return data
 
 # Conversational data for the assistant
 
@@ -71,47 +87,6 @@ _TEMPLATE_FORMAT_ = """# System
 
 {output}"""
 
-## Conversations
-
-### Sam dataset
-
-#### English
-
-#### French
-
-## Python
-
-## Search
- 
-## Wikipedia
-
-## Bash
-
-## Exit
-
-## Clear
-
-# data = [
-#     {
-#         'system': "",
-#         'instruction': "",
-#         'conversation': [
-#             { 'role': "human", 'message': "Bonjour" },
-#             { 'role': "assistant", 'message': "Bonjour! Vous êtes bien matinal aujourd'hui.",  'scratchpad': [
-#                     { 'action': 'Bash', 'action_input': "date", 'observation': "mer 02 aoû 2023 03:59:15 CEST" },
-#                     { 'action': 'final_answer', 'action_input': "Bonjour! Vous êtes bien matinal aujourd'hui.", 'observation': "" },
-#                 ]
-#             },
-#             { 'role': "human", 'message': "Quel jour sommes-nous?" },
-#             { 'role': "assistant", 'message': "mer 02 aoû 2023 03:59:15 CEST",  'scratchpad': [
-#                     { 'action': 'Bash', 'action_input': "date", 'observation': "mer 02 aoû 2023 03:59:15 CEST" },
-#                     { 'action': 'final_answer', 'action_input': "Nous sommes le mercredi 2 août 2023.", 'observation': "" },
-#                 ]
-#             },
-#         ]
-#     }
-# ]
-
 def convert_data_to_text(
         history: list,
         query: str,
@@ -180,3 +155,12 @@ def convert_dataset_to_text(dataset):
         history = []
     
     return text_data
+
+def get_assistant_text_data():
+    data = get_assistant_data()
+    text_data = convert_dataset_to_text(data)
+    print(f"Generated {len(text_data)} examples from {len(data)} conversations.")
+    return text_data
+
+if __name__ == "__main__":
+    text_data = get_assistant_text_data()

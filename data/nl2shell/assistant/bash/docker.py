@@ -7,7 +7,6 @@ _docker_data = []
 _base_data = {
     'system': "",
     'instruction': "",
-    'image': "",
 }
 
 #   Liste tous les conteneurs Docker (en cours d'exécution ou arrêtés) :

@@ -13,7 +13,7 @@ system_prompt = intruction_prompt= {
 #     'fr': ""
 # }
 
-def load_sam_en_dataset(ds_path='data/sam/samantha-1.1.json'):
+def load_sam_en_dataset(ds_path='sam/samantha-1.1.json'):
     with open(ds_path) as f:
         sam = json.load(f)
     return sam

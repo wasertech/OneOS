@@ -15,11 +15,11 @@ Be ready, a new conversation with the user is about to begin.
 
 Be sure to use the appropriate (iternationalized and localized) language for the user during the conversation."""
 
-_env = """LANG={LANG}.UTF-8
-DATE={DATE}
-LAST_SEEN={LAST_SEEN}
-USER={USERNAME}
-PWD={PWD}"""
+_env = """LANG={lang}.UTF-8
+DATE={date}
+LAST_SEEN={last_seen}
+USER={username}
+PWD={pwd}"""
 
 # Set prompts
 # Leave empty to use default values
@@ -53,11 +53,11 @@ first_greet_examples.append(
         'instruction': intruction_prompt.get('en', ""),
         'conversation': [
             { 'role': "human", 'message': _SYS_GREET_MSG.format(env=_env.format(**{
-                'LANG': "en_US",
-                'DATE': "Sat Sep  2 23:35:36 CEST 2023",
-                'LAST_SEEN': None,
-                'USERNAME': "tom",
-                'PWD': "/home/tom",
+                'lang': "en_US",
+                'date': "Sat Sep  2 23:35:36 CEST 2023",
+                'last_seen': None,
+                'username': "tom",
+                'pwd': "/home/tom",
             })) },
             { 'role': "assistant", 'message': first_greet_message_en,  'scratchpad': [
                     { 'action': 'final_answer', 'action_input': first_greet_message_en, 'observation': "" },
@@ -100,11 +100,11 @@ first_greet_examples.append(
         'instruction': intruction_prompt.get('fr', ""),
         'conversation': [
             { 'role': "human", 'message': _SYS_GREET_MSG.format(env=_env.format(**{
-                'LANG': "fr_CH",
-                'DATE': "Sat Sep  2 13:26:55 CEST 2023",
-                'LAST_SEEN': None,
-                'USERNAME': "waser",
-                'PWD': "/home/waser",
+                'lang': "fr_CH",
+                'date': "Sat Sep  2 13:26:55 CEST 2023",
+                'last_seen': None,
+                'username': "waser",
+                'pwd': "/home/waser",
             })) },
             { 'role': "assistant", 'message': first_greet_message_fr,  'scratchpad': [
                     { 'action': 'final_answer', 'action_input': first_greet_message_fr, 'observation': "" },
@@ -145,11 +145,11 @@ _greets = []
 # Greek known user at 8am
 _greets.append({
     'env': {
-        'LANG': "fr_FR",
-        'DATE': "Sat Sep  2 08:07:36 CEST 2023",
-        'LAST_SEEN': "Fri Sep 1 23:21:05 2023",
-        'USER': "tom",
-        'PWD': "/home/tom",
+        'lang': "fr_FR",
+        'date': "Sat Sep  2 08:07:36 CEST 2023",
+        'last_seen': "Fri Sep 1 23:21:05 2023",
+        'username': "tom",
+        'pwd': "/home/tom",
     },
     'final_answer': "Bonjour! Vous êtes bien matinal aujourd'hui.\nQue puis-je faire pour vous?"
 })
@@ -157,18 +157,19 @@ _greets.append({
 # Greet known user at 3am
 _greets.append({
     'env': {
-        'LANG': "fr_CH",
-        'DATE': "Sat Sep  2 03:07:36 CEST 2023",
-        'LAST_SEEN': "Fri Sep 1 23:21:05 2023",
-        'USER': "waser",
-        'PWD': "/home/waser",
+        'lang': "fr_CH",
+        'date': "Sat Sep  2 03:07:36 CEST 2023",
+        'last_seen': "Fri Sep 1 23:21:05 2023",
+        'username': "waser",
+        'pwd': "/home/waser",
         },
     'final_answer': "Ravis de vous revoir si tôt!\nNe devriez-vous pas dormir à une heure si tardive?\nQuoi qu'il en soit, je suis à votre entière disposition. Comme toujours."
 })
 
 
 for greet in _greets:
-    environ = _env.format(**greet['env'])
+    env = greet.get('env')
+    environ = _env.format(**env)
     answer = greet.get('final_answer')
     if answer:
         greet_examples.append(
