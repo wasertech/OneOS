@@ -3,6 +3,7 @@ import argparse
 from pathlib import Path
 
 from LLM_Trainer.dataset import DataLoader
+from LLM_Trainer.transformer import LLModel
 
 def parse_arguments():
     parse = argparse.ArgumentParser(description="Training script for LLM")
@@ -31,7 +32,7 @@ def main():
     # Load dataset
     dataset = DataLoader(dataset_name)
     # Load the model
-    
+    model = LLModel(foundation_model)
     # Laod the trainer
     # Train the model
     # Save the model
