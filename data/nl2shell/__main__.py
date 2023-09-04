@@ -2,6 +2,7 @@
 from nl2shell import LANGS
 from nl2shell.assistant import get_assistant_text_data
 from datasets import Dataset
+from huggingface_hub import login
 
 if __name__ == "__main__":
     
@@ -13,6 +14,7 @@ if __name__ == "__main__":
     dataset = Dataset.from_dict(dataset_dict)
 
     # Push to the hub
+    login()
     dataset.push_to_hub("OneOS")
 
 

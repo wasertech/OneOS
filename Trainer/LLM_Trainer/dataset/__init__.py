@@ -1,5 +1,5 @@
 
-from LLM_Trainer.dataset.text import TextDataLoader
+from LLM_Trainer.dataset.text import create_text_dataset
 
-class DataLoader(TextDataLoader):
-    pass
+def create_dataset(dataset_name, *args, **kwargs):
+    return create_text_dataset(dataset_name, *args, **kwargs)
