@@ -14,6 +14,7 @@ system_prompt = intruction_prompt = {
 py_compute_examples = []
 
 _examples = []
+_numpy_examples = []
 # Python computing with libraries:
 # Native
 
@@ -61,7 +62,7 @@ _examples.append({
 
 # NumPy
 
-_examples.append({
+_numpy_examples.append({
     'lang': "en",
     'input': """Quickly multiply those two matrices.
     
@@ -223,3 +224,55 @@ This report summarizes the sales performance of the two products, highlighting t
 # pytorch
 # scikit-learn
 # opencv
+
+for example in _examples:
+    lang = example.get('lang', 'en')
+    py_compute_command = example.get('input')
+    py_compute_action = example.get('action_input')
+    py_compute_answer = example.get('answer')
+
+    py_compute_examples.append(
+        {
+            'system': system_prompt.get(lang, ""),
+            'instruction': intruction_prompt.get(lang, ""),
+            'conversation': [
+                { 'role': "human", 'message': py_compute_command },
+                { 
+                    'role': "assistant", 
+                    'message': py_compute_answer,
+                    'scratchpad': [
+                        { 'action': "Python", 'action_input': py_compute_action },
+                        { 'action': 'final_answer', 'action_input': py_compute_answer }
+                    ]
+                }
+            ]
+        }
+    )
+
+for example in _numpy_examples:
+    lang = example.get('lang', 'en')
+    py_compute_command = example.get('input')
+    py_compute_action = example.get('action_input')
+    py_compute_answer = example.get('answer')
+
+    py_compute_examples.append(
+        {
+            'system': system_prompt.get(lang, ""),
+            'instruction': intruction_prompt.get(lang, ""),
+            'conversation': [
+                { 'role': "human", 'message': py_compute_command },
+                {
+                    'role': "assistant",
+                    'message': py_compute_answer,
+                    'scratchpad': [
+                        { 'action': "Bash", 'action_input': "pip install -U --no-input numpy" },
+                        { 'action': "Python", 'action_input': py_compute_action },
+                        { 'action': 'final_answer', 'action_input': py_compute_answer }
+                    ]
+                }
+            ]
+        }
+    )
+
+def get_compute_examples():
+    return py_compute_examples
