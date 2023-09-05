@@ -1,11 +1,17 @@
 FROM cnstark/pytorch:1.13.0-py3.9.12-cuda11.7.1-ubuntu20.04
 
 # Model parameters
-ARG base_model_name=""
+ARG dataset_name="wasertech/OneOS"
+ENV DATASET_NAME=$dataset_name
+
+ARG base_model_name="TinyPixel/Llama-2-7B-bf16-sharded"
 ENV BASE_MODEL_NAME=$base_model_name
 
-ARG model_language=fr
-ENV MODEL_LANGUAGE=$model_language
+ARG output_dir="output"
+ENV OUTPUT_MODEL_PATH=$output_dir
+
+ARG model_name="assistant-llama2-7b-qlora-bf16"
+ENV OUTPUT_MODEL_NAME=$model_name
 
 ARG disable_no_ignore_characters_warning=0
 ENV DONT_WARN_IGNORE_CHARS=$disable_no_ignore_characters_warning
@@ -101,7 +107,7 @@ ENV WORKDIR /mnt
 ENV VIRTUAL_ENV_NAME llm-train
 ENV VIRTUAL_ENV $HOMEDIR/$VIRTUAL_ENV_NAME
 
-ENV TRAINER_DIR $HOMEDIR/trainer
+ENV TRAINER_DIR $HOMEDIR/LLM_Trainer
 
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
@@ -152,9 +158,7 @@ RUN virtualenv --python=/usr/bin/python3 $VIRTUAL_ENV_NAME
 
 ENV PATH=$HOMEDIR/$VIRTUAL_ENV_NAME/bin:$PATH
 
-COPY --chown=trainer:trainer ./LLM_Trainer $TRAINER_DIR
-
-WORKDIR $TRAINER_DIR
+WORKDIR $HOMEDIR
 
 RUN pip install trl
 
@@ -172,13 +176,15 @@ RUN pip install einops
 
 RUN pip install wandb
 
+COPY --chown=trainer:trainer ./LLM_Trainer $TRAINER_DIR
+COPY --chown=trainer:trainer ./setup.py $HOMEDIR/setup.py
+COPY --chown=trainer:trainer ./README.md $HOMEDIR/README.md
+
 RUN pip install -e .
 
 WORKDIR $WORKDIR
 
 # Copy now so that docker build can leverage caches
 COPY --chown=trainer:trainer . $HOMEDIR/
-
-COPY --chown=trainer:trainer ${MODEL_LANGUAGE}/ $HOMEDIR/${MODEL_LANGUAGE}/
 
 ENTRYPOINT "$HOMEDIR/run.sh"

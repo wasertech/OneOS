@@ -2,4 +2,4 @@
 
 echo You are in `pwd`
 
-./train.sh
+${HOMEDIR}/train.sh
