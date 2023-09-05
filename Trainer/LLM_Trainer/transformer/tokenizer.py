@@ -13,4 +13,5 @@ def create_tokenizer(
         **kwargs
     )
     tokenizer.pad_token = tokenizer.eos_token
+    tokenizer.padding_side = 'right'
     return tokenizer
