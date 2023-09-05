@@ -5,8 +5,8 @@ from transformers import (
 
 def create_training_args(
         output_dir = "./results",
-        per_device_train_batch_size = 4,
-        gradient_accumulation_steps = 4,
+        per_device_train_batch_size = 2,
+        gradient_accumulation_steps = 8,
         optim = "paged_adamw_32bit",
         save_steps = 100,
         logging_steps = 10,
