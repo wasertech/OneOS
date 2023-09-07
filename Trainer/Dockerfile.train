@@ -162,13 +162,13 @@ WORKDIR $HOMEDIR
 
 RUN pip install trl
 
-RUN pip install transformers>=4.26.1
+RUN pip install 'transformers>=4.26.1'
 
 RUN pip install accelerate
 
 RUN pip install 'git+https://github.com/huggingface/peft.git'
 
-RUN pip install datasets>=1.18.0
+RUN pip install 'datasets>=1.18.0'
 
 RUN pip install bitsandbytes
 

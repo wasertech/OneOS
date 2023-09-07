@@ -4,6 +4,8 @@ RUN apt-get update && apt-get install -y git
 RUN pip install --upgrade --no-input pip
 RUN pip uninstall -y torch
 RUN pip install --no-input vllm
+# Try vllm-lora
+# RUN pip install --no-input 'git+https://github.com/VectorInstitute/vllm-lora'
 
 WORKDIR /app
 
