@@ -30,11 +30,14 @@ ENV EVAL_BATCH_SIZE=$eval_batch_size
 ARG opm_nproc=1
 ENV OMP_NUM_THREADS=$opm_nproc
 
-ARG epochs=7
+ARG epochs=1
 ENV EPOCHS=$epochs
 
-ARG learning_rate="3e-4"
+ARG learning_rate="1.41e-5"
 ENV LEARNING_RATE=$learning_rate
+
+ARG seq_len=4096
+ENV SEQENCE_LENGTH=$seq_len
 
 ARG dropout=0.0
 ENV DROPOUT=$dropout
@@ -51,6 +54,18 @@ ENV GAS=$gas
 
 ARG gradien_checkpointing=1
 ENV GRAD_CHECK=$gradien_checkpointing
+
+ARG use_peft=0
+ENV USE_PEFT=$use_peft
+
+ARG use_4bit=0
+ENV USE_4BIT=$use_4bit
+
+ARG use_8bit=0
+ENV USE_8BIT=$use_8bit
+
+ENV push_to_hub=0
+ENV PUSH_TO_HUB=$push_to_hub
 
 # Warm up uses ratio over steps
 # Set WARMUP_RATIO=0 to use steps instead
@@ -106,8 +121,6 @@ ENV WORKDIR /mnt
 
 ENV VIRTUAL_ENV_NAME llm-train
 ENV VIRTUAL_ENV $HOMEDIR/$VIRTUAL_ENV_NAME
-
-ENV TRAINER_DIR $HOMEDIR/LLM_Trainer
 
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
@@ -175,12 +188,6 @@ RUN pip install bitsandbytes
 RUN pip install einops
 
 RUN pip install wandb
-
-COPY --chown=trainer:trainer ./LLM_Trainer $TRAINER_DIR
-COPY --chown=trainer:trainer ./setup.py $HOMEDIR/setup.py
-COPY --chown=trainer:trainer ./README.md $HOMEDIR/README.md
-
-RUN pip install -e .
 
 WORKDIR $WORKDIR
 

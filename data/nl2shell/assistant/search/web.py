@@ -309,7 +309,7 @@ search_examples = []
 
 for example in _fr_search_examples:
     query = example.get('query', "")
-    search_terms = example.get('search_terms', "")
+    search_terms = example.get('search_terms', "").lower()
     context = example.get('context', "")
     response = example.get('response', "")
     if query and search_terms and context and response:
@@ -328,7 +328,7 @@ for example in _fr_search_examples:
 
 for example in _en_search_examples:
     query = example.get('query', "")
-    search_terms = example.get('search_terms', "")
+    search_terms = example.get('search_terms', "").lower()
     context = example.get('context', "")
     response = example.get('response', "")
     if query and search_terms and context and response:

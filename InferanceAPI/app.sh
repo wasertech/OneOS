@@ -5,9 +5,9 @@ set -xe
 
 HOST=${HOST:-0.0.0.0}
 PORT=${PORT:-8000}
-MODEL_ID=${MODEL_ID:-'TinyPixel/Llama-2-7B-bf16-sharded'}
+MODEL_ID=${MODEL_ID:-'TheBloke/Llama-2-7b-chat-fp16'}
 TOKENIZER_ID=${TOKENIZER_ID:-'hf-internal-testing/llama-tokenizer'}
-DTYPE=${DTYPE:-'half'} # 'auto', 'half', 'float', 'bfloat16'
+DTYPE=${DTYPE:-'auto'} # 'auto', 'half', 'float', 'bfloat16'
 
 python app.py --host $HOST --port $PORT --model $MODEL_ID --tokenizer $TOKENIZER_ID --dtype $DTYPE
 

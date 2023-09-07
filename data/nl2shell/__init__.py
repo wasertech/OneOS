@@ -1,3 +1,6 @@
+
+__version__ = "0.0.2"
+
 LANGS = []
 
 FR_LANGS = [

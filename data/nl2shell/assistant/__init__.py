@@ -19,6 +19,10 @@ def get_assistant_data(langs=['en_US', 'fr_FR']):
 
 # Conversational data for the assistant
 
+BOS, EOS = "<s>", "</s>"
+BOSYS, EOSYS = "<<SYS>>", "<</SYS>>"
+BOI, EOI = "[INST]", "[/INST]"
+
 _SYSTEM_PROMPT_ = (
     "You are Assistant, a sentient artificial intelligence.\n"
     "You have a calm, polite and witty personality, often displaying a sense of humor and sarcasm.\n"
@@ -40,7 +44,7 @@ _TOOLS_ = """
 
 _TOOL_NAMES_ = "Python, Search, Wikipedia, Bash, Exit, Clear"
 
-_INSTRUCTION_PROMPT_ = """Choose your next step carefuly.
+_INSTRUCTION_PROMPT_ = f"""Choose your next step carefuly.
 
 Given the following user query, the results of your actions and the state of the current conversation, you can either:
 
@@ -59,9 +63,15 @@ User does not see your actions. If you got the answer to the query in a previous
 
 _TEMPLATE_FORMAT_ = """# System
 
+{BOSYS}
+
 {system_prompt}
 
+{EOSYS}
+
 ## Instructions
+
+{BOI}
 
 {instruction}
 
@@ -75,7 +85,7 @@ _TEMPLATE_FORMAT_ = """# System
 
 ### User query
 
-{query}
+{BOS}{query}{EOS}
 
 ### Actions taken
 
@@ -83,9 +93,11 @@ _TEMPLATE_FORMAT_ = """# System
 {scratchpad}
 ```
 
+{EOI}
+
 ### Next action
 
-{output}"""
+{BOS}{output}{EOS}"""
 
 def convert_data_to_text(
         history: list,
@@ -94,16 +106,16 @@ def convert_data_to_text(
         action: str,
         action_input: str,
         system_prompt: str = _SYSTEM_PROMPT_,
-        instruction: str = _INSTRUCTION_PROMPT_,
+        instruction: str = _INSTRUCTION_PROMPT_
     ):
     _history = []
     for t in history:
         r, m = t.get('role'), t.get('message')
         if r and m:
             if r == "assistant":
-                _history.append(f"Assistant: {m}")
+                _history.append(f"Assistant: {BOS}{m}{EOS}")
             else:
-                _history.append(f"User: {m}")
+                _history.append(f"User: {BOS}{m}{EOS}")
     conversation = "\n".join(_history)
     _scratchpad = json.dumps(scratchpad, ensure_ascii=False)
     _output = action_input if action == "final_answer" else f"""```json
@@ -119,7 +131,13 @@ def convert_data_to_text(
         conversation=conversation,
         query=query,
         scratchpad=_scratchpad,
-        output=_output
+        output=_output,
+        BOS=BOS,
+        EOS=EOS,
+        BOSYS=BOSYS,
+        EOSYS=EOSYS,
+        BOI=BOI,
+        EOI=EOI
     )
 
     return text
@@ -143,7 +161,7 @@ def convert_dataset_to_text(dataset):
                 continue
             elif message_role == 'human':
                 _query = message.get('message', None)
-            elif message_role == 'assistant':
+            elif message_role == 'assistant' and _query:
                 for scratchpad in message['scratchpad']:
                     _action = scratchpad.get('action', None)
                     _action_input = scratchpad.get('action_input', None)
