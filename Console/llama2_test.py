@@ -2,7 +2,7 @@ import os
 from client.chains.models import get_llm
 from prompt_toolkit.shortcuts import PromptSession
 
-USERNAME = os.environ['USER']
+USERNAME = os.environ['USER'].capitalize()
 
 session = PromptSession()
 
@@ -20,8 +20,26 @@ prompt = """<<SYS>>
 [INST]{instruction}[/INST] <s>{input_text}
 """
 
+
+def prompt_model(
+        model, 
+        prompt, 
+        input_text="User input was empty.", 
+        system=system, 
+        instruction=instruction
+    ):
+    return model(prompt.format(
+            input_text=input_text,
+            system=system,
+            instruction=instruction
+            )).removesuffix("</s>")
+
+
+max_tokens = 500
+temperature = 0.4
+
 # Load the lama2 model
-model = get_llm(streaming=True, max_tokens=2048, temperature=0)
+model = get_llm(streaming=True, max_tokens=max_tokens, temperature=temperature)
 
 # Say hi
 output = model(prompt.format(
@@ -33,10 +51,14 @@ output = model(prompt.format(
 # Print the output
 print(f'Assistant: {output}')
 
-# Define the input text
-input_text = session.prompt(f'{USERNAME}: ') # input(f'{USERNAME}: ')
+exit_queries = ['exit', 'quit', 'q', ':q', ':q!']
+exit_reason = f"User input was found in {exit_queries=}."
 try:
-    while input_text != "" or input_text.lower() not in ['exit', 'quit']:
+    # Define the input text
+    input_text = session.prompt(f'{USERNAME}: ') # input(f'{USERNAME}: ')
+
+
+    while input_text != "" or input_text.lower() not in exit_queries:
 
         # Infer the model
         output = model(prompt.format(
@@ -49,13 +71,15 @@ try:
         print(f'Assistant: {output}')
 
         # Define the input text
-        input_text = input(f'{USERNAME}: ')
+        input_text = session.prompt(f'{USERNAME}: ')
 except KeyboardInterrupt as e:
+    exit_reason = f"User has pressed [Ctrl] + [C] to exit."
     print()
 except Exception as e:
     # Raiase expeption
+    exit_reason = f"Exception({str(e)}) was raised."
     output = model(prompt.format(
-        input_text=f"The program has encountered the following error:\n{e}\nPlease notify the user.",
+        input_text=f"The program has encountered the following error:\n{str(e)}\nPlease notify the user.",
         system=system,
         instruction=instruction
         )).removesuffix("</s>")
@@ -65,7 +89,7 @@ except Exception as e:
 
 # Say bye
 output = model(prompt.format(
-    input_text="The program is exiting. Say goodbye to the user.",
+    input_text=f"Last user input: {input_text}\nThe program is exiting with {exit_reason=}. Say goodbye to the user.",
     system=system,
     instruction=instruction
     )).removesuffix("</s>")
