@@ -1,4 +1,8 @@
 import json
+
+# use the base model to paraphrase with personnality
+from nl2shell.assistant.utils import paraphrase_assistant_message, check_server_health
+
 # import datasets
 from nl2shell.assistant.bash import get_bash_examples
 from nl2shell.assistant.python import get_python_examples
@@ -162,10 +166,11 @@ def convert_dataset_to_text(dataset):
             elif message_role == 'human':
                 _query = message.get('message', None)
             elif message_role == 'assistant' and _query:
+                _history = history[:-1] or []
+                message['message'] = paraphrase_assistant_message(message, system, history)
                 for scratchpad in message['scratchpad']:
                     _action = scratchpad.get('action', None)
                     _action_input = scratchpad.get('action_input', None)
-                    _history = history[:-1] or []
                     text_data.append(convert_data_to_text(history=_history, query=_query, scratchpad=_scratchpad, action=_action, action_input=_action_input, system_prompt=system, instruction=instruction))
                     _scratchpad.append(scratchpad)
                 _scratchpad = []
@@ -175,6 +180,7 @@ def convert_dataset_to_text(dataset):
     return text_data
 
 def get_assistant_text_data():
+
     data = get_assistant_data()
     text_data = convert_dataset_to_text(data)
     print(f"Generated {len(text_data)} examples from {len(data)} conversations.")

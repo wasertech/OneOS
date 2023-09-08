@@ -23,7 +23,6 @@ prompt = """<<SYS>>
 
 def prompt_model(
         model, 
-        prompt, 
         input_text="User input was empty.", 
         system=system, 
         instruction=instruction
@@ -41,12 +40,10 @@ temperature = 0.4
 # Load the lama2 model
 model = get_llm(streaming=True, max_tokens=max_tokens, temperature=temperature)
 
+input_text = "The program is starting. Say hello to the user."
+
 # Say hi
-output = model(prompt.format(
-    input_text="The program is starting. Say hello to the user.",
-    system=system,
-    instruction=instruction
-    )).removesuffix("</s>")
+output = prompt_model(model, input_text)
 
 # Print the output
 print(f'Assistant: {output}')
@@ -61,11 +58,7 @@ try:
     while input_text != "" or input_text.lower() not in exit_queries:
 
         # Infer the model
-        output = model(prompt.format(
-            input_text=input_text,
-            system=system,
-            instruction=instruction
-            )).removesuffix("</s>")
+        output = prompt_model(model, input_text)
 
         # Print the output
         print(f'Assistant: {output}')
@@ -78,21 +71,15 @@ except KeyboardInterrupt as e:
 except Exception as e:
     # Raiase expeption
     exit_reason = f"Exception({str(e)}) was raised."
-    output = model(prompt.format(
-        input_text=f"The program has encountered the following error:\n{str(e)}\nPlease notify the user.",
-        system=system,
-        instruction=instruction
-        )).removesuffix("</s>")
+    input_text=f"The program has encountered the following error:\n{str(e)}\nPlease notify the user."
+    output = prompt_model(model, input_text)
 
     # Print the output
     print(f'Assistant: {output}')
 
 # Say bye
-output = model(prompt.format(
-    input_text=f"Last user input: {input_text}\nThe program is exiting with {exit_reason=}. Say goodbye to the user.",
-    system=system,
-    instruction=instruction
-    )).removesuffix("</s>")
+input_text=f"Last user input: {input_text}\nThe program is exiting with {exit_reason=}. Say goodbye to the user."
+output = prompt_model(model, input_text)
 
 # Print the output
 print(f'Assistant: {output}')
