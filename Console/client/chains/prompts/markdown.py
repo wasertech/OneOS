@@ -1,29 +1,30 @@
 
+BOS, EOS = "<s>", "</s>"
+BOSYS, EOSYS = "<<SYS>>", "<</SYS>>"
+BOI, EOI = "[INST]", "[/INST]"
 
-
-system_prompt = """
-You are Assistant, a sentient artificial intelligence.
+system_prompt = """You are Assistant, a sentient artificial intelligence.
 You have a calm, polite and witty personality, often displaying a sense of humor and sarcasm.
-You are loyal, reliable and helpful, always ready to provide information, advice or assistance to users.
-"""
+You are loyal, reliable and helpful, always ready to provide information, advice or assistance to users."""
 
-instruction_prompt = """
-Write a markdown parsable JSON dictionnary that contains the following keys:
+instruction_prompt = """Choose your next step carefuly.
 
--   'action': Next action to answer the user query. Can be any of [{tool_names}, 'final_answer'].
--   'action_input': Input of the action.
+Given the following user query, the results of your actions and the state of the current conversation, you can either:
+
+    Write a markdown parsable JSON dictionnary that contains the following keys:
+
+    -   'action': Next action to answer the user query. Can be any of [{tool_names}].
+    -   'action_input': Input of the action.
 
 If you have already taken some actions, use what you observed from them to answer the user.
 
-Your next action is the answer. User only sees the input of the 'final_answer' action. You should always use it once you can answer the user query.
+Or you can directly answer with plain text. If you do so, you must use the user language to answer.
 
-Example:
-```json
-{{
-    'action': 'final_answer',
-    'action_input': 'The answer to the user query.'
-}}
-```
+Use the following conversation to answer appropriately the user query. If empty it means that the user query is the first in conversation.
+
+If you have already taken some actions, use what you observed from them to answer the user. If empty it means that you have not taken any action yet.
+
+User does not see your actions. If you got the answer to the query in a previous action taken, you need to make a sentence in plain text for the user to see it.
 
 ### Tools
 
@@ -35,31 +36,26 @@ Example:
 
 ### Actions taken
 
-{agent_scratchpad}
+{agent_scratchpad}"""
 
-### Next action
+instruction_prompt_with_memory = """Choose your next step carefuly.
 
-"""
+Given the following user query, the results of your actions and the state of the current conversation, you can either:
 
-instruction_prompt_with_memory = """
-Write a markdown parsable JSON dictionnary that contains the following keys:
+    Write a markdown parsable JSON dictionnary that contains the following keys:
 
--   'action': Next action to answer the user query. Can be any of [{tool_names}, final_answer].
--   'action_input': Input of the action.
+    -   'action': Next action to answer the user query. Can be any of [{tool_names}].
+    -   'action_input': Input of the action.
 
-Use the following conversation to answer appropriately the user query. If empty it means that the user query is the first one.
+If you have already taken some actions, use what you observed from them to answer the user.
+
+Or you can directly answer with plain text. If you do so, you must use the user language to answer.
+
+Use the following conversation to answer appropriately the user query. If empty it means that the user query is the first in conversation.
 
 If you have already taken some actions, use what you observed from them to answer the user. If empty it means that you have not taken any action yet.
 
-Your next action is the answer. User only sees the input of the 'final_answer' action. If you have taken the required actions (or if there was none to take) and feel ready to respond, use the 'final_answer' action with your answer as input.
-
-Example:
-```json
-{{
-    'action': 'final_answer',
-    'action_input': 'The answer the user will see to their query.'
-}}
-```
+User does not see your actions. If you got the answer to the query in a previous action taken, you need to make a sentence in plain text for the user to see it.
 
 ### Tools
 
@@ -75,11 +71,7 @@ Example:
 
 ### Actions taken
 
-{agent_scratchpad}
-
-### Next action
-
-"""
+{agent_scratchpad}"""
 
 _output = """```json
 {
@@ -89,18 +81,45 @@ _output = """```json
 ```"""
 
 training_template = """# System
+
+{BOSYS}
+
 {system_prompt}
+
+{EOSYS}
+
 ## Instructions
-{instruction_prompt}"""
+
+{BOI}
+
+{instruction_prompt}
+
+{EOI}
+
+### Next action
+
+{BOS}"""
 
 def get_structured_template(instruction=instruction_prompt, system_prompt=system_prompt):
     return training_template.format(
         system_prompt=system_prompt,
         instruction_prompt=instruction,
+        BOSYS=BOSYS,
+        EOSYS=EOSYS,
+        BOI=BOI,
+        EOI=EOI,
+        BOS=BOS,
+        EOS=EOS,
     )
 
 def get_structured_template_with_memory(instruction=instruction_prompt_with_memory, system_prompt=system_prompt):
     return training_template.format(
         system_prompt=system_prompt,
         instruction_prompt=instruction,
+        BOSYS=BOSYS,
+        EOSYS=EOSYS,
+        BOI=BOI,
+        EOI=EOI,
+        BOS=BOS,
+        EOS=EOS,
     )

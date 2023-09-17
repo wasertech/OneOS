@@ -39,8 +39,8 @@ _TOOLS_ = """
 	'Python': 'useful when you need to use logic in your answer. Input must be valid python code. You should always use print to output what you need to see.',
 	'Search': 'useful when you need more context to answer a question; you should use targeted search terms',
 	'Wikipedia': 'useful when you need to use an encyclopedia to answer a question; input will be used to search on wikipedia',
-	'Bash': 'useful when you need to use the system to achieve something; input must be valid bash code; implemented using subprocess so no tty support. Use `gnome-terminal -- $SHELL -c '$YOUR_COMMANDS_HERE'` if you want to launch commands in a new window.',
-	'Exit': 'useful when you need to exit the shell or stop the conversation, dont forget to tell the user that you can\'t wait for your next conversation first.',
+	'Shell': 'useful when you need to use the system to achieve something; input must be valid bash code.',
+	'Exit': 'useful when you need to exit the shell or stop the conversation, don\'t forget to tell the user that you can\'t wait for your next conversation first.',
 	'Clear': 'useful when you need to clear the screen or start a fresh conversation. Don\'t forget to say something nice.',
 }
 ```
@@ -167,7 +167,7 @@ def convert_dataset_to_text(dataset):
                 _query = message.get('message', None)
             elif message_role == 'assistant' and _query:
                 _history = history[:-1] or []
-                message['message'] = paraphrase_assistant_message(message, system, history)
+                # message['message'] = paraphrase_assistant_message(message, system, history)
                 for scratchpad in message['scratchpad']:
                     _action = scratchpad.get('action', None)
                     _action_input = scratchpad.get('action_input', None)
