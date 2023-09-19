@@ -39,7 +39,7 @@ docker run \
 --ulimit memlock=-1 \
 --ulimit stack=67108864 \
 --mount type=bind,src=`echo ~/.cache/huggingface/hub/`,dst=/root/.cache/huggingface/hub/ \
---env PORT="5085" --env MODEL_ID="TheBloke/Llama-2-7b-chat-fp16"
+--env PORT="5085" --env MODEL_ID="TheBloke/Llama-2-7b-chat-fp16" \
 vllm-inference-api:latest
 ```
 
