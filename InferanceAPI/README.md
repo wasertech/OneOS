@@ -46,6 +46,6 @@ vllm-inference-api:latest
 ```shell
 curl -N -X POST \
 -H "Accept: text/event-stream" -H "Content-Type: application/json" \
--d '{"prompt": "This is your prompt. The model should try to predict the next ", "temperature": 0.5, "max_tokens": 2048}' \
+-d '{"prompt": "This is your prompt. The model should try to predict the next ", "temperature": 0.5, "max_tokens": 2}' \
 http://0.0.0.0:8000/generate
 ```
