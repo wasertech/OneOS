@@ -1,14 +1,12 @@
 # vLLM API
 
-Efficiently serving LLMs is a challenging task. vLLM is currently the fastest way to produce tokens localy using LLMs.
+Efficiently serving LLMs is a challenging task. I use a custom vLLM server to achive so. Its relatively fast and efficient but lack support for quantized models yet.
 
 ## Installation & Usage
 
 I recommend you use `docker` to serve your model in a contained environment but you can always try to install vLLM with `pip` or from source but results are not given.
 
 ### Using docker
-
-One downside of vLLM is that it doesn't support CUDA 12 using PyTorch 2.0 as of now. So it's best to serve the LLM inside a contained image.
 
 You'll need a [working Docker installation with Nvidia Container Toolkit](https://docs.docker.com/config/containers/resource_constraints/#gpu) and at least one [GPU with a CUDA score of 7.0 or more](https://developer.nvidia.com/cuda-gpus) and enough memory to load the model.
 
@@ -27,18 +25,19 @@ docker build \
 
 ### Run your image
 
-Expose port `8000` (or `$PORT`), specify gpus, shared memory size allocation and mount your local HuggingFace cache inside the container so that you don't have to download it everytime.
+Expose port `5085` (or `$PORT`), specify gpus, shared memory size allocation and mount your local HuggingFace cache inside the container so that you don't have to download it everytime.
 
 ```shell
 docker run \
 -it \
--p 8000:8000 \
+-p 5085:5085 \
 --gpus=all \
 --privileged \
 --shm-size=8g \
 --ulimit memlock=-1 \
 --ulimit stack=67108864 \
 --mount type=bind,src=`echo ~/.cache/huggingface/hub/`,dst=/root/.cache/huggingface/hub/ \
+--env PORT="5085"
 vllm-inference-api:latest
 ```
 
