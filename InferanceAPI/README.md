@@ -27,6 +27,8 @@ docker build \
 
 Expose port `5085` (or `$PORT`), specify gpus, shared memory size allocation and mount your local HuggingFace cache inside the container so that you don't have to download it everytime.
 
+Use `MODEL_ID` to set which model to load.
+
 ```shell
 docker run \
 -it \
@@ -37,7 +39,7 @@ docker run \
 --ulimit memlock=-1 \
 --ulimit stack=67108864 \
 --mount type=bind,src=`echo ~/.cache/huggingface/hub/`,dst=/root/.cache/huggingface/hub/ \
---env PORT="5085"
+--env PORT="5085" --env MODEL_ID="TheBloke/Llama-2-7b-chat-fp16"
 vllm-inference-api:latest
 ```
 
