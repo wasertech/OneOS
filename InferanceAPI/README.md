@@ -27,7 +27,7 @@ docker build \
 
 Expose port `5085` (or `$PORT`), specify gpus, shared memory size allocation and mount your local HuggingFace cache inside the container so that you don't have to download it everytime.
 
-Use `MODEL_ID` to set which model to load.
+Use `$MODEL_ID` to set which model to load.
 
 ```shell
 docker run \
