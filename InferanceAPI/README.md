@@ -1,6 +1,6 @@
 # vLLM API
 
-Efficiently serving LLMs is a challenging task. I use a custom vLLM server to achive so. Its relatively fast and efficient but lack support for quantized models yet.
+Efficiently serving LLMs is a challenging task. I use a custom vLLM server to achive so. It's relatively fast and efficient but lack support for quantized models yet.
 
 ## Installation & Usage
 
