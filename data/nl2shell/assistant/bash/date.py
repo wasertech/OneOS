@@ -495,19 +495,22 @@ def generate_time_examples():
         english_answer = hours[hour]['english']
         french_answer = hours[hour]['french']
 
-        conversation = [
+        conversation_en = [
             {'role': 'human', 'message': english_query},
             {'role': 'assistant', 'message': english_answer, 'scratchpad': [
                 {'action': "Bash", 'action_input': "date '+%T'", 'observation': hour},
                 {'action': "final_answer", 'action_input': english_answer, 'observation': ""},
             ]},
+        ]
+        conversation_fr = [
             {'role': 'human', 'message': french_query},
             {'role': 'assistant', 'message': french_answer, 'scratchpad': [
                 {'action': "Bash", 'action_input': "date '+%T'", 'observation': hour},
                 {'action': "final_answer", 'action_input': french_answer, 'observation': ""},
             ]},
         ]
-        examples.append({'system': "", 'instruction': "", 'conversation': conversation})
+        examples.append({'lang': "en", 'system': "", 'instruction': "", 'conversation': conversation_en})
+        examples.append({'lang': "fr", 'system': "", 'instruction': "", 'conversation': conversation_fr})
     return examples
 
 def generate_date_examples() -> list:
@@ -572,19 +575,23 @@ def generate_date_examples() -> list:
 
     for date_fr, date_en, french_query, english_query, french_answer, english_answer in zip(dates_fr, dates_en, french_queries, english_queries, french_answers, english_answers):
 
-        conversation = [
+        conversation_en = [
             {'role': 'human', 'message': english_query},
             {'role': 'assistant', 'message': english_answer, 'scratchpad': [
                 {'action': "Bash", 'action_input': "date '+%c'", 'observation': date_en},
                 {'action': "final_answer", 'action_input': english_answer, 'observation': ""},
             ]},
+        ]
+        conversation_fr = [
             {'role': 'human', 'message': french_query},
             {'role': 'assistant', 'message': french_answer, 'scratchpad': [
                 {'action': "Bash", 'action_input': "date '+%c'", 'observation': date_fr},
                 {'action': "final_answer", 'action_input': french_answer, 'observation': ""},
             ]},
         ]
-        examples.append({'system': "", 'instruction': "", 'conversation': conversation})
+
+        examples.append({'lang': "en", 'system': "", 'instruction': "", 'conversation': conversation_en})
+        examples.append({'lang': "fr", 'system': "", 'instruction': "", 'conversation': conversation_fr})
 
     return examples
 
@@ -597,11 +604,12 @@ def get_date_examples(_data=cmd_data):
         observation = cmd_data['output']
         # french
         for human_msg in cmd_data['french']:
-            fr_answer = cmd_data.get('french_asnwer')
+            fr_answer = cmd_data.get('french_answer')
             if not fr_answer:
                 continue
             _answer = random.choice(fr_answer)
             _toadd_data = {
+                'lang': "fr",
                 'system': "",
                 'instruction': "",
                 'conversation': [
@@ -620,6 +628,7 @@ def get_date_examples(_data=cmd_data):
                 continue
             _answer = random.choice(en_answer)
             _toadd_data = {
+                'lang': "en",
                 'system': "",
                 'instruction': "",
                 'conversation': [

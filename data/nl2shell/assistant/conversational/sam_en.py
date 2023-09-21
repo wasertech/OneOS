@@ -86,6 +86,7 @@ def get_sam_en_examples():
                 continue
         
         sam_en.append({
+            'lang': 'en',
             'system': system_prompt.get('en', ""),
             'instruction': intruction_prompt.get('en', ""),
             'conversation': conversation

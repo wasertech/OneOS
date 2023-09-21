@@ -396,11 +396,13 @@ def get_ls_examples():
             }
         ]
         data.append({
+            'lang': 'en',
             'system': "",
             'instruction': "",
             'conversation': conversation_en,
         })
         data.append({
+            'lang': 'fr',
             'system': "",
             'instruction': "",
             'conversation': conversation_fr,
@@ -441,11 +443,13 @@ def get_ls_data(_data=ls_data):
             }
         ]
         data.append({
+            'lang': 'en',
             'system': "",
             'instruction': "",
             'conversation': conversation_en,
         })
         data.append({
+            'lang': 'fr',
             'system': "",
             'instruction': "",
             'conversation': conversation_fr,

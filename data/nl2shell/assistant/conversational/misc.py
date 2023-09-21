@@ -49,6 +49,7 @@ def get_misc_examples():
     for example in misc_examples:
         examples.append(
             {
+                'lang': example.get('lang', 'en'),
                 'system': system_prompt.get(example.get('lang', 'en'), ""),
                 'instruction': intruction_prompt.get(example.get('lang', 'en'), ""),
                 'conversation': [

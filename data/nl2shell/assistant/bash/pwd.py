@@ -382,6 +382,6 @@ def get_pwd_data():
                         ]
                     }
                 ]
-                data.append({'system': "", 'instruction': "", 'conversation': conversation})
+                data.append({'lang': lang, 'system': "", 'instruction': "", 'conversation': conversation})
 
     return data

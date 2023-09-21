@@ -34,6 +34,7 @@ def get_nl2shell_english_examples():
                 continue
             else:
                 data.append({
+                    'lang': 'en',
                     'system': "",
                     'instruction': "",
                     'conversation': [

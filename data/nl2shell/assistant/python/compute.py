@@ -233,6 +233,7 @@ for example in _examples:
 
     py_compute_examples.append(
         {
+            'lang': lang,
             'system': system_prompt.get(lang, ""),
             'instruction': instruction_prompt.get(lang, ""),
             'conversation': [
@@ -257,6 +258,7 @@ for example in _numpy_examples:
 
     py_compute_examples.append(
         {
+            'lang': lang,
             'system': system_prompt.get(lang, ""),
             'instruction': instruction_prompt.get(lang, ""),
             'conversation': [

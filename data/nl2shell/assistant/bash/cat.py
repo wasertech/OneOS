@@ -1,6 +1,6 @@
 # Set prompts
 # Leave empty to use default values
-system_prompt = intruction_prompt= {
+system_prompt = intruction_prompt = {
     'en': "",
     'fr': ""
 }
@@ -87,6 +87,7 @@ def get_cat_examples():
         assistant_reply_en = cat_examples['assistant_response']['en'][i].format(file_name=file_name, file_content=file_content)
         assistant_reply_fr = cat_examples['assistant_response']['fr'][i].format(file_name=file_name, file_content=file_content)
         data.append({
+            'lang': 'en',
             'system': system_prompt.get('en', ""),
             'instruction': intruction_prompt.get('en', ""),
             'conversation': [
@@ -99,6 +100,7 @@ def get_cat_examples():
             ]
         })
         data.append({
+            'lang': 'fr',
             'system': system_prompt.get('fr', ""),
             'instruction': intruction_prompt.get('fr', ""),
             'conversation': [

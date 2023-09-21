@@ -167,7 +167,18 @@ for query, response, action in zip(user_ask_cd_en, response_cd_en, action_cd):
             ]
         }
     ]
-    data.append({'system': "", 'instruction': "", 'conversation': conversation})
+    data.append({'lang': 'en', 'system': "", 'instruction': "", 'conversation': conversation})
+
+for query, response, action in zip(user_ask_cd_fr, response_cd_fr, action_cd):
+    conversation = [
+        {'role': 'human', 'message': query},
+        {'role': 'assistant', 'message': response, 'scratchpad': [
+                {'action': 'Bash', 'action_input': action, 'observation': ""},
+                {'action': 'final_answer', 'action_input': response, 'observation': ""},
+            ]
+        }
+    ]
+    data.append({'lang': 'fr', 'system': "", 'instruction': "", 'conversation': conversation})
 
 def get_cd_examples(dataset=data):    
     return dataset

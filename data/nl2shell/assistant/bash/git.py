@@ -16,6 +16,7 @@ git_examples = []
 
 git_examples.append(
     {
+        'lang': 'en',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -31,6 +32,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'fr',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -46,6 +48,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'en',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -61,6 +64,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'fr',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -78,6 +82,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'en',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -93,6 +98,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'fr',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -110,6 +116,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'en',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -125,6 +132,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'fr',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -142,6 +150,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'en',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -157,6 +166,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'fr',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -174,6 +184,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'en',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -189,6 +200,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'fr',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -206,6 +218,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'en',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -221,6 +234,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'fr',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -238,6 +252,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'en',
         'system': "",
         'instruction': "",
         'conversation': [
@@ -253,6 +268,7 @@ git_examples.append(
 
 git_examples.append(
     {
+        'lang': 'fr',
         'system': "",
         'instruction': "",
         'conversation': [

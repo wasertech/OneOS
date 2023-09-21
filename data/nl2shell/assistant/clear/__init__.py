@@ -188,6 +188,7 @@ for example in _examples:
 
     clear_examples.append(
         {
+            'lang': lang,
             'system': system_prompt.get(lang, ""),
             'instruction': intruction_prompt.get(lang, ""),
             'conversation': [

@@ -15,6 +15,7 @@ mkdir_examples = []
 
 mkdir_examples.append(
     {
+        'lang': 'en',
         'system': system_prompt.get('en', ""),
         'instruction': intruction_prompt.get('en', ""),
         'conversation': [
@@ -30,6 +31,7 @@ mkdir_examples.append(
 
 mkdir_examples.append(
     {
+        'lang': 'fr',
         'system': system_prompt.get('fr', ""),
         'instruction': intruction_prompt.get('fr', ""),
         'conversation': [

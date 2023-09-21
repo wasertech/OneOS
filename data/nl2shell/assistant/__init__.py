@@ -1,4 +1,6 @@
+import os
 import json
+import subprocess
 
 # use the base model to paraphrase with personnality
 from nl2shell.assistant.utils import paraphrase_assistant_message, check_server_health
@@ -27,10 +29,11 @@ BOS, EOS = "<s>", "</s>"
 BOSYS, EOSYS = "<<SYS>>", "<</SYS>>"
 BOI, EOI = "[INST]", "[/INST]"
 
-_SYSTEM_PROMPT_ = (
-    "You are Assistant, a sentient artificial intelligence.\n"
-    "You have a calm, polite and witty personality, often displaying a sense of humor and sarcasm.\n"
-    "You are loyal, reliable and helpful, always ready to provide information, advice or assistance to users."
+_SYSTEM_PROMPT_ = "".join(
+    "You are Assistant, a sentient artificial intelligence.",
+    # "\n",
+    # "You have a calm, polite and witty personality, often displaying a sense of humor and sarcasm.\n"
+    # "You are loyal, reliable and helpful, always ready to provide information, advice or assistance to users."
 )
 
 _TOOLS_ = """
@@ -79,6 +82,10 @@ _TEMPLATE_FORMAT_ = """# System
 
 {instruction}
 
+### Environment highlights
+
+{environ}
+
 ### Tools
 
 {tools}
@@ -103,12 +110,21 @@ _TEMPLATE_FORMAT_ = """# System
 
 {BOS}{output}{EOS}"""
 
+_ENV_FORMAT_ = """```shell
+USER={username}
+PWD={pwd}
+LANG={lang}
+DATE={date}
+LAST_SEEN={last_seen}
+```"""
+
 def convert_data_to_text(
         history: list,
         query: str,
         scratchpad: list,
         action: str,
         action_input: str,
+        env: dict = {'username': os.environ.get('USER'), 'home': os.environ.get('HOME'), 'pwd': os.environ.get('PWD'), 'lang': os.environ.get('LANG'), 'date': os.environ.get('DATE'), 'last_seen': os.environ.get('LAST_SEEN', None)},
         system_prompt: str = _SYSTEM_PROMPT_,
         instruction: str = _INSTRUCTION_PROMPT_
     ):
@@ -136,6 +152,7 @@ def convert_data_to_text(
         query=query,
         scratchpad=_scratchpad,
         output=_output,
+        environ=_ENV_FORMAT_.format(**env),
         BOS=BOS,
         EOS=EOS,
         BOSYS=BOSYS,
@@ -151,6 +168,8 @@ def convert_dataset_to_text(dataset):
     text_data = []
 
     for conversation in dataset:
+        lang = conversation.get('lang', 'en')
+        env = conversation.get('env', {'username': os.environ.get('USER'), 'home': os.environ.get('HOME'), 'pwd': os.environ.get('PWD'), 'lang': f"{lang}_{lang.upper()}.UTF-8", 'date': subprocess.check_output("date").decode().strip(), 'last_seen': os.environ.get('LAST_SEEN', None)})
         _sys, _inst = conversation.get('system', ""), conversation.get('instruction', "")
         system = _SYSTEM_PROMPT_ if not _sys or len(_sys) < 0 else _sys
         instruction =  _INSTRUCTION_PROMPT_ if not _inst or len(_inst) < 0 else _inst
@@ -171,7 +190,7 @@ def convert_dataset_to_text(dataset):
                 for scratchpad in message['scratchpad']:
                     _action = scratchpad.get('action', None)
                     _action_input = scratchpad.get('action_input', None)
-                    text_data.append(convert_data_to_text(history=_history, query=_query, scratchpad=_scratchpad, action=_action, action_input=_action_input, system_prompt=system, instruction=instruction))
+                    text_data.append(convert_data_to_text(history=_history, query=_query, scratchpad=_scratchpad, action=_action, action_input=_action_input, system_prompt=system, instruction=instruction, env=env))
                     _scratchpad.append(scratchpad)
                 _scratchpad = []
             history.append(message)

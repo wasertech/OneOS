@@ -35,6 +35,7 @@ def get_nl2shell_french_examples():
     for example in data:
         try:
             example['conversation'][0]['message'] = translate(example['conversation'][0]['message'])
+            example['lang'] = 'fr'
             _data.append(example)
         except Exception as e:
             print(f"Error: {e}")

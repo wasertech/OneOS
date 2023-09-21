@@ -124,6 +124,7 @@ _noargs_conv = [
 ]
 for _lang in _LANGS:
     no_args = _base_dict.copy()
+    no_args['lang'] = _lang
     no_args['conversation'] = [
         {
             'role': 'human',
@@ -246,6 +247,7 @@ _onearg_conv = [
 
 for _lang in _LANGS:
     one_arg = _base_dict.copy()
+    one_arg['lang'] = _lang
     one_arg['conversation'] = [
         {
             'role': 'human',
@@ -352,6 +354,7 @@ _twoargs_conv = [
 
 for _lang in _LANGS:
     two_args = _base_dict.copy()
+    two_args['lang'] = _lang
     two_args['conversation'] = [
         {
             'role': 'human',
@@ -424,6 +427,7 @@ _threeargs_conv = [
 
 for _lang in _LANGS:
     three_args = _base_dict.copy()
+    three_args['lang'] = _lang
     three_args['conversation'] = [
         {
             'role': 'human',

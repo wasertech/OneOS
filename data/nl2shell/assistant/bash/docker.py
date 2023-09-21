@@ -15,6 +15,7 @@ _base_data = {
 
 _docker_data.append({
     **_base_data,
+    'lang': "fr",
     'conversation': [
         { 'role': "human", 'message': "Liste tous les conteneurs Docker (en cours d'exécution ou arrêtés)." },
         { 'role': "assistant", 'message': "Voici la liste de tous les conteneurs Docker (en cours d'exécution ou arrêtés) :",  'scratchpad': [
@@ -51,6 +52,7 @@ _docker_data.append({
 
 _docker_data.append({
     **_base_data,
+    'lang': 'fr',
     'conversation': [
         { 'role': "human", 'message': "Démarre un conteneur custom-frerade-container à partir de l'image freqtrade/freqtrade:stable." },
         { 'role': "assistant", 'message': "Le conteneur custom-frerade-container a été démarré avec succès.",  'scratchpad': [
@@ -68,6 +70,7 @@ _docker_data.append({
 
 _docker_data.append({
     **_base_data,
+    'lang': 'fr',
     'conversation': [
         { 'role': "human", 'message': "Démarre le conteneur custom-frerade-container." },
         { 'role': "assistant", 'message': "Le conteneur custom-frerade-container a été démarré avec succès.",  'scratchpad': [
@@ -85,6 +88,7 @@ _docker_data.append({
 
 _docker_data.append({
     **_base_data,
+    'lang': 'fr',
     'conversation': [
         { 'role': "human", 'message': "Télécharge l'image freqtrade/freqtrade:stable depuis le registre Docker." },
         { 'role': "assistant", 'message': "L'image freqtrade/freqtrade:stable a été téléchargée avec succès.",  'scratchpad': [
@@ -101,6 +105,7 @@ _docker_data.append({
 
 _docker_data.append({
     **_base_data,
+    'lang': 'fr',
     'conversation': [
         { 'role': "human", 'message': "Affiche les images déjà téléchargées." },
         { 'role': "assistant", 'message': "Voici la liste des images déjà téléchargées :",  'scratchpad': [
@@ -135,6 +140,7 @@ _docker_data.append({
 
 _docker_data.append({
     **_base_data,
+    'lang': 'fr',
     'conversation': [
         { 'role': "human", 'message': "Ouvre un shell dans le conteneur custom-freqtrade-container." },
         { 'role': "assistant", 'message': "Un shell a été ouvert dans le conteneur custom-freqtrade-container.",  'scratchpad': [
@@ -151,6 +157,7 @@ _docker_data.append({
 
 _docker_data.append({
     **_base_data,
+    'lang': 'fr',
     'conversation': [
         { 'role': "human", 'message': "Supprime le conteneur custom-freqtrade-container." },
         { 'role': "assistant", 'message': "Le conteneur custom-freqtrade-container a été supprimé avec succès.",  'scratchpad': [
@@ -167,6 +174,7 @@ _docker_data.append({
 
 _docker_data.append({
     **_base_data,
+    'lang': 'fr',
     'conversation': [
         { 'role': "human", 'message': "Récupère et suit les journaux de message du conteneur custom-freqtrade-container." },
         { 'role': "assistant", 'message': "Voici les journaux de message du conteneur custom-freqtrade-container :",  'scratchpad': [
@@ -184,6 +192,7 @@ _docker_data.append({
 
 _docker_data.append({
     **_base_data,
+    'lang': 'fr',
     'conversation': [
         { 'role': "human", 'message': "Supprime l'image freqtrade/freqtrade:stable." },
         { 'role': "assistant", 'message': "L'image freqtrade/freqtrade:stable a été supprimée avec succès.",  'scratchpad': [
@@ -201,6 +210,7 @@ _docker_data.append({
 
 _docker_data.append({
     **_base_data,
+    'lang': 'fr',
     'conversation': [
         { 'role': "human", 'message': "Supprime toutes les images non utilisées." },
         { 'role': "assistant", 'message': "Toutes les images non utilisées ont été supprimées avec succès.",  'scratchpad': [
@@ -227,6 +237,7 @@ _docker_data.append({
 
 _docker_data.append({
     **_base_data,
+    'lang': 'fr',
     'conversation': [
         { 'role': "human", 'message': "Supprime tous les conteneurs arrêtés." },
         { 'role': "assistant", 'message': "Tous les conteneurs arrêtés ont été supprimés avec succès.",  'scratchpad': [
@@ -252,6 +263,7 @@ _docker_data.append({
 
 _docker_data.append({
     **_base_data,
+    'lang': 'fr',
     'conversation': [
         { 'role': "human", 'message': "Supprime tous les conteneurs et toutes les images non utilisées." },
         { 'role': "assistant", 'message': "Tous les conteneurs et toutes les images non utilisées ont été supprimés avec succès.",  'scratchpad': [
@@ -278,6 +290,7 @@ _docker_data.append({
 
 _docker_data.append({
     **_base_data,
+    'lang': 'fr',
     'conversation': [
         { 'role': "human", 'message': "Supprime tous les conteneurs, toutes les images et tous les volumes non utilisés, sans confirmation." },
         { 'role': "assistant", 'message': "Tous les conteneurs, toutes les images et tous les volumes non utilisés ont été supprimés avec succès.",  'scratchpad': [

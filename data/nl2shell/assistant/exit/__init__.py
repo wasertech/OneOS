@@ -201,6 +201,7 @@ for example in _examples:
 
     exit_examples.append(
         {
+            'lang': lang,
             'system': system_prompt.get(lang, ""),
             'instruction': intruction_prompt.get(lang, ""),
             'conversation': [

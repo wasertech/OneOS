@@ -16,6 +16,7 @@ md_examples = []
 
 md_examples.append(
     {
+        'lang': 'en',
         'system': system_prompt.get('en', ""),
         'instruction': intruction_prompt.get('en', ""),
         'conversation': [
@@ -31,6 +32,7 @@ md_examples.append(
 
 md_examples.append(
     {
+        'lang': 'fr',
         'system': system_prompt.get('fr', ""),
         'instruction': intruction_prompt.get('fr', ""),
         'conversation': [

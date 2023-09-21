@@ -1,38 +1,19 @@
-_SYS_GREET_MSG = """This is the System, letting you know that the user has just entered a new shell session.
-You should probably take this opportunity to greet the user and ask them how can you be useful.
-
-### Environment Highlights
-
-You can always use tools like bash or python to get a more detailed view of the environment.
-
-```env
-{env}
-```
-
-### Conversation Start
-
-Be ready, a new conversation with the user is about to begin.
-
-Be sure to use the appropriate (iternationalized and localized) language for the user during the conversation."""
-
-_env = """LANG={lang}.UTF-8
-DATE={date}
-LAST_SEEN={last_seen}
-USER={username}
-PWD={pwd}"""
+_SYS_GREET_MSG = """Assistant"""
 
 # Set prompts
 # Leave empty to use default values
-system_prompt = intruction_prompt = {
+system_prompt = {
     'en': "",
     'fr': ""
 }
 
-# intruction_prompt = {
-#     'en': "",
-#     'fr': ""
-# }
-# 
+instruct_prompt = ""
+
+intruction_prompt = {
+    'en': instruct_prompt,
+    'fr': instruct_prompt
+}
+
 
 greet_examples = []
 
@@ -49,16 +30,11 @@ I just want to be helpful."""
 
 first_greet_examples.append(
     {
+        'lang': 'en',
         'system': system_prompt.get('en', ""),
         'instruction': intruction_prompt.get('en', ""),
         'conversation': [
-            { 'role': "human", 'message': _SYS_GREET_MSG.format(env=_env.format(**{
-                'lang': "en_US",
-                'date': "Sat Sep  2 23:35:36 CEST 2023",
-                'last_seen': None,
-                'username': "tom",
-                'pwd': "/home/tom",
-            })) },
+            { 'role': "human", 'message': _SYS_GREET_MSG },
             { 'role': "assistant", 'message': first_greet_message_en,  'scratchpad': [
                     { 'action': 'final_answer', 'action_input': first_greet_message_en, 'observation': "" },
                 ]
@@ -96,16 +72,11 @@ Je veux juste être utile."""
 
 first_greet_examples.append(
     {
+        'lang': 'fr',
         'system': system_prompt.get('fr', ""),
         'instruction': intruction_prompt.get('fr', ""),
         'conversation': [
-            { 'role': "human", 'message': _SYS_GREET_MSG.format(env=_env.format(**{
-                'lang': "fr_CH",
-                'date': "Sat Sep  2 13:26:55 CEST 2023",
-                'last_seen': None,
-                'username': "waser",
-                'pwd': "/home/waser",
-            })) },
+            { 'role': "human", 'message': _SYS_GREET_MSG },
             { 'role': "assistant", 'message': first_greet_message_fr,  'scratchpad': [
                     { 'action': 'final_answer', 'action_input': first_greet_message_fr, 'observation': "" },
                 ]
@@ -141,9 +112,17 @@ first_greet_examples.append(
 )
 
 _greets = []
+_env = """```shell
+USER={username}
+PWD={pwd}
+LANG={lang}
+DATE={date}
+LAST_SEEN={last_seen}
+```"""
 
 # Greek known user at 8am
 _greets.append({
+    'lang': "fr",
     'env': {
         'lang': "fr_FR",
         'date': "Sat Sep  2 08:07:36 CEST 2023",
@@ -156,6 +135,7 @@ _greets.append({
 
 # Greet known user at 3am
 _greets.append({
+    'lang': "fr",
     'env': {
         'lang': "fr_CH",
         'date': "Sat Sep  2 03:07:36 CEST 2023",
@@ -167,17 +147,33 @@ _greets.append({
 })
 
 
+# Greet known user at 3pm
+_greets.append({
+    'lang': "fr",
+    'env': {
+        'lang': "fr_CH",
+        'date': "Sat Sep  19 15:07:45 CEST 2023",
+        'last_seen': "Fri Sep 18 23:21:05 2023",
+        'username': "waser",
+        'pwd': "/home/waser/projects/",
+        },
+    'final_answer': "Monsieur? Quel sont vos ordres?"
+})
+
 for greet in _greets:
     env = greet.get('env')
-    environ = _env.format(**env)
+    # environ = _env.format(**env)
     answer = greet.get('final_answer')
+    lang = greet.get('lang', 'en')
     if answer:
         greet_examples.append(
             {
-                'system': system_prompt.get('en', ""),
-                'instruction': intruction_prompt.get('en', ""),
+                'lang': lang,
+                'env': env,
+                'system': system_prompt.get(lang, ""),
+                'instruction': intruction_prompt.get(lang, ""),
                 'conversation': [
-                    { 'role': "human", 'message': _SYS_GREET_MSG.format(env=environ) },
+                    { 'role': "human", 'message': _SYS_GREET_MSG},
                     { 'role': "assistant", 'message': answer,  'scratchpad': [
                             { 'action': 'final_answer', 'action_input': answer, 'observation': "" },
                         ]

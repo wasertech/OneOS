@@ -14,6 +14,7 @@ py_examples = []
 
 py_examples.append(
     {
+        'lang': 'en',
         'system': system_prompt.get('en', ""),
         'instruction': intruction_prompt.get('en', ""),
         'conversation': [

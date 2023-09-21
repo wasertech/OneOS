@@ -314,6 +314,7 @@ for example in _fr_search_examples:
     response = example.get('response', "")
     if query and search_terms and context and response:
         search_examples.append({
+            'lang': 'fr',
             'system': system_prompt.get('fr', ""),
             'instruction': intruction_prompt.get('fr', ""),
             'conversation': [
@@ -333,6 +334,7 @@ for example in _en_search_examples:
     response = example.get('response', "")
     if query and search_terms and context and response:
         search_examples.append({
+            'lang': 'en',
             'system': system_prompt.get('en', ""),
             'instruction': intruction_prompt.get('en', ""),
             'conversation': [
