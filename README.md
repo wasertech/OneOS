@@ -10,7 +10,7 @@ This part aims to ease the creation of a dataset to train a NLU OS.
 
 Efficiently train/fine-tune a custom LLM for the system.
 
-# [InferanceAPI](InferanceAPI/)
+# [InferenceAPI](InferenceAPI/)
 
 Serve a large language model.
 

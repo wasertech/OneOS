@@ -4,7 +4,7 @@ set -xe
 # Set default value if env var is not set
 
 HOST=${HOST:-0.0.0.0}
-PORT=${PORT:-8000}
+PORT=${PORT:-5085}
 MODEL_ID=${MODEL_ID:-'TheBloke/Llama-2-7b-chat-fp16'}
 TOKENIZER_ID=${TOKENIZER_ID:-'hf-internal-testing/llama-tokenizer'}
 DTYPE=${DTYPE:-'auto'} # 'auto', 'half', 'float', 'bfloat16'

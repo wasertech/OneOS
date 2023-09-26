@@ -8,7 +8,7 @@ from langchain.schema import Generation, LLMResult
 
 class vLLM(LLM):
     host: str = "localhost"
-    port: str = "8000"
+    port: str = "5085"
     use_beam_search: bool = False
     n: int = 1
     temperature: float = 0.0
