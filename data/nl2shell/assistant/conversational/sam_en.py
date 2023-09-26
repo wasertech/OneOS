@@ -51,7 +51,7 @@ def get_sam_en_examples():
             'lang': 'en',
             'env': {
                 'USER': "theodore",
-            }
+            },
             'system': system_prompt.get('en', ""),
             'instruction': intruction_prompt.get('en', ""),
             'conversation': conversation

@@ -31,7 +31,7 @@ def get_sam_fr_examples():
         conversation = []
         for message in conv.get('conversations'):
             if message.get('from') == 'human':
-                _message = replace_names(message.get('value'))
+                _message = message.get('value')
                 conversation.append({
                     'role': "human",
                     'message': _message
@@ -50,6 +50,9 @@ def get_sam_fr_examples():
         
         sam_fr.append({
             'lang': 'fr',
+            'env': {
+                'USER': "theodore"
+            },
             'system': system_prompt.get('fr', ""),
             'instruction': intruction_prompt.get('fr', ""),
             'conversation': conversation
