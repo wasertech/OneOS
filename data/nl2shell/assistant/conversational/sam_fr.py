@@ -50,9 +50,9 @@ def get_sam_fr_examples():
         
         sam_fr.append({
             'lang': 'fr',
-            'env': {
-                'USER': "theodore"
-            },
+            # 'env': {
+            #     'username': "theodore"
+            # },
             'system': system_prompt.get('fr', ""),
             'instruction': intruction_prompt.get('fr', ""),
             'conversation': conversation
