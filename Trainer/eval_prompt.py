@@ -3,9 +3,9 @@ import os
 from transformers import TrainerCallback
 
 def get_prompt(sentence, system="You are Assistant, a sentient artificial intelligence."):
-    USER=os.environ['USER']
-    PWD=os.environ['PWD']
-    LANG=os.environ['LANG']
+    USER=os.environ.get('USER')
+    PWD=os.environ.get('PWD')
+    LANG=os.environ.get('LANG', 'en_US.UTF-8')
     LAST_SEEN=os.environ.get('LAST_SEEN', None)
     DATE=subprocess.check_output(['date']).decode('utf-8').strip()
 
