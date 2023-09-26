@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -xe
+
 echo "Starting training..."
 
 
@@ -33,7 +35,7 @@ EPOCHS="${EPOCHS:-1}"
 LEARNING_RATE="${LEARNING_RATE:-1.41e-5}"
 SEQENCE_LENGTH="${SEQENCE_LENGTH:-512}"
 
-python ${HOMEDIR}/train_sftt_peft_lora.py \
+python ${HOMEDIR}/sft_train.py \
             --model_name "${BASE_MODEL_NAME}" \
             --dataset_name "${DATASET_NAME}" \
             ${LORA_PARAMS} \
@@ -45,4 +47,5 @@ python ${HOMEDIR}/train_sftt_peft_lora.py \
             --seq_length ${SEQENCE_LENGTH} \
             --output_dir "${OUTPUT_MODEL_PATH}" \
             ${WANDB_LOG_PARAMS} \
-            ${HUB_PARAMS}
+            ${HUB_PARAMS} && \
+${HOMEDIR}/export.sh || echo "Training failed." && exit 1

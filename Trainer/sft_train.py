@@ -1,3 +1,6 @@
+'''
+Supervised Fine Tuning Training Script
+'''
 # coding=utf-8
 # Copyright 2023 The HuggingFace Inc. team. All rights reserved.
 #
@@ -24,6 +27,7 @@ from huggingface_hub import login
 
 from trl import SFTTrainer
 
+from eval_prompt import PromptCallback
 
 tqdm.pandas()
 
@@ -93,10 +97,6 @@ class ScriptArguments:
 parser = HfArgumentParser(ScriptArguments)
 script_args = parser.parse_args_into_dataclasses()[0]
 
-# Step 0: Login to the hub if needed
-if script_args.push_to_hub:
-    login() # This might not be needed...
-
 # Step 1: Load the model
 if script_args.load_in_8bit and script_args.load_in_4bit:
     raise ValueError("You can't load the model in 8 bits and 4 bits at the same time")
@@ -108,9 +108,9 @@ elif script_args.load_in_8bit or script_args.load_in_4bit:
     device_map = 'auto' #{"": 0}
     torch_dtype = torch.bfloat16
 else:
-    device_map = None
+    device_map = 'auto' #None
     quantization_config = None
-    torch_dtype = None
+    torch_dtype = torch.bfloat16
 
 model = AutoModelForCausalLM.from_pretrained(
     script_args.model_name,
@@ -152,6 +152,7 @@ else:
     peft_config = None
 
 # Step 5: Define the Trainer
+
 trainer = SFTTrainer(
     model=model,
     args=training_args,
@@ -159,6 +160,7 @@ trainer = SFTTrainer(
     train_dataset=dataset,
     dataset_text_field=script_args.dataset_text_field,
     peft_config=peft_config,
+    callbacks=[PromptCallback()],
 )
 
 trainer.train()

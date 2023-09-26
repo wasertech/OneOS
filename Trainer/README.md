@@ -1,22 +1,34 @@
 
+Build and start training using docker.
+
 ```shell
-python -m LLM_Train.train --help
-usage: train.py [-h] [-v] -d DATASET_NAME [-m FOUNDATION_MODEL] [-s MAX_SEQ_LENGTH] [-o OUTPUT_DIR] [-n MODEL_NAME] [-p]
-
-Training script for LLM
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -v, --version         shows the current version
-  -d DATASET_NAME, --dataset_name DATASET_NAME
-                        Path or name of the dataset to use
-  -m FOUNDATION_MODEL, --foundation_model FOUNDATION_MODEL
-                        Base model to use as foundation for fine-tuning the LLM
-  -s MAX_SEQ_LENGTH, --max_seq_length MAX_SEQ_LENGTH
-                        Maximum sequence length to use for training
-  -o OUTPUT_DIR, --output_dir OUTPUT_DIR
-                        Path to save the model
-  -n MODEL_NAME, --model_name MODEL_NAME
-                        Name of the model to save
-  -p, --push            Push the model to the hub
+docker build \
+--rm \
+--build-arg uid=1018 \
+--build-arg gid=1018 \
+-f Dockerfile.train \
+-t llm-train:latest . && \
+docker run \
+-it \
+--env HUB_API_TOKEN="${HUB_API_TOKEN}" \
+--env PUSH_TO_HUB=0 \
+--env LOG_TO_WANDB=1 \
+--env DISTRIBUTE_TRAIN=1 \
+--env NPROC_PER_GPU=2 \
+--env BASE_MODEL_NAME="TheBloke/Llama-2-7b-chat-fp16" \
+--env OUTPUT_MODEL_NAME="assistant-llama2-7b-chat-fp16" \
+--env BATCH_SIZE=4 \
+--env GAS=8 \
+--env SEQENCE_LENGTH=4096 \
+--env USE_PEFT=1 \
+--env USE_4BIT=1 \
+--gpus=all \
+--privileged \
+--shm-size=1g \
+--ulimit memlock=-1 \
+--ulimit stack=67108864 \
+--mount type=bind,src=`echo ~/.cache/huggingface/`,dst=/home/trainer/.cache/huggingface/ \
+--mount type=bind,src="/mnt/Data_II/Données/LLM/data",dst=/mnt \
+llm-train:latest && \
+docker container prune || docker container prune -f
 ```

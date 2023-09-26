@@ -6,3 +6,4 @@ datasets
 bitsandbytes 
 einops 
 wandb
+scipy

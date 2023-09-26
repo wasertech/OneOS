@@ -10,7 +10,7 @@ ENV BASE_MODEL_NAME=$base_model_name
 ARG output_dir="output"
 ENV OUTPUT_MODEL_PATH=$output_dir
 
-ARG model_name="assistant-llama2-7b-qlora-bf16"
+ARG model_name="assistant-llama2-7b-bf16"
 ENV OUTPUT_MODEL_NAME=$model_name
 
 ARG disable_no_ignore_characters_warning=0
@@ -188,6 +188,8 @@ RUN pip install bitsandbytes
 RUN pip install einops
 
 RUN pip install wandb
+
+RUN pip install scipy
 
 WORKDIR $WORKDIR
 
