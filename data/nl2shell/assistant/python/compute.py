@@ -168,7 +168,7 @@ The product with the highest number of units sold is Product A with 420 units so
 
 This report summarizes the sales performance of the two products, highlighting their total revenue and units sold. Product A emerges as the leader in both categories, generating the highest revenue and selling the most units.""",
             'scratchpad': [
-                { 'action': "Bash", 'action_input': "cat sales_data.csv", 'observation': """Date,Product,Units Sold,Revenue
+                { 'action': "Shell", 'action_input': "cat sales_data.csv", 'observation': """Date,Product,Units Sold,Revenue
 2023-01-01,Product A,100,5000
 2023-01-01,Product B,75,3750
 2023-01-02,Product A,120,6000
@@ -177,7 +177,7 @@ This report summarizes the sales performance of the two products, highlighting t
 2023-01-03,Product B,60,3000
 2023-01-04,Product A,110,5500
 2023-01-04,Product B,70,3500"""},
-                { 'action': "Bash", 'action_input': "pip install -U --no-input pandas" },
+                { 'action': "Shell", 'action_input': "pip install -U --no-input pandas" },
                 { 'action': "Python", 'action_input': """import pandas as pd
 df = pd.read_csv("sales_data.csv")
 revenue_by_product = df.groupby("Product")["Revenue"].sum()
@@ -267,7 +267,7 @@ for example in _numpy_examples:
                     'role': "assistant",
                     'message': py_compute_answer,
                     'scratchpad': [
-                        { 'action': "Bash", 'action_input': "pip install -U --no-input numpy" },
+                        { 'action': "Shell", 'action_input': "pip install -U --no-input numpy" },
                         { 'action': "Python", 'action_input': py_compute_action },
                         { 'action': 'final_answer', 'action_input': py_compute_answer }
                     ]

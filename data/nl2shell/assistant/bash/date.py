@@ -498,14 +498,14 @@ def generate_time_examples():
         conversation_en = [
             {'role': 'human', 'message': english_query},
             {'role': 'assistant', 'message': english_answer, 'scratchpad': [
-                {'action': "Bash", 'action_input': "date '+%T'", 'observation': hour},
+                {'action': "Shell", 'action_input': "date '+%T'", 'observation': hour},
                 {'action': "final_answer", 'action_input': english_answer, 'observation': ""},
             ]},
         ]
         conversation_fr = [
             {'role': 'human', 'message': french_query},
             {'role': 'assistant', 'message': french_answer, 'scratchpad': [
-                {'action': "Bash", 'action_input': "date '+%T'", 'observation': hour},
+                {'action': "Shell", 'action_input': "date '+%T'", 'observation': hour},
                 {'action': "final_answer", 'action_input': french_answer, 'observation': ""},
             ]},
         ]
@@ -578,14 +578,14 @@ def generate_date_examples() -> list:
         conversation_en = [
             {'role': 'human', 'message': english_query},
             {'role': 'assistant', 'message': english_answer, 'scratchpad': [
-                {'action': "Bash", 'action_input': "date '+%c'", 'observation': date_en},
+                {'action': "Shell", 'action_input': "date '+%c'", 'observation': date_en},
                 {'action': "final_answer", 'action_input': english_answer, 'observation': ""},
             ]},
         ]
         conversation_fr = [
             {'role': 'human', 'message': french_query},
             {'role': 'assistant', 'message': french_answer, 'scratchpad': [
-                {'action': "Bash", 'action_input': "date '+%c'", 'observation': date_fr},
+                {'action': "Shell", 'action_input': "date '+%c'", 'observation': date_fr},
                 {'action': "final_answer", 'action_input': french_answer, 'observation': ""},
             ]},
         ]
@@ -615,7 +615,7 @@ def get_date_examples(_data=cmd_data):
                 'conversation': [
                     {'role': 'human', 'message': human_msg},
                     {'role': 'assistant', 'message': _answer, 'scratchpad': [
-                        {'action': "Bash", 'action_input': cmd, 'observation': observation},
+                        {'action': "Shell", 'action_input': cmd, 'observation': observation},
                         {'action': "final_answer", 'action_input': _answer, 'observation': ""},
                     ]}
                 ]
@@ -634,7 +634,7 @@ def get_date_examples(_data=cmd_data):
                 'conversation': [
                     {'role': 'human', 'message': human_msg},
                     {'role': 'assistant', 'message': _answer, 'scratchpad': [
-                        {'action': "Bash", 'action_input': cmd, 'observation': observation},
+                        {'action': "Shell", 'action_input': cmd, 'observation': observation},
                         {'action': "final_answer", 'action_input': _answer, 'observation': ""},
                     ]}
                 ]

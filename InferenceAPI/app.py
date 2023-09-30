@@ -15,6 +15,10 @@ TIMEOUT_KEEP_ALIVE = 5  # seconds.
 TIMEOUT_TO_PREVENT_DEADLOCK = 1  # seconds.
 app = FastAPI()
 
+# Helth check endpoint.
+@app.get("/")
+async def health_check() -> Response:
+    return Response(status_code=200)
 
 @app.post("/generate")
 async def generate(request: Request) -> Response:

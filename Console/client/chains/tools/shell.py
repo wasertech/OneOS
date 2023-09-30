@@ -34,7 +34,7 @@ def get_tool():
     clear_tool = ClearScreenTool()
     return [
             Tool(
-                name="Bash",
+                name="Shell",
                 func=shell.run,
                 description="useful when you need to use the system to achieve something; input must be valid bash code; implemented using subprocess so no tty support. Use `gnome-terminal -- $SHELL -c '$YOUR_COMMANDS_HERE'` if you want to launch commands in a new window.",
             ),

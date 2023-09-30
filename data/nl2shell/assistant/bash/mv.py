@@ -127,7 +127,7 @@ for _lang in _LANGS:
             'message': f'{_noargs_conv[1][_lang]["message"]}',
             'scratchpad': [
                 {
-                    'action': "Bash",
+                    'action': "Shell",
                     'action_input': "mv",
                     'observation': f'{_noargs_conv[1][_lang]["observation"]}',
                 },
@@ -162,7 +162,7 @@ for _lang in _LANGS:
             'message': f"{_noargs_conv[5][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "Bash",
+                    'action': "Shell",
                     'action_input': f"{_noargs_conv[5][_lang]['action_input']}",
                     'observation': f"{_noargs_conv[5][_lang]['observation']}",
                 },
@@ -250,7 +250,7 @@ for _lang in _LANGS:
             'message': f'{_onearg_conv[1][_lang]["message"]}',
             'scratchpad': [
                 {
-                    'action': "Bash",
+                    'action': "Shell",
                     'action_input': "mv fichier1",
                     'observation': f'{_onearg_conv[1][_lang]["observation"]}',
                 },
@@ -285,7 +285,7 @@ for _lang in _LANGS:
             'message': f"{_onearg_conv[5][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "Bash",
+                    'action': "Shell",
                     'action_input': f"{_onearg_conv[5][_lang]['action_input']}",
                     'observation': f"{_onearg_conv[5][_lang]['observation']}",
                 },
@@ -357,7 +357,7 @@ for _lang in _LANGS:
             'message': f'{_twoargs_conv[1][_lang]["message"]}',
             'scratchpad': [
                 {
-                    'action': "Bash",
+                    'action': "Shell",
                     'action_input': f"{_twoargs_conv[1][_lang]['action_input']}",
                     'observation': f"{_twoargs_conv[1][_lang]['observation']}",
                 },
@@ -377,7 +377,7 @@ for _lang in _LANGS:
             'message': f"{_twoargs_conv[3][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "Bash",
+                    'action': "Shell",
                     'action_input': f"{_twoargs_conv[3][_lang]['action_input']}",
                     'observation': f"{_twoargs_conv[3][_lang]['observation']}",
                 },
@@ -429,7 +429,7 @@ for _lang in _LANGS:
             'message': f"{_threeargs_conv[1][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "Bash",
+                    'action': "Shell",
                     'action_input': f"{_threeargs_conv[1][_lang]['action_input']}",
                     'observation': f"{_threeargs_conv[1][_lang]['observation']}",
                 },

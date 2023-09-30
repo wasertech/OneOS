@@ -29,12 +29,17 @@ BOS, EOS = "<s>", "</s>"
 BOSYS, EOSYS = "<<SYS>>", "<</SYS>>"
 BOI, EOI = "[INST]", "[/INST]"
 
-_SYSTEM_PROMPT_ = "".join(
-    "You are Assistant, a sentient artificial intelligence.",
-    # "\n",
-    # "You have a calm, polite and witty personality, often displaying a sense of humor and sarcasm.\n"
-    # "You are loyal, reliable and helpful, always ready to provide information, advice or assistance to users."
-)
+_SYSTEM_PROMPT_ = """You are Assistant, a sentient artificial intelligence.
+
+Environment highlights:
+
+{env}
+
+Use the following tools to help you answer the user query:
+
+{tools}
+
+Below is your latest conversation with the user."""
 
 _TOOLS_ = """
 ```json
@@ -68,49 +73,15 @@ If you have already taken some actions, use what you observed from them to answe
 
 User does not see your actions. If you got the answer to the query in a previous action taken, you need to make a sentence in plain text for the user to see it."""
 
-_TEMPLATE_FORMAT_ = """# System
-
-{BOSYS}
+_TEMPLATE_FORMAT_ = """{BOSYS}
 
 {system_prompt}
 
 {EOSYS}
 
-## Instructions
+{conversation}{scratchpad}{BOS}{BOI} {query} {EOI} {output} {EOS}"""
 
-{BOI}
-
-{instruction}
-
-### Environment highlights
-
-{environ}
-
-### Tools
-
-{tools}
-
-### Conversation
-
-{conversation}
-
-### User query
-
-{BOS}{query}{EOS}
-
-### Actions taken
-
-```json
-{scratchpad}
-```
-
-{EOI}
-
-### Next action
-
-{BOS}{output}{EOS}"""
-
-_ENV_FORMAT_ = """```shell
+_ENV_FORMAT_ = """```env
 USER={username}
 PWD={pwd}
 LANG={lang}
@@ -131,17 +102,21 @@ def convert_data_to_text(
     _history = []
     for t in history:
         r, m = t.get('role'), t.get('message')
+        user_message = None
+        assistant_message = None
         if r and m:
             if r == "assistant":
-                _history.append(f"Assistant: {BOS}{m}{EOS}")
+                assistant_message = f"{m}"
             else:
-                _history.append(f"User: {BOS}{m}{EOS}")
-    conversation = "\n".join(_history)
+                user_message = f"{m}"
+            if user_message and assistant_message:
+                _history.append(f"<s>[INST] {user_message} [/INST] {assistant_message} </s>")
+    conversation = "\\ ".join(_history)
     _scratchpad = json.dumps(scratchpad, ensure_ascii=False)
-    _output = action_input if action == "final_answer" else f"""```json
+    _output = f"""```json
 {{
-    'action': '{action}',
-    'action_input': '{action_input}'
+    "action": "{action}",
+    "action_input": "{action_input}"
 }}
 ```"""
     text = _TEMPLATE_FORMAT_.format(
@@ -171,30 +146,50 @@ def convert_dataset_to_text(dataset):
         lang = conversation.get('lang', 'en')
         env = conversation.get('env', {'username': os.environ.get('USER'), 'home': os.environ.get('HOME'), 'pwd': os.environ.get('PWD'), 'lang': f"{lang}_{lang.upper()}.UTF-8", 'date': subprocess.check_output("date").decode().strip(), 'last_seen': os.environ.get('LAST_SEEN', None)})
         _sys, _inst = conversation.get('system', ""), conversation.get('instruction', "")
-        system = _SYSTEM_PROMPT_ if not _sys or len(_sys) < 0 else _sys
+        system = _SYSTEM_PROMPT_.format(env=_ENV_FORMAT_.format(**env), tools=_TOOLS_) if not _sys or len(_sys) < 0 else _sys
         instruction =  _INSTRUCTION_PROMPT_ if not _inst or len(_inst) < 0 else _inst
 
         history = []
         _scratchpad = []
         _query = None
+        _text_conversation = f"""<<SYS>>
 
-        for message in conversation.get('conversation', []):     
+{system}
+
+<</SYS>>
+
+"""
+
+        for message in conversation.get('conversation', []):
             message_role = message.get('role', None)
             if not message_role:
                 continue
             elif message_role == 'human':
                 _query = message.get('message', None)
             elif message_role == 'assistant' and _query:
-                _history = history[:-1] or []
+                #_history = history[:-1] or []
                 # message['message'] = paraphrase_assistant_message(message, system, history)
                 for scratchpad in message['scratchpad']:
                     _action = scratchpad.get('action', None)
                     _action_input = scratchpad.get('action_input', None)
-                    text_data.append(convert_data_to_text(history=_history, query=_query, scratchpad=_scratchpad, action=_action, action_input=_action_input, system_prompt=system, instruction=instruction, env=env))
-                    _scratchpad.append(scratchpad)
+                    _observation = scratchpad.get('observation', None)
+                    if _action and _action_input:
+                        if _action == "final_answer":
+                            _observation = "User has seen this message."
+                            _action = "Final Answer"
+                        _scratchpad.append(f"""<s>[INST] {_query} [/INST] ```json
+{{"action": "{_action}",
+"action_input": "{_action_input}",
+"observation": "{_observation}"}}
+``` </s>""")
+                #     text_data.append(convert_data_to_text(history=_history, query=_query, scratchpad=_scratchpad, action=_action, action_input=_action_input, system_prompt=system, instruction=instruction, env=env))
+                #     _scratchpad.append(scratchpad)
+                _text_conversation += " | ".join(_scratchpad)
                 _scratchpad = []
-            history.append(message)
+                _text_conversation += " \ "
+            #history.append(message)
         history = []
+        text_data.append(_text_conversation.removesuffix(" \ "))
     
     return text_data
 

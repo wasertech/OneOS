@@ -40,7 +40,7 @@ def get_nl2shell_english_examples():
                     'conversation': [
                         { 'role': "human", 'message': query },
                         { 'role': "assistant", 'message': "",  'scratchpad': [
-                                { 'action': 'Bash', 'action_input': output, 'observation': "" },
+                                { 'action': 'Shell', 'action_input': output, 'observation': "" },
                             ]
                         },
                     ]

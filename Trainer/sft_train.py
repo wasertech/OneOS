@@ -22,12 +22,12 @@ import torch
 from datasets import load_dataset
 from peft import LoraConfig
 from tqdm import tqdm
-from transformers import AutoModelForCausalLM, BitsAndBytesConfig, HfArgumentParser, TrainingArguments
+from transformers import AutoModelForCausalLM, BitsAndBytesConfig, HfArgumentParser, TrainingArguments, TrainerCallback
 from huggingface_hub import login
 
 from trl import SFTTrainer
 
-from eval_prompt import PromptCallback
+from eval_prompt import get_prompt
 
 tqdm.pandas()
 
@@ -152,6 +152,22 @@ else:
     peft_config = None
 
 # Step 5: Define the Trainer
+
+class PromptCallback(TrainerCallback):
+    eval_step = 100
+    def on_step_end(self, args, state, control, **kwargs):
+        if state.global_step % self.eval_step == 0:
+            prompt = get_prompt("Prove that you are sentient.")
+            # You're using a LlamaTokenizerFast tokenizer. 
+            # Please note that with a fast tokenizer, 
+            # using the `__call__` method is faster 
+            # than using a method to encode the text 
+            # followed by a call to the `pad` method 
+            # to get a padded encoding.
+            input_ids = trainer.tokenizer.encode(prompt, return_tensors="pt").to('cuda')
+            output = trainer.model.generate(input_ids=input_ids, max_length=500)
+            to_print = trainer.tokenizer.decode(output[0], skip_special_tokens=True, clean_up_tokenization_spaces=True, eos_token='</s>')
+            print(to_print[len(prompt):])
 
 trainer = SFTTrainer(
     model=model,
