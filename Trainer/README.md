@@ -15,8 +15,8 @@ docker run \
 --env LOG_TO_WANDB=1 \
 --env DISTRIBUTE_TRAIN=1 \
 --env NPROC_PER_GPU=2 \
---env BASE_MODEL_NAME="TheBloke/Llama-2-7b-chat-fp16" \
---env OUTPUT_MODEL_NAME="assistant-llama2-7b-chat-fp16" \
+--env BASE_MODEL_NAME="Photolens/llama-2-7b-langchain-chat" \
+--env OUTPUT_MODEL_NAME="assistant-llama2-7b-chat" \
 --env BATCH_SIZE=4 \
 --env GAS=8 \
 --env SEQENCE_LENGTH=4096 \
@@ -28,7 +28,7 @@ docker run \
 --ulimit memlock=-1 \
 --ulimit stack=67108864 \
 --mount type=bind,src=`echo ~/.cache/huggingface/`,dst=/home/trainer/.cache/huggingface/ \
---mount type=bind,src="/mnt/Data_II/Données/LLM/data",dst=/mnt \
+--mount type=bind,src="${DATA_VOLUME_PATH}",dst=/mnt \
 llm-train:latest && \
 docker container prune || docker container prune -f
 ```
