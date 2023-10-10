@@ -1,6 +1,6 @@
 # vLLM API
 
-Efficiently serving LLMs is a challenging task. I use a custom vLLM server to achive so. It's relatively fast and efficient but lack support for quantized models yet.
+Efficiently serving LLMs is a challenging task. I use a custom vLLM server to achive so. It's relatively fast and efficient, specially with AWQ models.
 
 ## Installation & Usage
 
@@ -39,7 +39,8 @@ docker run \
 --ulimit memlock=-1 \
 --ulimit stack=67108864 \
 --mount type=bind,src=`echo ~/.cache/huggingface/hub/`,dst=/root/.cache/huggingface/hub/ \
---env PORT="5085" --env MODEL_ID="TheBloke/Llama-2-7b-chat-fp16" \
+--env PORT="5085" --env MODEL_ID="wasertech/assistant-llama2-chat-awq" \
+--env QUANT="awq" --env DTYPE="half" \
 vllm-inference-api:latest
 ```
 
@@ -48,6 +49,6 @@ vllm-inference-api:latest
 ```shell
 curl -N -X POST \
 -H "Accept: text/event-stream" -H "Content-Type: application/json" \
--d '{"prompt": "This is your prompt. The model should try to predict the next ", "temperature": 0.5, "max_tokens": 2}' \
+-d '{"prompt": "<s>[INST] Greeting Assistant [/INST] ", "temperature": 0.5, "max_tokens": 2, "stop": ["</s>",]}' \
 http://0.0.0.0:8000/generate
 ```
