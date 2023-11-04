@@ -13,7 +13,7 @@ N_GPUS=${N_GPUS:-1}
 GPU_MEM=${GPU_MEM:-0.9}
 
 QUANT_FLAG=""
-if [ $QUANT = 'awq' ]; then
+if [ -z $QUANT ]; then
     QUANT_FLAG="--quantization ${QUANT}"
 fi
 

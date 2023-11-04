@@ -1,9 +1,16 @@
-import os
-import questionary
-import json
-
+from data_manager import Conversations, Conversation, User, Agent, SystemPrompt, Environment, Tools, Tool
 
 if __name__ == '__main__':
+
+    system = SystemPrompt()
+    Conversation(
+        [
+            Conversation([
+
+            ],
+            system=system)
+        ]
+    )
 
 
     def load_data():

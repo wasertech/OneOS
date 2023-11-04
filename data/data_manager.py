@@ -635,7 +635,7 @@ class Conversation:
 {{"action": "{agent_action}",
 "action_input": "{agent_action_input}",
 "observation": "{agent_observation}"}}
-``` </s>"""
+```"""
             )
         return " | ".join(agent_output) + " | " if agent_output else ""
 
@@ -644,14 +644,10 @@ class Conversation:
 
         for t, turn in enumerate(self.turns):
             user_input = turn.get("human")
-            scratchpad = turn.get("scratchpad")
+            # scratchpad = turn.get("scratchpad")
             agent_answer = turn.get("final_answer")
             if agent_answer:
-                history += f"""<s>[INST] {user_input} [/INST] ```json
-{{"action": "Final Answer",
-"action_input": "{agent_answer}",
-"observation": "User has seen this message."}}
-``` <s> / """
+                history += f"""[INST] {user_input} [/INST] {agent_answer} / """
             elif user_input:
                 history += f"""<s>[INST] {user_input} [/INST] """
 
@@ -728,6 +724,7 @@ class Conversations:
                     for scratchpad_item in scratchpad:
                         prompt = scratchpad_item.get("prompt")
                         rejected = scratchpad_item.get("model_output")
+                        rejected = rejected[:min(500, len(rejected))]
                         action, action_input, observation = (
                             scratchpad_item.get("action"),
                             scratchpad_item.get("action_input"),
@@ -752,7 +749,7 @@ class Conversations:
 {{"action": "{action}",
 "action_input": "{action_input}",
 "observation": "{observation}"}}
-``` </s>"""
+```"""
                             )
         return data
 
