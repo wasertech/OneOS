@@ -1,6 +1,6 @@
 import json
 from typing import Any, Coroutine, List, Optional, Iterable
-from requests import Response, post
+from requests import Response, post, get
 
 from langchain.llms.base import LLM
 from langchain.callbacks.manager import AsyncCallbackManagerForLLMRun, CallbackManagerForLLMRun
@@ -19,6 +19,16 @@ class vLLM(LLM):
     @property
     def _llm_type(self) -> str:
         return "custom"
+
+    def is_nlp_server_up(self):
+        try:
+            r = get(f"http://{self.host}:{self.port}")
+            if r.status_code == 200:
+                return True
+            raise Exception("Server is not up.")
+        except Exception as e:
+            return False
+
 
     def post_http_request(self,
                           prompt: str,
@@ -53,9 +63,17 @@ class vLLM(LLM):
                 yield output
 
     def get_response(self, response: Response) -> List[str]:
-        data = json.loads(response.content)
-        output = data["text"]
-        return output
+        try:
+            data = json.loads(response.content)
+            output = data["text"]
+            return output
+        except json.decoder.JSONDecodeError as e:
+            print("The server was not able to reply to the request.")
+            print(f"Failed with error: {e}")
+            print("This can happen if the server was running before hibernation and is now unable to access the GPU.")
+            print("To fix this issue, restart the system.")
+            print("I'm sure we all are sorry for the inconvenience.")
+            return [None]
 
     async def get_streaming_response_async(self, response: Response):
         _response = ""

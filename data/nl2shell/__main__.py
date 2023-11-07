@@ -14,20 +14,31 @@ def get_text_dataset():
     
     return text_data
 
+def print_head_tail(dataset_dict):
+    for text_data in dataset_dict['text'][:10]:
+        print(text_data)
+        print()
+        print("_"*42)
+        print()
+    print("-"*42)
+    for text_data in dataset_dict['text'][:10]:
+        print(text_data)
+        print()
+        print("_"*42)
+        print()
+
 if __name__ == "__main__":
     
     dataset_dict = get_text_dataset()
 
+    print_head_tail(dataset_dict)
+
     # Create the Hugging Face dataset
-    dataset = Dataset.from_dict(dataset_dict)
+    # dataset = Dataset.from_dict(dataset_dict)
 
     # Push to the hub
     # login()
-    dataset.push_to_hub("OneOS")
+    # dataset.push_to_hub("OneOS")
 
-    # for text_data in dataset_dict['text']:
-    #     print(text_data)
-    #     print()
-    #     print("_"*42)
-    #     print()
+
 

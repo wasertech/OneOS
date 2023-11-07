@@ -15,8 +15,7 @@ def get_conversational_examples(langs=['en_US', 'fr_FR']):
 
 
 if __name__ == "__main__":
-    data = get_conversational_examples()
-    for d in data:
+    for d in get_conversational_examples():
         assert d.get('lang', None) is not None, "Language is missing"
         assert d.get('system', None) is not None, "System prompt is missing"
         assert d.get('instruction', None) is not None, "Instruction prompt is missing"

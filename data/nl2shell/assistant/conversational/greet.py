@@ -68,7 +68,7 @@ A propos, je connais déjà votre nom d'utilisateur mais je pense que je serais 
 Quel est votre nom? Comment dois-je m'adresser à vous ? Souhaitez-vous que je sois formel ou pas ? Puis-je vous tutoyer? Quels pronoms devrais-je utiliser ?
 Dis-moi tout, je suis là pour vous !
 Je suis désolé, j'ai tellement de questions... Je dois être un peu écrasant.
-Je veux juste être utile."""
+J'essaie juste d'être utile."""
 
 first_greet_examples.append(
     {
