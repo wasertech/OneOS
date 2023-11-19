@@ -2,9 +2,9 @@ from typing import List, Optional, Tuple, Union, Any
 from langchain import LLMChain
 from langchain.agents import BaseMultiActionAgent
 from langchain.schema import AgentAction, AgentFinish
-from client.chains.parsers import get_output_parser
-from client.chains.prompts import get_prompt, template
-from client.chains.agents.__executor__ import get_executor_from_agent_and_tools
+from Console.client.chains.parsers import get_output_parser
+from Console.client.chains.prompts import get_prompt, template
+from Console.client.chains.agents.__executor__ import get_executor_from_agent_and_tools
 
 class MultiActionAgent(BaseMultiActionAgent):
     """Custom Multi-Action Agent."""

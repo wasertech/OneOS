@@ -1,5 +1,5 @@
-from langchain.tools import Tool, ShellTool, BaseTool
-from langchain.utilities import BashProcess
+from langchain.tools import Tool, BaseTool
+# from langchain.utilities import BashProcess
 
 from prompt_toolkit.shortcuts import clear
 
@@ -28,14 +28,22 @@ class ClearScreenTool(BaseTool):
         #spinner.stop()
         clear()
 
+def shell_func(tool_input: str | dict,
+    verbose: bool | None = None,
+    start_color: str | None = "green",
+    color: str | None = "green",
+    callbacks = None,
+    **kwargs):
+    return "shell: error: not implemented"
+
 def get_tool():
-    persistent_process = BashProcess(persistent=True)
-    shell = ShellTool(process=persistent_process)
+    # persistent_process = BashProcess(persistent=True)
+    # shell = ShellTool(process=persistent_process)
     clear_tool = ClearScreenTool()
     return [
             Tool(
                 name="Shell",
-                func=shell.run,
+                func=shell_func,
                 description="useful when you need to use the system to achieve something; input must be valid bash code; implemented using subprocess so no tty support. Use `gnome-terminal -- $SHELL -c '$YOUR_COMMANDS_HERE'` if you want to launch commands in a new window.",
             ),
             Tool(

@@ -2,9 +2,9 @@
 from langchain.prompts import StringPromptTemplate, ChatPromptTemplate, PromptTemplate, SystemMessagePromptTemplate, MessagesPlaceholder, HumanMessagePromptTemplate
 from typing import Callable
 
-from client.chains.tools import get_all_tools
-from client.chains.prompts.markdown import get_structured_template, get_structured_template_with_memory
-# from client.chains.tools.retriever import get_relevant_tools_from_query
+from Console.client.chains.tools import get_all_tools
+from Console.client.chains.prompts.markdown import get_structured_template, get_structured_template_with_memory
+# from Console.client.chains.tools.retriever import get_relevant_tools_from_query
 
 class MarkdownPromptTemplate(StringPromptTemplate):
     # The template to use
