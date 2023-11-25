@@ -1,5 +1,6 @@
 import os
-from langchain import PromptTemplate, LLMChain
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 from langchain.agents import LLMSingleActionAgent, AgentExecutor
 from langchain.memory import ConversationBufferMemory
 

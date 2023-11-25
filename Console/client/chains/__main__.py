@@ -1,4 +1,5 @@
-from langchain import PromptTemplate, LLMChain
+# from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 from langchain.agents import LLMSingleActionAgent, AgentExecutor
 
 from client.chains.agents import get_initialized_agent
@@ -33,9 +34,9 @@ class SingleCommandAssistant:
         self._initialize_agent()
             
     def _initialize_llm(self):
-        # self.llm = get_llm(max_tokens=self.max_tokens, temperature=self.temperature, streaming=self.streaming, callbacks=self.callbacks)
-        from langchain import OpenAI
-        self.llm = OpenAI(temperature=0, callbacks=[InputOutputAsyncCallbackHandler()])
+        self.llm = get_llm(max_tokens=self.max_tokens, temperature=self.temperature, streaming=self.streaming, callbacks=self.callbacks)
+        # from langchain import OpenAI
+        # self.llm = OpenAI(temperature=0, callbacks=[InputOutputAsyncCallbackHandler()])
 
     def _initialize_prompt(self):
         self.prompt = get_prompt()

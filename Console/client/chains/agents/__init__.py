@@ -1,5 +1,5 @@
 from typing import List, Optional, Tuple, Union, Any
-from langchain import LLMChain
+from langchain.chains import LLMChain
 from langchain.agents import BaseMultiActionAgent
 from langchain.schema import AgentAction, AgentFinish
 from Console.client.chains.parsers import get_output_parser
