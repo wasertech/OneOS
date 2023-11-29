@@ -8,7 +8,11 @@ FROM nvcr.io/nvidia/pytorch:22.12-py3
 # For OpenIA API Interface
 # RUN pip install --no-input fschat
 # RUN pip install --no-input accelerate
-# RUN pip install --no-input "pydantic==1.10.13"
+# RUN pip install --no-input "pydantic>2"
+
+# For embedding with langchain using sentence-transformers
+RUN pip install --no-input "langchain>=0.0.340"
+RUN pip install --no-input "sentence-transformers>=2.2.2"
 
 RUN pip install --no-input "vllm>=0.2.0"
 # Try wasertech/vllm@awq-sm_75

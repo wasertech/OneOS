@@ -1,3 +1,5 @@
+"""Large language model inference API for generation and embedding."""
+import sys
 import argparse
 import json
 from typing import AsyncGenerator
@@ -11,6 +13,9 @@ from vllm.engine.async_llm_engine import AsyncLLMEngine
 from vllm.sampling_params import SamplingParams
 from vllm.utils import random_uuid
 
+import sentence_transformers
+from langchain.embeddings import HuggingFaceEmbeddings
+
 TIMEOUT_KEEP_ALIVE = 5  # seconds.
 TIMEOUT_TO_PREVENT_DEADLOCK = 1  # seconds.
 app = FastAPI()
@@ -19,6 +24,52 @@ app = FastAPI()
 @app.get("/")
 async def health_check() -> Response:
     return Response(status_code=200)
+
+@app.get("/embeding/model/name")
+async def get_embedding_model_name() -> Response:
+    return Response(status_code=200, content=emmbeding_engine.model_name)
+
+@app.post("/embed")
+async def emmbed(request: Request) -> Response:
+    """Generate embeddings for the request.
+
+    The request should be a JSON object with the following fields:
+    - prompt: the prompt to use for the generation.
+    """
+    request_dict = await request.json()
+    prompt = request_dict.pop("prompt")
+    # stream = request_dict.pop("stream", False)
+    # request_id = random_uuid()
+    #results_generator = emmbeding_engine.embed_query(prompt)
+    results_generator = emmbeding_engine.client.encode_multi_process([prompt] if isinstance(prompt, str) else prompt if isinstance(prompt, list) else [], emmbeding_engine_pool)
+    
+    # Streaming case
+    # async def stream_results() -> AsyncGenerator[bytes, None]:
+    #     async for request_output in results_generator.tolist()[0]:
+    #         ret = {"emmbedings": request_output}
+    #         yield (json.dumps(ret) + "\0").encode("utf-8")
+    
+    # async def abort_request() -> None:
+    #     sentence_transformers.SentenceTransformer.stop_multi_process_pool(pool)
+    
+    # if stream:
+    #     background_tasks = BackgroundTasks()
+    #     # Abort the request if the client disconnects.
+    #     background_tasks.add_task(abort_request)
+    #     return StreamingResponse(stream_results(), background=background_tasks)
+    
+    # Non-streaming case
+    final_output = []
+    #for request_output in results_generator.tolist():
+    if await request.is_disconnected():
+        # Abort the request if the client disconnects.
+        sentence_transformers.SentenceTransformer.stop_multi_process_pool(emmbeding_engine_pool)
+        return Response(status_code=499)
+    final_output = results_generator.tolist()[0]
+
+    assert final_output
+    ret = {"emmbedings": final_output}
+    return JSONResponse(ret)
 
 @app.post("/generate")
 async def generate(request: Request) -> Response:
@@ -46,7 +97,7 @@ async def generate(request: Request) -> Response:
             text_outputs = [
                 output.text for output in request_output.outputs
             ]
-            ret = {"text": text_outputs}
+            ret = {"text": text_outputs, 'output': request_output.outputs}
             yield (json.dumps(ret) + "\0").encode("utf-8")
 
     async def abort_request() -> None:
@@ -71,7 +122,7 @@ async def generate(request: Request) -> Response:
     # prompt = final_output.prompt
     # text_outputs = [prompt + output.text for output in final_output.outputs]
     text_outputs = [output.text for output in final_output.outputs]
-    ret = {"text": text_outputs}
+    ret = {"text": text_outputs, 'output': final_output.outputs}
     return JSONResponse(ret)
 
 
@@ -79,14 +130,28 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", type=str, default="localhost")
     parser.add_argument("--port", type=int, default=8000)
-    parser = AsyncEngineArgs.add_cli_args(parser)
-    args = parser.parse_args()
+    parser.add_argument("--embed", type=str, default="intfloat/e5-large-v2", help="Embedding model to use")
+    parser.add_argument("--embed-device", type=str, default="cuda", help="Embedding model device")
+    parser.add_argument("--embed-norm", type=bool, default=True, help="Normalize embeddings")
+    vllm_parser = AsyncEngineArgs.add_cli_args(parser)
+    vllm_args = vllm_parser.parse_args()
 
-    engine_args = AsyncEngineArgs.from_cli_args(args)
+    engine_args = AsyncEngineArgs.from_cli_args(vllm_args)
     engine = AsyncLLMEngine.from_engine_args(engine_args)
-
-    uvicorn.run(app,
-                host=args.host,
-                port=args.port,
-                log_level="debug",
-                timeout_keep_alive=TIMEOUT_KEEP_ALIVE)
+    
+    args = parser.parse_args()
+    emmbeding_engine_model = args.embed
+    emmbeding_engine_model_kwargs = {'device': args.embed_device}
+    emmbeding_engine_encode_kwargs = {'normalize_embeddings': args.embed_norm}
+    emmbeding_engine = HuggingFaceEmbeddings(model_name=emmbeding_engine_model, model_kwargs=emmbeding_engine_model_kwargs, encode_kwargs=emmbeding_engine_encode_kwargs, cache_folder="/root/.cache/huggingface/hub/")
+    emmbeding_engine_pool = emmbeding_engine.client.start_multi_process_pool()
+    
+    try:
+        uvicorn.run(app,
+                    host=args.host,
+                    port=args.port,
+                    log_level="debug",
+                    timeout_keep_alive=TIMEOUT_KEEP_ALIVE)
+    except KeyboardInterrupt:
+        print("Shutting down...")
+        
