@@ -97,7 +97,7 @@ async def generate(request: Request) -> Response:
             text_outputs = [
                 output.text for output in request_output.outputs
             ]
-            ret = {"text": text_outputs, 'output': request_output.outputs}
+            ret = {"text": text_outputs}
             yield (json.dumps(ret) + "\0").encode("utf-8")
 
     async def abort_request() -> None:
@@ -122,7 +122,7 @@ async def generate(request: Request) -> Response:
     # prompt = final_output.prompt
     # text_outputs = [prompt + output.text for output in final_output.outputs]
     text_outputs = [output.text for output in final_output.outputs]
-    ret = {"text": text_outputs, 'output': final_output.outputs}
+    ret = {"text": text_outputs}
     return JSONResponse(ret)
 
 
