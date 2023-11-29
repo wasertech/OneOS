@@ -68,7 +68,7 @@ async def emmbed(request: Request) -> Response:
     final_output = results_generator.tolist()[0]
 
     assert final_output
-    ret = {"embedings": final_output}
+    ret = {"embeddings": final_output}
     return JSONResponse(ret)
 
 @app.post("/generate")
