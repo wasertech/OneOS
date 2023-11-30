@@ -65,7 +65,7 @@ async def emmbed(request: Request) -> Response:
         # Abort the request if the client disconnects.
         sentence_transformers.SentenceTransformer.stop_multi_process_pool(emmbeding_engine_pool)
         return Response(status_code=499)
-    final_output = results_generator.tolist()[0]
+    final_output = results_generator.tolist() if isinstance(prompt, list) else results_generator.tolist()[0] if isinstance(prompt, str) else []
 
     assert final_output
     ret = {"embeddings": final_output}
