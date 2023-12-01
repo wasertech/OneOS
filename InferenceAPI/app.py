@@ -139,6 +139,7 @@ if __name__ == "__main__":
     engine_args = AsyncEngineArgs.from_cli_args(vllm_args)
     engine = AsyncLLMEngine.from_engine_args(engine_args)
     
+    print("Loading embedding model...")
     args = parser.parse_args()
     emmbeding_engine_model = args.embed
     emmbeding_engine_model_kwargs = {'device': args.embed_device}

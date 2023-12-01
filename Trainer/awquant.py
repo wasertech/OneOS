@@ -1,17 +1,19 @@
-# Activation-aware Weight Quantization (AWQ) algorithm for quantizing LLMs
+"""
+Activation-aware Weight Quantization (AWQ) algorithm for quantizing LLMs
+"""
 import os
 from awq import AutoAWQForCausalLM
 from transformers import AutoTokenizer
 
 model_path = os.environ.get('OUTPUT_MODEL_NAME', "assistant-llama2-7b-merge")
 tokenizer_path = "hf-internal-testing/llama-tokenizer"
-print(f"Taking full precision weigths from {model_path}.")
+print(f"Taking full precision weigths and biases from {model_path}.")
 
 quant_path = f'{model_path}-awq'
 
 quant_config = { "zero_point": True, "q_group_size": 128, "w_bit": 4 }
 
-print(f"Exporting:")
+print("Exporting:")
 print(f"{quant_config=}")
 print(f"{quant_path=}")
 
