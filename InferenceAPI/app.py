@@ -2,11 +2,12 @@
 import sys
 import argparse
 import json
-from typing import AsyncGenerator
+import logging
+import uvicorn
 
+from typing import AsyncGenerator
 from fastapi import BackgroundTasks, FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
-import uvicorn
 
 from vllm.engine.arg_utils import AsyncEngineArgs
 from vllm.engine.async_llm_engine import AsyncLLMEngine
@@ -15,6 +16,8 @@ from vllm.utils import random_uuid
 
 import sentence_transformers
 from langchain.embeddings import HuggingFaceEmbeddings
+
+logging.basicConfig(level=logging.DEBUG)
 
 TIMEOUT_KEEP_ALIVE = 5  # seconds.
 TIMEOUT_TO_PREVENT_DEADLOCK = 1  # seconds.
@@ -156,3 +159,6 @@ if __name__ == "__main__":
     except KeyboardInterrupt:
         print("Shutting down...")
         
+
+    emmbeding_engine.client.stop_multi_process_pool(emmbeding_engine_pool)
+    
