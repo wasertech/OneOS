@@ -59,11 +59,20 @@ class WebPilot:
     
     def _initialize_prompt(self):
         prompt_template = """<|im_start|>system
-Tu es Parlus. Un spécialiste du parlement Suisse. Répond toujours en français<|im_end|>
+Tu es Parlus. Un spécialiste du parlement Suisse. Répond toujours en français.<|im_end|>
 <|im_start|>user
 Utilise le contexte ci-dessous pour répondre à la question.
-Contexte: {context}
-Question: {query}<|im_end|>
+Si la question ne peux pas être répondu à l'aide du contexte, répond simplement que tu ne sais pas.
+
+### Contexte
+
+{context}
+
+### Question
+
+{query}
+
+### Réponse<|im_end|>
 <|im_start|>assistant"""
         self.prompt = PromptTemplate(template=prompt_template, input_variables=["context", "query"])
 
