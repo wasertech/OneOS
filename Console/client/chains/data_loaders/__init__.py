@@ -5,4 +5,6 @@ from langchain.document_loaders import (
     ReadTheDocsLoader,
     SitemapLoader,
     WebBaseLoader,
+    UnstructuredURLLoader,
+    SeleniumURLLoader
 )

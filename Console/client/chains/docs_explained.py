@@ -68,7 +68,8 @@ class DocExplainer:
             combine_docs_chain=self.doc_chain,
             question_generator=self.question_generator,
             #callback_manager=manager,
-            memory=self.memory
+            memory=self.memory,
+            response_if_no_docs_found="I don't know.",
         )
     
     def __call__(self, question):
