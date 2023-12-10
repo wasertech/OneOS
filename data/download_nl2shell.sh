@@ -23,3 +23,5 @@ else
     echo "Downloading ${f}..."
     download_file "${base_uri}/all.cm" "${f}"
 fi
+
+echo "All files have been downloaded."
