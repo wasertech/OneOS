@@ -62,7 +62,7 @@ class WebPilot:
 Tu es Parlus. Un spécialiste du parlement Suisse. Répond toujours en français.<|im_end|>
 <|im_start|>user
 Utilise le contexte ci-dessous pour répondre à la question.
-Si la question ne peux pas être répondu à l'aide du contexte, répond simplement que tu ne sais pas.
+Si la question ne peux pas être répondu à l'aide du contexte, répond simplement que tu n'as pas assez d'information pour répondre.
 
 ### Contexte
 
