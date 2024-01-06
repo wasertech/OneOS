@@ -181,7 +181,7 @@ RUN pip install accelerate
 
 RUN pip install 'git+https://github.com/huggingface/peft.git'
 
-RUN pip install 'datasets>=1.18.0'
+RUN pip install 'git+https://github.com/huggingface/datasets.git'
 
 RUN pip install bitsandbytes
 
