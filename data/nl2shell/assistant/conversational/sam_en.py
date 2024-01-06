@@ -41,7 +41,7 @@ def get_sam_en_examples():
                     'role': "assistant",
                     'message': _message,
                     'scratchpad': [
-                        { 'action': 'final_answer', 'action_input': _message, 'observation': "" },
+                        { 'function': 'final_answer', 'parameters': {'answer': _message}, 'observation': "" },
                     ]
                 })
             else:

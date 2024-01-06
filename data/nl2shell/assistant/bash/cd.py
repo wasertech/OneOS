@@ -1,40 +1,40 @@
-# Bash: cd
+# Shell: cd
 # English: Go to my home directory.
 # French: Va dans mon répertoire personnel.
 
-# Bash: cd /
+# Shell: cd /
 # English: Go to the root directory.
 # French: Déplace-toi dans le répertoire racine.
 
-# Bash: cd /home/user/documents
+# Shell: cd /home/user/documents
 # English: Go to the "documents" folder in the user's home directory.
 # French: Va dans le dossier "documents" dans le répertoire personnel de l'utilisateur.
 
-# Bash: cd ../..
+# Shell: cd ../..
 # English: Go up two levels in the directory hierarchy.
 # French: Remonte de deux niveaux dans la hiérarchie des dossiers.
 
-# Bash: cd ~/Desktop
+# Shell: cd ~/Desktop
 # English: Go to the "Desktop" folder in your home directory.
 # French: Va dans le dossier "Bureau" dans ton répertoire personnel.
 
-# Bash: cd /var/www/html
+# Shell: cd /var/www/html
 # English: Go to the "html" folder in the "/var/www" directory.
 # French: Déplace-toi dans le dossier "html" dans le répertoire "/var/www".
 
-# Bash: cd /etc
+# Shell: cd /etc
 # English: Go to the "/etc" directory.
 # French: Va dans le répertoire "/etc".
 
-# Bash: cd ../../shared
+# Shell: cd ../../shared
 # English: Go up two levels and then into the "shared" folder.
 # French: Remonte de deux niveaux et entre dans le dossier "shared".
 
-# Bash: cd ~/Documents/Work\ Projects
+# Shell: cd ~/Documents/Work\ Projects
 # English: Go to the "Work Projects" folder inside the "Documents" folder in your home directory.
 # French: Va dans le dossier "Projets de travail" dans le dossier "Documents" de ton répertoire personnel.
 
-# Bash: cd -
+# Shell: cd -
 # English: Go back to the previous directory you were in.
 # French: Retourne dans le répertoire précédent où tu étais.
 
@@ -158,12 +158,24 @@ action_cd = [
 
 data = []
 
+guides = {
+    'en': """# Change current working directory
+
+When the user ask you to change the current working directory, use the `cd` tool to change the current working directory. Then in your final answer (once you have observed the successful execution of the command), let the User know that the current working directory was changed and that you are ready to be useful. Remember that `cd` does not print anything to the screen when it is successful.
+
+""",
+    'fr': """# Modifier le répertoire de travail actuel
+
+Lorsque l'utilisateur vous demande de modifier le répertoire de travail actuel, utilisez l'outil `cd` pour modifier le répertoire de travail actuel. Ensuite, dans votre réponse finale (une fois que vous avez observé l'exécution réussie de la commande), faites savoir à l'utilisateur que le répertoire de travail actuel a été modifié et que vous êtes prêt à être utile. Rappelez-vous que `cd` n'imprime rien à l'écran quand il est réussi.
+"""
+}
+
 for query, response, action in zip(user_ask_cd_en, response_cd_en, action_cd):
     conversation = [
-        {'role': 'human', 'message': query},
+        {'role': 'human', 'message': query, 'guide': guides.get('en') },
         {'role': 'assistant', 'message': response, 'scratchpad': [
-                {'action': 'Bash', 'action_input': action, 'observation': ""},
-                {'action': 'final_answer', 'action_input': response, 'observation': ""},
+                {'function': 'shell', 'parameters': {'code': action}, 'observation': ""},
+                {'function': 'final_answer', 'parameters': {'answer': response}, 'observation': ""},
             ]
         }
     ]
@@ -171,10 +183,10 @@ for query, response, action in zip(user_ask_cd_en, response_cd_en, action_cd):
 
 for query, response, action in zip(user_ask_cd_fr, response_cd_fr, action_cd):
     conversation = [
-        {'role': 'human', 'message': query},
+        {'role': 'human', 'message': query, 'guide': guides.get('fr')},
         {'role': 'assistant', 'message': response, 'scratchpad': [
-                {'action': 'Bash', 'action_input': action, 'observation': ""},
-                {'action': 'final_answer', 'action_input': response, 'observation': ""},
+                {'function': 'Shell', 'parameters': {'code': action}, 'observation': ""},
+                {'function': 'final_answer', 'parameters': {'answer': response}, 'observation': ""},
             ]
         }
     ]

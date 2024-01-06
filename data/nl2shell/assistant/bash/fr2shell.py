@@ -10,13 +10,13 @@ translator = Translator("eng_Latn", "fra_Latn", model_id="Helsinki-NLP/opus-mt-e
 #         'conversation': [
 #             { 'role': "human", 'message': "Bonjour" },
 #             { 'role': "assistant", 'message': "Bonjour! Vous êtes bien matinal aujourd'hui.",  'scratchpad': [
-#                     { 'action': 'Bash', 'action_input': "date", 'observation': "mer 02 aoû 2023 03:59:15 CEST" },
+#                     { 'action': 'Shell', 'action_input': "date", 'observation': "mer 02 aoû 2023 03:59:15 CEST" },
 #                     { 'action': 'final_answer', 'action_input': "Bonjour! Vous êtes bien matinal aujourd'hui.", 'observation': "" },
 #                 ]
 #             },
 #             { 'role': "human", 'message': "Quel jour sommes-nous?" },
 #             { 'role': "assistant", 'message': "mer 02 aoû 2023 03:59:15 CEST",  'scratchpad': [
-#                     { 'action': 'Bash', 'action_input': "date", 'observation': "mer 02 aoû 2023 03:59:15 CEST" },
+#                     { 'action': 'Shell', 'action_input': "date", 'observation': "mer 02 aoû 2023 03:59:15 CEST" },
 #                     { 'action': 'final_answer', 'action_input': "Nous sommes le mercredi 2 août 2023.", 'observation': "" },
 #                 ]
 #             },

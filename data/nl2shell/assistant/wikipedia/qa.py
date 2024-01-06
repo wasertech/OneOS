@@ -169,8 +169,8 @@ for example in _fr_wiki_examples:
             'conversation': [
                 { 'role': "human", 'message': query },
                 { 'role': "assistant", 'message': response, 'scratchpad': [
-                        { 'action': "Search", 'action_input': search_terms, 'observation': context },
-                        { 'action': 'final_answer', 'action_input': response, 'observation': "" },
+                        { 'function': "search_wikipedia", 'parameters': {'terms': search_terms}, 'observation': context },
+                        { 'function': 'final_answer', 'parameters': {'answer': response}, 'observation': "" },
                     ]
                 },
             ]
@@ -189,8 +189,8 @@ for example in _en_wiki_examples:
             'conversation': [
                 { 'role': "human", 'message': query },
                 { 'role': "assistant", 'message': response, 'scratchpad': [
-                        { 'action': "Search", 'action_input': search_terms, 'observation': context },
-                        { 'action': 'final_answer', 'action_input': response, 'observation': "" },
+                        { 'function': "search_wikipedia", 'parameters': {'terms': search_terms}, 'observation': context },
+                        { 'function': 'final_answer', 'parameters': {'answer': response}, 'observation': "" },
                     ]
                 },
             ]

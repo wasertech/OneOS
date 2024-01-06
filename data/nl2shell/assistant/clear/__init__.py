@@ -9,7 +9,17 @@ system_prompt = intruction_prompt = {
 #     'en': "",
 #     'fr': ""
 # }
-# 
+
+guides = {
+    'en': """# Clearing the Screen or Starting Anew
+
+When the user expresses a desire to clear the screen or initiate a new conversation, use the `clear` tool to clear the screen and print a message acknowledging the fact you cleared the screen (or started a new conversation), then in your final answer, let the User know that you are ready to be useful.
+""",
+    'fr': """# Effacement de l'écran ou nouvelle conversation
+
+Lorsque l'utilisateur exprime le désir d'effacer l'écran ou d'initier une nouvelle conversation, utilisez l'outil `clear` pour effacer l'écran et imprimer un message reconnaissant le fait que vous avez effacé l'écran (ou commencé une nouvelle conversation), puis dans votre réponse finale, faites savoir à l'utilisateur que vous êtes prêt à être utile.
+"""
+}
 
 clear_examples = []
 _examples = []
@@ -192,10 +202,10 @@ for example in _examples:
             'system': system_prompt.get(lang, ""),
             'instruction': intruction_prompt.get(lang, ""),
             'conversation': [
-                { 'role': "human", 'message': clear_command },
+                { 'role': "human", 'message': clear_command, 'guide': guides.get(lang, None) },
                 { 'role': "assistant", 'message': clear_reply, 'scratchpad': [
-                        { 'action': "Clear", 'action_input': clear_reply },
-                        { 'action': 'final_answer', 'action_input': clear_reply }
+                        { 'function': "clear", 'parameters': {}, 'observation': ""},
+                        { 'function': 'final_answer', 'parameters': clear_reply }
                     ]
                 }
             ]

@@ -15,8 +15,8 @@ docker run \
 --env LOG_TO_WANDB=1 \
 --env DISTRIBUTE_TRAIN=1 \
 --env NPROC_PER_GPU=2 \
---env BASE_MODEL_NAME="Photolens/llama-2-7b-langchain-chat" \
---env OUTPUT_MODEL_NAME="assistant-llama2-7b-chat" \
+--env BASE_MODEL_NAME="cognitivecomputations/dolphin-2.2.1-mistral-7b" \
+--env OUTPUT_MODEL_NAME="assistant-mistral-7b-dolphin-2.2.1" \
 --env BATCH_SIZE=4 \
 --env GAS=8 \
 --env SEQENCE_LENGTH=4096 \

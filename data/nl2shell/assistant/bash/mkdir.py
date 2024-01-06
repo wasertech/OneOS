@@ -21,8 +21,8 @@ mkdir_examples.append(
         'conversation': [
             { 'role': "human", 'message': "Make directory test" },
             { 'role': "assistant", 'message': "I created a new directory test.",  'scratchpad': [
-                    { 'action': 'Bash', 'action_input': "mkdir test", 'observation': "" },
-                    { 'action': 'final_answer', 'action_input': "I created a new directory test.", 'observation': "" },
+                    { 'function': 'shell', 'parameters': {'code': "mkdir test"}, 'observation': "" },
+                    { 'function': 'final_answer', 'parameters': {'answer': "I created a new directory test."}, 'observation': "" },
                 ]
             },
         ]
@@ -37,8 +37,8 @@ mkdir_examples.append(
         'conversation': [
             { 'role': "human", 'message': "Crée un répertoire test" },
             { 'role': "assistant", 'message': "J'ai créé un nouveau répertoire test.",  'scratchpad': [
-                    { 'action': 'Bash', 'action_input': "mkdir test", 'observation': "" },
-                    { 'action': 'final_answer', 'action_input': "J'ai créé un nouveau répertoire test.", 'observation': "" },
+                    { 'function': 'shell', 'parameters': {'code': "mkdir test"}, 'observation': "" },
+                    { 'function': 'final_answer', 'parameters': {'answer': "J'ai créé un nouveau répertoire test."}, 'observation': "" },
                 ]
             },
         ]

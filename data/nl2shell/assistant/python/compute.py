@@ -168,7 +168,7 @@ The product with the highest number of units sold is Product A with 420 units so
 
 This report summarizes the sales performance of the two products, highlighting their total revenue and units sold. Product A emerges as the leader in both categories, generating the highest revenue and selling the most units.""",
             'scratchpad': [
-                { 'action': "Shell", 'action_input': "cat sales_data.csv", 'observation': """Date,Product,Units Sold,Revenue
+                { 'function': "shell", 'parameters': {'code': "cat sales_data.csv"}, 'observation': """Date,Product,Units Sold,Revenue
 2023-01-01,Product A,100,5000
 2023-01-01,Product B,75,3750
 2023-01-02,Product A,120,6000
@@ -177,8 +177,8 @@ This report summarizes the sales performance of the two products, highlighting t
 2023-01-03,Product B,60,3000
 2023-01-04,Product A,110,5500
 2023-01-04,Product B,70,3500"""},
-                { 'action': "Shell", 'action_input': "pip install -U --no-input pandas" },
-                { 'action': "Python", 'action_input': """import pandas as pd
+                { 'function': "shell", 'parameters': {'code': "pip install -U --no-input pandas"} },
+                { 'function': "python", 'parameters': {'code': """import pandas as pd
 df = pd.read_csv("sales_data.csv")
 revenue_by_product = df.groupby("Product")["Revenue"].sum()
 product_with_highest_revenue = revenue_by_product.idxmax()
@@ -192,7 +192,7 @@ print(f"The product with the highest revenue is {product_with_highest_revenue} w
 print("\nTotal units sold by product:")
 print(units_sold_by_product)
 print(f"The product with the highest units sold is {product_with_highest_units_sold} with {highest_units_sold} units sold.")
-""", 'observation': """Total revenue by product:
+"""}, 'observation': """Total revenue by product:
 Product
 Product A    21000
 Product B    14250
@@ -203,7 +203,7 @@ Product A    420
 Product B    285
 Name: Units Sold, dtype: int64
 The product with the highest units sold is Product A with 420 units sold."""},
-                { 'action': 'final_answer', 'action_input': """### Product Sales Report
+                { 'function': 'final_answer', 'parameters': {'answer': """### Product Sales Report
 #### Total Revenue by Product
 Product A generated a total revenue of $21,000.
 Product B generated a total revenue of $14,250.
@@ -214,7 +214,7 @@ Product A had a total of 420 units sold.
 Product B had a total of 285 units sold.
 The product with the highest number of units sold is Product A with 420 units sold.
 
-This report summarizes the sales performance of the two products, highlighting their total revenue and units sold. Product A emerges as the leader in both categories, generating the highest revenue and selling the most units.""" },
+This report summarizes the sales performance of the two products, highlighting their total revenue and units sold. Product A emerges as the leader in both categories, generating the highest revenue and selling the most units."""} },
         ]}
     ]
 })
@@ -242,8 +242,8 @@ for example in _examples:
                     'role': "assistant", 
                     'message': py_compute_answer,
                     'scratchpad': [
-                        { 'action': "Python", 'action_input': py_compute_action },
-                        { 'action': 'final_answer', 'action_input': py_compute_answer }
+                        { 'function': "python", 'parameters': {'code': py_compute_action} },
+                        { 'function': 'final_answer', 'parameters': {'answer': py_compute_answer} }
                     ]
                 }
             ]
@@ -267,9 +267,9 @@ for example in _numpy_examples:
                     'role': "assistant",
                     'message': py_compute_answer,
                     'scratchpad': [
-                        { 'action': "Shell", 'action_input': "pip install -U --no-input numpy" },
-                        { 'action': "Python", 'action_input': py_compute_action },
-                        { 'action': 'final_answer', 'action_input': py_compute_answer }
+                        { 'function': "shell", 'parameters': {'code': "pip install -U --no-input numpy"} },
+                        { 'function': "python", 'parameters': {'code': py_compute_action} },
+                        { 'function': 'final_answer', 'parameters': {'answer': py_compute_answer} }
                     ]
                 }
             ]

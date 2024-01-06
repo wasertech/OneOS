@@ -69,11 +69,11 @@ def get_generated_thought(inputs):
     return random.choice(thoughts)
 
 tools = """
-Bash: useful when you need to use the system to achieve something; input must be valid bash code; implemented using subprocess so no tty support. Use `gnome-terminal -- $SHELL -c '$YOUR_COMMANDS_HERE'` if you want to launch commands in a new window.
+Shell: useful when you need to use the system to achieve something; input must be valid bash code; implemented using subprocess so no tty support. Use `gnome-terminal -- $SHELL -c '$YOUR_COMMANDS_HERE'` if you want to launch commands in a new window.
 Exit: useful when you need to exit the shell or stop the conversation, dont forget to tell the user that you can't wait for your next conversation first.
 Clear: useful when you need to clear the screen or start a fresh conversation. Don't forget to say something nice.
 """
-tool_names = "Bash, Exit, Clear"
+tool_names = "Shell, Exit, Clear"
 
 def get_input(utterance, agent_scratchpad = "", chat_history = ""):
     return memory_template.format(

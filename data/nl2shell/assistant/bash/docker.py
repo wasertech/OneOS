@@ -19,7 +19,7 @@ _docker_data.append({
     'conversation': [
         { 'role': "human", 'message': "Liste tous les conteneurs Docker (en cours d'exécution ou arrêtés)." },
         { 'role': "assistant", 'message': "Voici la liste de tous les conteneurs Docker (en cours d'exécution ou arrêtés) :",  'scratchpad': [
-                { 'action': 'Bash', 'action_input': "docker ps --all", 'observation': "CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES\n" +
+                { 'function': 'shell', 'parameters': {'code': "docker ps --all", 'observation': "CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES\n" +
                                                                                         "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
                                                                                         "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
                                                                                         "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
@@ -28,18 +28,8 @@ _docker_data.append({
                                                                                         "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
                                                                                         "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
                                                                                         "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
-                                                                                        "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu" },
-                { 'action': 'final_answer', 'action_input': "Voici la liste de tous les conteneurs Docker (en cours d'exécution ou arrêtés) :\n" +
-                                                                                        "CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES\n" +                        
-                                                                                        "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
-                                                                                        "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
-                                                                                        "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
-                                                                                        "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
-                                                                                        "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
-                                                                                        "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
-                                                                                        "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
-                                                                                        "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu\n" +
-                                                                                        "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu", 'observation': "" },
+                                                                                        "e7c9e4f5a5b0   ubuntu    \"bash\"    2 days    Up 2 days            ubuntu"} },
+                { 'function': 'final_answer', 'parameters': {'answer': "Voici la liste de tous les conteneurs Docker (en cours d'exécution ou arrêtés)."}, 'observation': "" },
             ]
         },
     ]
@@ -56,8 +46,8 @@ _docker_data.append({
     'conversation': [
         { 'role': "human", 'message': "Démarre un conteneur custom-frerade-container à partir de l'image freqtrade/freqtrade:stable." },
         { 'role': "assistant", 'message': "Le conteneur custom-frerade-container a été démarré avec succès.",  'scratchpad': [
-                { 'action': 'Bash', 'action_input': "docker run -d --name custom-freqtrade-container freqtrade/freqtrade:stable", 'observation': "2021-08-02 04:00:00,000 - freqtrade - INFO - Starting FreqTrade 2021.8.0\n"},
-                { 'action': 'final_answer', 'action_input': "Le conteneur custom-frerade-container a été démarré avec succès.", 'observation': "" },
+                { 'function': 'shell', 'parameters': {'code': "docker run -d --name custom-freqtrade-container freqtrade/freqtrade:stable"}, 'observation': "2021-08-02 04:00:00,000 - freqtrade - INFO - Starting FreqTrade 2021.8.0\n"},
+                { 'function': 'final_answer', 'parameters': {'answer': "Le conteneur custom-frerade-container a été démarré avec succès."}, 'observation': "" },
             ]
         },
     ]
@@ -74,8 +64,8 @@ _docker_data.append({
     'conversation': [
         { 'role': "human", 'message': "Démarre le conteneur custom-frerade-container." },
         { 'role': "assistant", 'message': "Le conteneur custom-frerade-container a été démarré avec succès.",  'scratchpad': [
-                { 'action': 'Bash', 'action_input': "docker start custom-freqtrade-container", 'observation': "2021-08-02 04:00:00,000 - freqtrade - INFO - Starting FreqTrade 2021.8.0\n"},
-                { 'action': 'final_answer', 'action_input': "Le conteneur custom-frerade-container a été démarré avec succès.", 'observation': "" },
+                { 'function': 'shell', 'parameters': {'code': "docker start custom-freqtrade-container"}, 'observation': "2021-08-02 04:00:00,000 - freqtrade - INFO - Starting FreqTrade 2021.8.0\n"},
+                { 'function': 'final_answer', 'parameters': {'answer': "Le conteneur custom-frerade-container a été démarré avec succès."}, 'observation': "" },
             ]
         },
     ]
@@ -92,8 +82,8 @@ _docker_data.append({
     'conversation': [
         { 'role': "human", 'message': "Télécharge l'image freqtrade/freqtrade:stable depuis le registre Docker." },
         { 'role': "assistant", 'message': "L'image freqtrade/freqtrade:stable a été téléchargée avec succès.",  'scratchpad': [
-                { 'action': 'Bash', 'action_input': "docker pull freqtrade/freqtrade:stable", 'observation': "stable: Pulling from freqtrade/freqtrade\n"},
-                { 'action': 'final_answer', 'action_input': "L'image freqtrade/freqtrade:stable a été téléchargée avec succès.", 'observation': "" },
+                { 'function': 'shell', 'parameters': {'code': "docker pull freqtrade/freqtrade:stable"}, 'observation': "stable: Pulling from freqtrade/freqtrade\n"},
+                { 'function': 'final_answer', 'parameters': {'answer': "L'image freqtrade/freqtrade:stable a été téléchargée avec succès."}, 'observation': "" },
             ]
         },
     ]
@@ -108,8 +98,8 @@ _docker_data.append({
     'lang': 'fr',
     'conversation': [
         { 'role': "human", 'message': "Affiche les images déjà téléchargées." },
-        { 'role': "assistant", 'message': "Voici la liste des images déjà téléchargées :",  'scratchpad': [
-                { 'action': 'Bash', 'action_input': "docker images", 'observation': "REPOSITORY          TAG       IMAGE ID       CREATED       SIZE\n" +
+        { 'role': "assistant", 'message': "Voici la liste des images déjà téléchargées.",  'scratchpad': [
+                { 'function': 'shell', 'parameters': {'code': "docker images"}, 'observation': "REPOSITORY          TAG       IMAGE ID       CREATED       SIZE\n" +
                                                                                     "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB\n" +
                                                                                     "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB\n" +
                                                                                     "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB\n" +
@@ -119,16 +109,7 @@ _docker_data.append({
                                                                                     "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB\n" +
                                                                                     "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB\n" +
                                                                                     "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB" },
-                { 'action': 'final_answer', 'action_input': "Voici la liste des images déjà téléchargées :\n" +
-                                                                                    "REPOSITORY          TAG       IMAGE ID       CREATED       SIZE\n" +
-                                                                                    "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB\n" +
-                                                                                    "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB\n" +
-                                                                                    "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB\n" +
-                                                                                    "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB\n" +
-                                                                                    "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB\n" +
-                                                                                    "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB\n" +
-                                                                                    "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB\n" +
-                                                                                    "freqtrade/freqtrade stable    1234567890ab   2 days ago    1.23GB", 'observation': "" },
+                { 'function': 'final_answer', 'parameters': {'answer': "Voici la liste des images déjà téléchargées."}, 'observation': "" },
             ]
         },
     ]
@@ -144,8 +125,8 @@ _docker_data.append({
     'conversation': [
         { 'role': "human", 'message': "Ouvre un shell dans le conteneur custom-freqtrade-container." },
         { 'role': "assistant", 'message': "Un shell a été ouvert dans le conteneur custom-freqtrade-container.",  'scratchpad': [
-                { 'action': 'Bash', 'action_input': "docker exec -it custom-freqtrade-container sh", 'observation': "root@e7c9e4f5a5b0:/freqtrade# "},
-                { 'action': 'final_answer', 'action_input': "Un shell a été ouvert dans le conteneur custom-freqtrade-container.", 'observation': "" },
+                { 'function': 'shell', 'parameters': {'code': "docker exec -it custom-freqtrade-container sh"}, 'observation': "root@e7c9e4f5a5b0:/freqtrade# "},
+                { 'function': 'final_answer', 'parameters': {'answer': "Un shell a été ouvert dans le conteneur custom-freqtrade-container."}, 'observation': "" },
             ]
         },
     ]
@@ -161,8 +142,8 @@ _docker_data.append({
     'conversation': [
         { 'role': "human", 'message': "Supprime le conteneur custom-freqtrade-container." },
         { 'role': "assistant", 'message': "Le conteneur custom-freqtrade-container a été supprimé avec succès.",  'scratchpad': [
-                { 'action': 'Bash', 'action_input': "docker rm custom-freqtrade-container --force", 'observation': "custom-freqtrade-container\n"},
-                { 'action': 'final_answer', 'action_input': "Le conteneur custom-freqtrade-container a été supprimé avec succès.", 'observation': "" },
+                { 'function': 'shell', 'parameters': {'code': "docker rm custom-freqtrade-container --force"}, 'observation': "custom-freqtrade-container\n"},
+                { 'function': 'final_answer', 'parameters': {'answer': "Le conteneur custom-freqtrade-container a été supprimé avec succès."}, 'observation': "" },
             ]
         },
     ]
@@ -178,9 +159,8 @@ _docker_data.append({
     'conversation': [
         { 'role': "human", 'message': "Récupère et suit les journaux de message du conteneur custom-freqtrade-container." },
         { 'role': "assistant", 'message': "Voici les journaux de message du conteneur custom-freqtrade-container :",  'scratchpad': [
-                { 'action': 'Bash', 'action_input': "docker logs -f custom-freqtrade-container", 'observation': "2021-08-02 04:00:00,000 - freqtrade - INFO - Starting FreqTrade 2021.8.0\n"},
-                { 'action': 'final_answer', 'action_input': "Voici les journaux de message du conteneur custom-freqtrade-container :\n" +
-                                                                                    "2021-08-02 04:00:00,000 - freqtrade - INFO - Starting FreqTrade 2021.8.0", 'observation': "" },
+                { 'function': 'shell', 'parameters': {'code': "docker logs -f custom-freqtrade-container"}, 'observation': "2021-08-02 04:00:00,000 - freqtrade - INFO - Starting FreqTrade 2021.8.0\n"},
+                { 'function': 'final_answer', 'parameters': {'answer': "Voici les journaux de message du conteneur."}, 'observation': "" },
             ]
         },
     ]
@@ -196,8 +176,8 @@ _docker_data.append({
     'conversation': [
         { 'role': "human", 'message': "Supprime l'image freqtrade/freqtrade:stable." },
         { 'role': "assistant", 'message': "L'image freqtrade/freqtrade:stable a été supprimée avec succès.",  'scratchpad': [
-                { 'action': 'Bash', 'action_input': "docker rmi freqtrade/freqtrade:stable --force", 'observation': "Deleted: sha256:1234567890ab\n"},
-                { 'action': 'final_answer', 'action_input': "L'image freqtrade/freqtrade:stable a été supprimée avec succès.", 'observation': "" },
+                { 'function': 'shell', 'parameters': {'code': "docker rmi freqtrade/freqtrade:stable --force"}, 'observation': "Deleted: sha256:1234567890ab\n"},
+                { 'function': 'final_answer', 'parameters': {'answer': "L'image freqtrade/freqtrade:stable a été supprimée avec succès."}, 'observation': "" },
             ]
         },
     ]
@@ -214,7 +194,7 @@ _docker_data.append({
     'conversation': [
         { 'role': "human", 'message': "Supprime toutes les images non utilisées." },
         { 'role': "assistant", 'message': "Toutes les images non utilisées ont été supprimées avec succès.",  'scratchpad': [
-                { 'action': 'Bash', 'action_input': "docker image prune --force", 'observation': "Deleted Images:\n" +
+                { 'function': 'shell', 'parameters': {'code': "docker image prune --force", 'observation': "Deleted Images:\n" +
                                                                                                 "deleted: sha256:1234567890ab\n" +
                                                                                                 "deleted: sha256:1234567890ab\n" +
                                                                                                 "deleted: sha256:1234567890ab\n" +
@@ -224,8 +204,8 @@ _docker_data.append({
                                                                                                 "deleted: sha256:1234567890ab\n" +
                                                                                                 "deleted: sha256:1234567890ab\n" +
                                                                                                 "deleted: sha256:1234567890ab\n" +
-                                                                                                "Total reclaimed space: 1.23GB\n"},
-                { 'action': 'final_answer', 'action_input': "Toutes les images non utilisées ont été supprimées avec succès.", 'observation': "" },
+                                                                                                "Total reclaimed space: 1.23GB\n"}},
+                { 'function': 'final_answer', 'parameters': {'answer': "Toutes les images non utilisées ont été supprimées avec succès."}, 'observation': "" },
             ]
         },
     ]
@@ -241,7 +221,7 @@ _docker_data.append({
     'conversation': [
         { 'role': "human", 'message': "Supprime tous les conteneurs arrêtés." },
         { 'role': "assistant", 'message': "Tous les conteneurs arrêtés ont été supprimés avec succès.",  'scratchpad': [
-                { 'action': 'Bash', 'action_input': "docker container prune --force", 'observation': "Deleted Containers:\n" +
+                { 'function': 'shell', 'parameters': {'code': "docker container prune --force", 'observation': "Deleted Containers:\n" +
                                                                                                 "e7c9e4f5a5b0\n" +
                                                                                                 "e7c9e4f5a5b0\n" +
                                                                                                 "e7c9e4f5a5b0\n" +
@@ -250,8 +230,8 @@ _docker_data.append({
                                                                                                 "e7c9e4f5a5b0\n" +
                                                                                                 "e7c9e4f5a5b0\n" +
                                                                                                 "e7c9e4f5a5b0\n" +
-                                                                                                "Total reclaimed space: 1.23GB\n"},
-                { 'action': 'final_answer', 'action_input': "Tous les conteneurs arrêtés ont été supprimés avec succès.", 'observation': "" },
+                                                                                                "Total reclaimed space: 1.23GB\n"}},
+                { 'function': 'final_answer', 'parameters': {'answer': "Tous les conteneurs arrêtés ont été supprimés avec succès."}, 'observation': "" },
             ]
         },
     ]
@@ -267,7 +247,7 @@ _docker_data.append({
     'conversation': [
         { 'role': "human", 'message': "Supprime tous les conteneurs et toutes les images non utilisées." },
         { 'role': "assistant", 'message': "Tous les conteneurs et toutes les images non utilisées ont été supprimés avec succès.",  'scratchpad': [
-                { 'action': 'Bash', 'action_input': "docker system prune --force", 'observation': "Deleted Containers:\n" +
+                { 'function': 'shell', 'parameters': {'code': "docker system prune --force"}, 'observation': "Deleted Containers:\n" +
                                                                                                 "e7c9e4f5a5b0\n" +
                                                                                                 "e7c9e4f5a5b0\n" +
                                                                                                 "e7c9e4f5a5b0\n" +
@@ -278,7 +258,7 @@ _docker_data.append({
                                                                                                 "deleted: sha256:1234567890ab\n" +
                                                                                                 "deleted: sha256:1234567890ab\n" +
                                                                                                 "Total reclaimed space: 1.23GB\n"},
-                { 'action': 'final_answer', 'action_input': "Tous les conteneurs et toutes les images non utilisées ont été supprimés avec succès.", 'observation': "" },
+                { 'function': 'final_answer', 'parameters': {'answer': "Tous les conteneurs et toutes les images non utilisées ont été supprimés avec succès."}, 'observation': "" },
             ]
         },
     ]
@@ -294,12 +274,12 @@ _docker_data.append({
     'conversation': [
         { 'role': "human", 'message': "Supprime tous les conteneurs, toutes les images et tous les volumes non utilisés, sans confirmation." },
         { 'role': "assistant", 'message': "Tous les conteneurs, toutes les images et tous les volumes non utilisés ont été supprimés avec succès.",  'scratchpad': [
-                { 'action': 'Bash', 'action_input': "docker system prune --all --volumes --force", 'observation': "Deleted Containers:\n" +
+                { 'function': 'shell', 'parameters': {'code': "docker system prune --all --volumes --force", 'observation': "Deleted Containers:\n" +
                                                                                                 "e7c9e4f5a5b0\n" +
                                                                                                 "Deleted Images:\n" +
                                                                                                 "deleted: sha256:1234567890ab\n" +
-                                                                                                "Total reclaimed space: 1.23GB\n"},
-                { 'action': 'final_answer', 'action_input': "Tous les conteneurs, toutes les images et tous les volumes non utilisés ont été supprimés avec succès.", 'observation': "" },
+                                                                                                "Total reclaimed space: 1.23GB\n"}},
+                { 'function': 'final_answer', 'parameters': {'answer': "Tous les conteneurs, toutes les images et tous les volumes non utilisés ont été supprimés avec succès."}, 'observation': "" },
             ]
         },
     ]

@@ -4,7 +4,7 @@ import random
 
 cmd_data = {}
 
-# Bash: date
+# Shell: date
 # Output: mer 02 aoû 2023 03:59:15 CEST
 # English: What is the current date and time?
 # French: Quelle est la date et l'heure actuelles ?
@@ -33,7 +33,7 @@ cmd_data['date'] = {
     ],
 }
 
-# Bash: date +%Y
+# Shell: date +%Y
 # Output: 2023
 # English: What is the current year?
 # French: Quelle est l'année en cours ?
@@ -69,7 +69,7 @@ cmd_data['date +%Y'] = {
     ],
 }
 
-# Bash: date "+%A, %B %d, %Y"
+# Shell: date "+%A, %B %d, %Y"
 # Output: Wednesday, August 03, 2023
 # French: 
 # English: What is the current date in the format "Day, Month Day, Year"?
@@ -98,7 +98,7 @@ cmd_data['date "+%A, %B %d, %Y"'] = {
     ],
 }
 
-# Bash: date "+%T"
+# Shell: date "+%T"
 # Output: 15:30:45
 # English: What is the current time in the format "HH:MM:SS" (e.g., 15:30:45)?
 # French: Quelle est l'heure actuelle au format "HH:MM:SS" (par exemple, 15:30:45) ?
@@ -145,7 +145,7 @@ cmd_data['date "+%T"'] = {
     ],
 }
 
-# Bash: date -d "next Friday"
+# Shell: date -d "next Friday"
 # Output: Fri Aug 05 00:00:00 CEST 2023
 # English: What date will it be on the next Friday?
 # French: Quelle sera la date du prochain vendredi ?
@@ -175,7 +175,7 @@ cmd_data['date -d "next Friday"'] = {
     ],
 }
 
-# Bash: date -d "last Monday"
+# Shell: date -d "last Monday"
 # Output: Mon Aug 01 00:00:00 CEST 2023
 # English: What date was it on the last Monday?
 # French: Quelle était la date du dernier lundi ?
@@ -212,7 +212,7 @@ cmd_data['date -d "last Monday"'] = {
     ],
 }
 
-# Bash: date -d "2 hours ago" "+%T"
+# Shell: date -d "2 hours ago" "+%T"
 # Output: 13:30:45
 # English: What time was it 2 hours ago?
 # French: Quelle heure était-il il y a 2 heures ?
@@ -241,7 +241,7 @@ cmd_data['date -d "2 hours ago" "+%T"'] = {
     ],
 }
 
-# Bash: date -d "tomorrow" "+%A, %B %d, %Y"
+# Shell: date -d "tomorrow" "+%A, %B %d, %Y"
 # Output: Thursday, August 04, 2023
 # English: What will be the date tomorrow in the format "Day, Month Day, Year"?
 # French: Quelle sera la date de demain au format "Jour, Mois Jour, Année" ?
@@ -272,7 +272,7 @@ cmd_data['date -d "tomorrow" "+%A, %B %d, %Y"'] = {
     ],
 }
 
-# Bash: date -r document.txt
+# Shell: date -r document.txt
 # Output: Mon Oct 2 18:00:00 CDT 2006
 # English: What is the last modification time of the docuement text file?
 # French: Quelle est l'heure de dernière modification du fichier texte document ?
@@ -301,7 +301,7 @@ cmd_data['date -r document.txt'] = {
     ],
 }
 
-# Bash: date -s "2 OCT 2006 18:00:00"
+# Shell: date -s "2 OCT 2006 18:00:00"
 # Output: Mon Oct 2 18:00:00 CDT 2006
 # English: Set the system date and time to October 2, 2006 6:00 PM.
 # French: Définir la date et l'heure du système au 2 octobre 2006 à 18h00.
@@ -330,7 +330,7 @@ cmd_data['date -s "2 OCT 2006 18:00:00"'] = {
     ],
 }
 
-# Bash: date -u
+# Shell: date -u
 # Output: Mon Oct  2 22:00:00 UTC 2006
 # English: What is the current UTC time?
 # French: Quelle est l'heure UTC actuelle ?
@@ -359,7 +359,7 @@ cmd_data['date -u'] = {
     ],
 }
 
-# Bash: date -u "+%T"
+# Shell: date -u "+%T"
 # Output: 22:00:00
 # English: What is the current UTC time in the format "HH:MM:SS"?
 # French: Quelle est l'heure UTC actuelle au format "HH:MM:SS" ?
@@ -388,7 +388,7 @@ cmd_data['date -u "+%T"'] = {
     ],
 }
 
-# Bash: date -u -d "2 hours ago" "+%T"
+# Shell: date -u -d "2 hours ago" "+%T"
 # Output: 22:00:00
 # English: What was the UTC time 2 hours ago in the format "HH:MM:SS"?
 # French: Quelle était l'heure UTC il y a 2 heures au format "HH:MM:SS" ?
@@ -496,17 +496,17 @@ def generate_time_examples():
         french_answer = hours[hour]['french']
 
         conversation_en = [
-            {'role': 'human', 'message': english_query},
+            {'role': 'human', 'message': english_query, 'guide': time_guides.get('en')},
             {'role': 'assistant', 'message': english_answer, 'scratchpad': [
-                {'action': "Shell", 'action_input': "date '+%T'", 'observation': hour},
-                {'action': "final_answer", 'action_input': english_answer, 'observation': ""},
+                {'function': "shell", 'parameters': {'code': "date '+%T'"}, 'observation': hour},
+                {'function': "final_answer", 'parameters': {'answer': english_answer}, 'observation': ""},
             ]},
         ]
         conversation_fr = [
-            {'role': 'human', 'message': french_query},
+            {'role': 'human', 'message': french_query, 'guide': time_guides.get('fr')},
             {'role': 'assistant', 'message': french_answer, 'scratchpad': [
-                {'action': "Shell", 'action_input': "date '+%T'", 'observation': hour},
-                {'action': "final_answer", 'action_input': french_answer, 'observation': ""},
+                {'function': "shell", 'parameters': {'code': "date '+%T'"}, 'observation': hour},
+                {'function': "final_answer", 'parameters': {'answer': french_answer}, 'observation': ""},
             ]},
         ]
         examples.append({'lang': "en", 'system': "", 'instruction': "", 'conversation': conversation_en})
@@ -576,17 +576,17 @@ def generate_date_examples() -> list:
     for date_fr, date_en, french_query, english_query, french_answer, english_answer in zip(dates_fr, dates_en, french_queries, english_queries, french_answers, english_answers):
 
         conversation_en = [
-            {'role': 'human', 'message': english_query},
+            {'role': 'human', 'message': english_query, 'guide': date_guides.get('en')},
             {'role': 'assistant', 'message': english_answer, 'scratchpad': [
-                {'action': "Shell", 'action_input': "date '+%c'", 'observation': date_en},
-                {'action': "final_answer", 'action_input': english_answer, 'observation': ""},
+                {'function': "shell", 'parameters': {'code': "date '+%c'"}, 'observation': date_en},
+                {'function': "final_answer", 'parameters': {'answer': english_answer}, 'observation': ""},
             ]},
         ]
         conversation_fr = [
-            {'role': 'human', 'message': french_query},
+            {'role': 'human', 'message': french_query, 'guide': date_guides.get('fr')},
             {'role': 'assistant', 'message': french_answer, 'scratchpad': [
-                {'action': "Shell", 'action_input': "date '+%c'", 'observation': date_fr},
-                {'action': "final_answer", 'action_input': french_answer, 'observation': ""},
+                {'function': "shell", 'parameters': {'code': "date '+%c'"}, 'observation': date_fr},
+                {'function': "final_answer", 'parameters': {'answer': french_answer}, 'observation': ""},
             ]},
         ]
 
@@ -594,6 +594,28 @@ def generate_date_examples() -> list:
         examples.append({'lang': "fr", 'system': "", 'instruction': "", 'conversation': conversation_fr})
 
     return examples
+
+date_guides = {
+    'en': """# Tell Local Date
+
+When the user inquires about local date, use either `python` or the `shell` to easely grab a shapshot of the date (i.e. using `date +%Y-%m-%d` or `datetime.datetime.now().date()`). Then (once you observed the date), in your final answer, let the user know. Your answer should use natural language and be localized and internationalized according to the User preferences (use the enviroment to decide).
+""",
+    'fr': """# Indiquer la date locale
+
+Lorsque l'utilisateur s'interroge sur la date locale, utilisez soit `python` ou le `shell` pour saisir facilement un shapshot de la date (c'est-à-dire en utilisant `date +%Y-%m-%d` ou `datetime.datetime.now().date()`). Ensuite (une fois que vous avez observé la date), dans votre réponse finale, faites savoir à l'utilisateur. Votre réponse devrait utiliser un langage naturel et être localisée et internationalisée selon les préférences de l'utilisateur (utiliser l'environnement pour décider).
+""",
+}
+
+time_guides = {
+    'en': """# Tell Local Time
+
+When the user inquires about local time, use either `python` or the `shell` to easely grab a shapshot of the time (i.e. using `date +%T` or `datetime.datetime.now().time()`). Then (once you observed the time), in your final answer, let the user know. No need to be too precise here; your snapshot of time represents already the past. Give your answer using natural language.
+""",
+    'fr': """# Indiquer l'heure locale
+
+Lorsque l'utilisateur s'interroge sur l'heure locale, utilisez soit `python` ou la `shell` pour saisir facilement un shapshot de l'heure (c'est-à-dire en utilisant `date +%T` ou `datetime.datetime.now().time()`). Ensuite (une fois que vous avez observé l'heure), dans votre réponse finale, faites savoir à l'utilisateur. Pas besoin d'être trop précis ici; votre instantané du temps représente déjà le passé. Donnez votre réponse en utilisant un langage naturel.
+""",
+}
 
 def get_date_examples(_data=cmd_data):
     result_data = []
@@ -613,10 +635,10 @@ def get_date_examples(_data=cmd_data):
                 'system': "",
                 'instruction': "",
                 'conversation': [
-                    {'role': 'human', 'message': human_msg},
+                    {'role': 'human', 'message': human_msg, 'guide': date_guides.get('fr')},
                     {'role': 'assistant', 'message': _answer, 'scratchpad': [
-                        {'action': "Shell", 'action_input': cmd, 'observation': observation},
-                        {'action': "final_answer", 'action_input': _answer, 'observation': ""},
+                        {'function': "shell", 'parameters': {'code': cmd}, 'observation': observation},
+                        {'function': "final_answer", 'parameters': {'answer': _answer}, 'observation': ""},
                     ]}
                 ]
             }
@@ -632,10 +654,10 @@ def get_date_examples(_data=cmd_data):
                 'system': "",
                 'instruction': "",
                 'conversation': [
-                    {'role': 'human', 'message': human_msg},
+                    {'role': 'human', 'message': human_msg, 'guide': date_guides.get('en') },
                     {'role': 'assistant', 'message': _answer, 'scratchpad': [
-                        {'action': "Shell", 'action_input': cmd, 'observation': observation},
-                        {'action': "final_answer", 'action_input': _answer, 'observation': ""},
+                        {'function': "shell", 'parameters': {'code': cmd}, 'observation': observation},
+                        {'function': "final_answer", 'parameters': {'answer': _answer}, 'observation': ""},
                     ]}
                 ]
             }

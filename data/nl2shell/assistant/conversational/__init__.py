@@ -8,8 +8,13 @@ def get_conversational_examples(langs=['en_US', 'fr_FR']):
 
     data.extend(get_greet_examples())
     data.extend(get_misc_examples())
+    
+    # Samantha data
+    # uncomment to use
+    # adds a lot of data and thus slows down the training
+    # plus we can pick a base model that is already trained on samantha (like Mistral Dolphin)
     # data.extend(get_sam_en_examples())
-    # data.extend(get_sam_fr_examples())
+    # data.extend(get_sam_fr_examples()) # it would still be nice to have the french translation I guess
     
     return data
 

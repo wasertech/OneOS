@@ -79,6 +79,17 @@ file_data = {
     'README.txt': 'Welcome to this project.\nPlease read the instructions carefully.\n'
 }
 
+guides = {
+    'en': """# Read a file
+
+When the user ask you to read a file, use the `cat` tool to read the file and print its content to the screen. Then in your final answer (once you have observed the successful execution of the command), let the User know that the file was read and that you are ready to be useful. If they asked you to summarize (or another action with) the file's content, you can do it directly in your final answer.
+""",
+    'fr': """# Lire un fichier
+
+Lorsque l'utilisateur vous demande de lire un fichier, utilisez l'outil `cat` pour lire le fichier et imprimer son contenu à l'écran. Ensuite, dans votre réponse finale (une fois que vous avez observé l'exécution réussie de la commande), faites savoir à l'utilisateur que le fichier a été lu et que vous êtes prêt à être utile. S'ils vous ont demandé de résumer (ou une autre action avec) le contenu du fichier, vous pouvez le faire directement dans votre réponse finale.
+"""
+}
+
 def get_cat_examples():
     data = []
     for i, (file_name, file_content) in enumerate(file_data.items()):
@@ -91,10 +102,10 @@ def get_cat_examples():
             'system': system_prompt.get('en', ""),
             'instruction': intruction_prompt.get('en', ""),
             'conversation': [
-                { 'role': "human", 'message': user_ask_en },
+                { 'role': "human", 'message': user_ask_en, 'guide': guides.get('en') },
                 { 'role': "assistant", 'message': assistant_reply_en,  'scratchpad': [
-                        { 'action': 'Bash', 'action_input': f"cat {file_name}", 'observation': file_content },
-                        { 'action': 'final_answer', 'action_input': assistant_reply_en, 'observation': "" },
+                        { 'function': 'shell', 'parameters': {'code': f"cat {file_name}"}, 'observation': file_content },
+                        { 'function': 'final_answer', 'parameters': {'answer': assistant_reply_en}, 'observation': "" },
                     ]
                 },
             ]
@@ -104,10 +115,10 @@ def get_cat_examples():
             'system': system_prompt.get('fr', ""),
             'instruction': intruction_prompt.get('fr', ""),
             'conversation': [
-                { 'role': "human", 'message': user_ask_fr },
+                { 'role': "human", 'message': user_ask_fr, 'guide': guides.get('fr') },
                 { 'role': "assistant", 'message': assistant_reply_fr,  'scratchpad': [
-                        { 'action': 'Bash', 'action_input': f"cat {file_name}", 'observation': file_content },
-                        { 'action': 'final_answer', 'action_input': assistant_reply_fr, 'observation': "" },
+                        { 'function': 'shell', 'parameters': {'code': f"cat {file_name}"}, 'observation': file_content },
+                        { 'function': 'final_answer', 'parameters': {'answer': assistant_reply_fr}, 'observation': "" },
                     ]
                 },
             ]

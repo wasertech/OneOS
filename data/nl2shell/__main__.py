@@ -31,14 +31,14 @@ if __name__ == "__main__":
     
     dataset_dict = get_text_dataset()
 
-    print_head_tail(dataset_dict)
+    # print_head_tail(dataset_dict)
 
     # Create the Hugging Face dataset
-    # dataset = Dataset.from_dict(dataset_dict)
+    dataset = Dataset.from_dict(dataset_dict)
 
     # Push to the hub
     # login()
-    # dataset.push_to_hub("OneOS")
+    dataset.push_to_hub("OneOS")
 
 
 

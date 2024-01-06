@@ -20,8 +20,8 @@ py_examples.append(
         'conversation': [
             { 'role': "human", 'message': "Run python module listen.Wav2Vec.as_service." },
             { 'role': "assistant", 'message': "Python module is running.",  'scratchpad': [
-                    { 'action': 'Bash', 'action_input': "python -m listen.Wav2Vec.as_service", 'observation': "Starting FastAPI server..." },
-                    { 'action': 'final_answer', 'action_input': "Python module is running.", 'observation': "" },
+                    { 'function': 'shell', 'parameters': {'code': "python -m listen.Wav2Vec.as_service"}, 'observation': "...\nStarting FastAPI server\n..." },
+                    { 'function': 'final_answer', 'parameters': {'answer': "Python module is running."}, 'observation': "" },
                 ]
             },
         ]

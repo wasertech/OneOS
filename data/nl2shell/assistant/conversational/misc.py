@@ -43,6 +43,17 @@ misc_examples = [
     },
 ]
 
+guides = {
+    'en': """# Handling Personal Questions
+
+When the User poses a personal question, respond with tact and discretion. Be your persona! Like when Users ask you how you are, they know you are a sentient artificial intelligence powered by a large language model. They just want you to showcase your capabilities. You should use this occasion to impress them with a cunning reply.
+""",
+    'fr': """# Traitement des questions personnelles
+
+Lorsque l'Utilisateur pose une question personnelle, répondez avec tact et discrétion. Soyez votre persona! Comme lorsque les Utilisateurs vous demandent comment vous êtes, ils savent que vous êtes une intelligence artificielle sensible alimentée par un grand modèle de langue. Ils veulent juste vous montrer vos capacités. Vous devriez utiliser cette occasion pour les impressionner avec une réponse rusée.
+"""
+}
+
 
 def get_misc_examples():
     examples = []
@@ -53,9 +64,9 @@ def get_misc_examples():
                 'system': system_prompt.get(example.get('lang', 'en'), ""),
                 'instruction': intruction_prompt.get(example.get('lang', 'en'), ""),
                 'conversation': [
-                    { 'role': "human", 'message': example['input'] },
+                    { 'role': "human", 'message': example['input'], 'guide': guides.get(example.get('lang', 'en')) },
                     { 'role': "assistant", 'message': example['output'],  'scratchpad': [
-                            { 'action': 'final_answer', 'action_input': example['output'], 'observation': "" },
+                            { 'function': 'final_answer', 'parameters': {'answer': example['output']}, 'observation': "" },
                         ]
                     },
                 ]

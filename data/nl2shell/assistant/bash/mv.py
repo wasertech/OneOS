@@ -104,12 +104,12 @@ _noargs_conv = [
     },
     {
         'fr': {
-            'action_input': "mv fichier1 fichier2",
+            'parameters': "mv fichier1 fichier2",
             'observation': "",
             'message': "Très bien, fichier1 est maintenant officiellement appelé fichier2.",
         },
         'en': {
-            'action_input': "mv file1 file2",
+            'parameters': "mv file1 file2",
             'observation': "",
             'message': "Alright, file1 is now officially called file2.",
         },
@@ -127,13 +127,13 @@ for _lang in _LANGS:
             'message': f'{_noargs_conv[1][_lang]["message"]}',
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': "mv",
+                    'function': "shell",
+                    'parameters': {'code': "mv"},
                     'observation': f'{_noargs_conv[1][_lang]["observation"]}',
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f'{_noargs_conv[1][_lang]["message"]}',
+                    'function': "final_answer",
+                    'parameters': {'answer': f'{_noargs_conv[1][_lang]["message"]}'},
                     'observation': "",
                 },
             ],
@@ -147,8 +147,8 @@ for _lang in _LANGS:
             'message': f"{_noargs_conv[3][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "final_answer",
-                    'action_input': f"{_noargs_conv[3][_lang]['message']}",
+                    'function': "final_answer",
+                    'parameters': {'answer': f"{_noargs_conv[3][_lang]['message']}"},
                     'observation': "",
                 },
             ],
@@ -162,13 +162,13 @@ for _lang in _LANGS:
             'message': f"{_noargs_conv[5][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': f"{_noargs_conv[5][_lang]['action_input']}",
+                    'function': "shell",
+                    'parameters': {'code': f"{_noargs_conv[5][_lang]['parameters']}"},
                     'observation': f"{_noargs_conv[5][_lang]['observation']}",
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f"{_noargs_conv[5][_lang]['message']}",
+                    'function': "final_answer",
+                    'parameters': {'answer': f"{_noargs_conv[5][_lang]['message']}"},
                 },
             ],
         },
@@ -225,12 +225,12 @@ _onearg_conv = [
     },
     {
         'fr': {
-            'action_input': "mv fichier1 fichier2",
+            'parameters': "mv fichier1 fichier2",
             'observation': "",
             'message': "Très bien, fichier1 est maintenant officiellement appelé fichier2.",
         },
         'en': {
-            'action_input': "mv file1 file2",
+            'parameters': "mv file1 file2",
             'observation': "",
             'message': "Alright, file1 is now officially called file2.",
         },
@@ -250,13 +250,13 @@ for _lang in _LANGS:
             'message': f'{_onearg_conv[1][_lang]["message"]}',
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': "mv fichier1",
+                    'function': "shell",
+                    'parameters': {'code': "mv fichier1"},
                     'observation': f'{_onearg_conv[1][_lang]["observation"]}',
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f'{_onearg_conv[1][_lang]["message"]}',
+                    'function': "final_answer",
+                    'parameters': {'answer': f'{_onearg_conv[1][_lang]["message"]}'},
                     'observation': "",
                 },
             ],
@@ -270,8 +270,8 @@ for _lang in _LANGS:
             'message': f"{_onearg_conv[3][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "final_answer",
-                    'action_input': f"{_onearg_conv[3][_lang]['message']}",
+                    'function': "final_answer",
+                    'parameters': {'answer': f"{_onearg_conv[3][_lang]['message']}"},
                     'observation': "",
                 },
             ],
@@ -285,13 +285,13 @@ for _lang in _LANGS:
             'message': f"{_onearg_conv[5][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': f"{_onearg_conv[5][_lang]['action_input']}",
+                    'function': "shell",
+                    'parameters': {'code': f"{_onearg_conv[5][_lang]['parameters']}"},
                     'observation': f"{_onearg_conv[5][_lang]['observation']}",
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f"{_onearg_conv[5][_lang]['message']}",
+                    'function': "final_answer",
+                    'parameters': {'answer': f"{_onearg_conv[5][_lang]['message']}"},
                 },
             ],
         },
@@ -312,12 +312,12 @@ _twoargs_conv = [
     },
     {
         'fr': {
-            'action_input': "mv .zlogin.zsh zlogin.zsh.bak",
+            'parameters': "mv .zlogin.zsh zlogin.zsh.bak",
             'observation': "mv: impossible d'évaluer '.zlogin.zsh': Aucun fichier ou dossier de ce type\nSaisissez « mv --help » pour plus d'informations.",
             'message': "Le fichier .zlogin.zsh n'existe pas. Veuillez spécifier un fichier existant.",
         },
         'en': {
-            'action_input': "mv .zlogin.zsh zlogin.zsh.bak",
+            'parameters': "mv .zlogin.zsh zlogin.zsh.bak",
             'observation': "mv: cannot stat '.zlogin.zsh': No such file or directory\nTry 'mv --help' for more information.",
             'message': "File .zlogin.zsh does not exist. Please specify an existing file.",
         },
@@ -332,12 +332,12 @@ _twoargs_conv = [
     },
     {
         'fr': {
-            'action_input': "mv ~/.zlogin.zsh ./zlogin.zsh.bak",
+            'parameters': "mv ~/.zlogin.zsh ./zlogin.zsh.bak",
             'observation': "",
             'message': "Très bien, ~/.zlogin.zsh est devenu ./zlogin.zsh.bak.",
         },
         'en': {
-            'action_input': "mv ~/.zlogin.zsh ./zlogin.zsh.bak",
+            'parameters': "mv ~/.zlogin.zsh ./zlogin.zsh.bak",
             'observation': "",
             'message': "Alright, ~/.zlogin.zsh has become ./zlogin.zsh.bak.",
         },
@@ -357,13 +357,13 @@ for _lang in _LANGS:
             'message': f'{_twoargs_conv[1][_lang]["message"]}',
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': f"{_twoargs_conv[1][_lang]['action_input']}",
+                    'function': "shell",
+                    'parameters': {'code': f"{_twoargs_conv[1][_lang]['parameters']}"},
                     'observation': f"{_twoargs_conv[1][_lang]['observation']}",
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f'{_twoargs_conv[1][_lang]["message"]}',
+                    'function': "final_answer",
+                    'parameters': {'answer': f'{_twoargs_conv[1][_lang]["message"]}'},
                     'observation': "",
                 },
             ],
@@ -377,13 +377,13 @@ for _lang in _LANGS:
             'message': f"{_twoargs_conv[3][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': f"{_twoargs_conv[3][_lang]['action_input']}",
+                    'function': "shell",
+                    'parameters': {'code': f"{_twoargs_conv[3][_lang]['parameters']}"},
                     'observation': f"{_twoargs_conv[3][_lang]['observation']}",
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f"{_twoargs_conv[3][_lang]['message']}",
+                    'function': "final_answer",
+                    'parameters': {'answer': f"{_twoargs_conv[3][_lang]['message']}"},
                 },
             ],
         },
@@ -404,12 +404,12 @@ _threeargs_conv = [
     },
     {
         'fr': {
-            'action_input': "mv ~/.zlogin.zsh ~/.zshenv ~/.zshrc /tmp/",
+            'parameters': "mv ~/.zlogin.zsh ~/.zshenv ~/.zshrc /tmp/",
             'observation': "",
             'message': "Terminé, ~/.zlogin.zsh, ~/.zshenv et ~/.zshrc ont été déplacés dans /tmp.",
         },
         'en': {
-            'action_input': "mv ~/.zlogin.zsh ~/.zshenv ~/.zshrc /tmp/",
+            'parameters': "mv ~/.zlogin.zsh ~/.zshenv ~/.zshrc /tmp/",
             'observation': "",
             'message': "Done, ~/.zlogin.zsh, ~/.zshenv and ~/.zshrc have been moved to /tmp.",
         },
@@ -429,13 +429,13 @@ for _lang in _LANGS:
             'message': f"{_threeargs_conv[1][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': f"{_threeargs_conv[1][_lang]['action_input']}",
+                    'function': "shell",
+                    'parameters': {'code': f"{_threeargs_conv[1][_lang]['parameters']}"},
                     'observation': f"{_threeargs_conv[1][_lang]['observation']}",
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f"{_threeargs_conv[1][_lang]['message']}",
+                    'function': "final_answer",
+                    'parameters': {'answer': f"{_threeargs_conv[1][_lang]['message']}"},
                 },
             ],
         },

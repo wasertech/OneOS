@@ -12,6 +12,18 @@ system_prompt = intruction_prompt = {
 # }
 # 
 
+
+guides = {
+    'en': """# Exiting the session or ending the conversation
+
+When the user expresses a desire to exit the session or end the conversation, use the `exit` tool to exit the session and print a message to let the user know that you can't wait to see them soon.
+""",
+    'fr': """# Sortie de la session ou fin de la conversation
+
+Lorsque l'utilisateur exprime le désir de quitter la session ou de mettre fin à la conversation, utilisez l'outil `exit` pour quitter la session et imprimer un message pour faire savoir à l'utilisateur que vous ne pouvez pas attendre de les voir bientôt.
+"""
+}
+
 exit_examples = []
 _examples = []
 
@@ -205,10 +217,10 @@ for example in _examples:
             'system': system_prompt.get(lang, ""),
             'instruction': intruction_prompt.get(lang, ""),
             'conversation': [
-                { 'role': "human", 'message': exit_command },
+                { 'role': "human", 'message': exit_command, 'guide': guides.get(lang, None) },
                 { 'role': "assistant", 'message': exit_reply, 'scratchpad': [
-                        { 'action': "Exit", 'action_input': exit_reply },
-                        { 'action': 'final_answer', 'action_input': exit_reply }
+                        { 'function': "exit", 'parameters': {'salutation': exit_reply} },
+                        { 'function': 'final_answer', 'parameters': {'answer': exit_reply} }
                     ]
                 }
             ]

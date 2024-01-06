@@ -135,13 +135,13 @@ for _lang in _LANGS:
             'message': f'{_noargs_conv[1][_lang]["message"]}',
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': "cp",
+                    'function': "shell",
+                    'parameters': {'code': "cp"},
                     'observation': f'{_noargs_conv[1][_lang]["observation"]}',
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f'{_noargs_conv[1][_lang]["message"]}',
+                    'function': "final_answer",
+                    'parameters':{'answer':  f'{_noargs_conv[1][_lang]["message"]}'},
                     'observation': "",
                 },
             ],
@@ -155,8 +155,8 @@ for _lang in _LANGS:
             'message': f"{_noargs_conv[3][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "final_answer",
-                    'action_input': f"{_noargs_conv[3][_lang]['message']}",
+                    'function': "final_answer",
+                    'parameters': {'answer': f"{_noargs_conv[3][_lang]['message']}"},
                     'observation': "",
                 },
             ],
@@ -170,13 +170,13 @@ for _lang in _LANGS:
             'message': f"{_noargs_conv[5][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': f"{_noargs_conv[5][_lang]['action_input']}",
+                    'function': "shell",
+                    'parameters': {'code': f"{_noargs_conv[5][_lang]['action_input']}"},
                     'observation': f"{_noargs_conv[5][_lang]['observation']}",
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f"{_noargs_conv[5][_lang]['message']}",
+                    'function': "final_answer",
+                    'parameters': {'answer': f"{_noargs_conv[5][_lang]['message']}"},
                 },
             ],
         },
@@ -258,13 +258,13 @@ for _lang in _LANGS:
             'message': f'{_onearg_conv[1][_lang]["message"]}',
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': "cp fichier1",
+                    'function': "shell",
+                    'parameters': {'code': "cp fichier1"},
                     'observation': f'{_onearg_conv[1][_lang]["observation"]}',
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f'{_onearg_conv[1][_lang]["message"]}',
+                    'function': "final_answer",
+                    'action_input': {'answer': f'{_onearg_conv[1][_lang]["message"]}'},
                     'observation': "",
                 },
             ],
@@ -278,8 +278,8 @@ for _lang in _LANGS:
             'message': f"{_onearg_conv[3][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "final_answer",
-                    'action_input': f"{_onearg_conv[3][_lang]['message']}",
+                    'function': "final_answer",
+                    'parameters': {'answer': f"{_onearg_conv[3][_lang]['message']}"},
                     'observation': "",
                 },
             ],
@@ -293,13 +293,13 @@ for _lang in _LANGS:
             'message': f"{_onearg_conv[5][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': f"{_onearg_conv[5][_lang]['action_input']}",
+                    'function': "shell",
+                    'parameters': {'code': f"{_onearg_conv[5][_lang]['action_input']}"},
                     'observation': f"{_onearg_conv[5][_lang]['observation']}",
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f"{_onearg_conv[5][_lang]['message']}",
+                    'function': "final_answer",
+                    'parameters': {'answer': f"{_onearg_conv[5][_lang]['message']}"},
                 },
             ],
         },
@@ -365,13 +365,13 @@ for _lang in _LANGS:
             'message': f'{_twoargs_conv[1][_lang]["message"]}',
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': f"{_twoargs_conv[1][_lang]['action_input']}",
+                    'function': "shell",
+                    'parameters': {'code': f"{_twoargs_conv[1][_lang]['action_input']}"},
                     'observation': f"{_twoargs_conv[1][_lang]['observation']}",
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f'{_twoargs_conv[1][_lang]["message"]}',
+                    'function': "final_answer",
+                    'parameters': {'answer': f'{_twoargs_conv[1][_lang]["message"]}'},
                     'observation': "",
                 },
             ],
@@ -385,13 +385,13 @@ for _lang in _LANGS:
             'message': f"{_twoargs_conv[3][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': f"{_twoargs_conv[3][_lang]['action_input']}",
+                    'function': "shell",
+                    'parameters': {'code': f"{_twoargs_conv[3][_lang]['action_input']}"},
                     'observation': f"{_twoargs_conv[3][_lang]['observation']}",
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f"{_twoargs_conv[3][_lang]['message']}",
+                    'function': "final_answer",
+                    'parameters': {'answer': f"{_twoargs_conv[3][_lang]['message']}"},
                 },
             ],
         },
@@ -438,13 +438,13 @@ for _lang in _LANGS:
             'message': f"{_threeargs_conv[1][_lang]['message']}",
             'scratchpad': [
                 {
-                    'action': "Shell",
-                    'action_input': f"{_threeargs_conv[1][_lang]['action_input']}",
+                    'function': "shell",
+                    'parameters': {'code': f"{_threeargs_conv[1][_lang]['action_input']}"},
                     'observation': f"{_threeargs_conv[1][_lang]['observation']}",
                 },
                 {
-                    'action': "final_answer",
-                    'action_input': f"{_threeargs_conv[1][_lang]['message']}",
+                    'function': "final_answer",
+                    'parameters': {'answer': f"{_threeargs_conv[1][_lang]['message']}"},
                 },
             ],
         },

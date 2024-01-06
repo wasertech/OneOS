@@ -88,7 +88,7 @@ Available functions:
 {tools}
 
 Guidebook:
-Use the following guide to anser only if relevant to the Input from the User.
+Use the following guide to answer only if relevant to the Input from the User.
 {guide}
 {EOI}
 {BOS}
@@ -97,6 +97,7 @@ Use the following guide to anser only if relevant to the Input from the User.
 
 _ENV_FORMAT_ = """```env
 USER={username}
+HOME=/home/{username}
 PWD={pwd}
 LANG={lang}
 DATE={date}
@@ -111,7 +112,7 @@ def convert_data_to_text(
         action_input: str,
         env: dict = {'username': os.environ.get('USER'), 'home': os.environ.get('HOME'), 'pwd': os.environ.get('PWD'), 'lang': os.environ.get('LANG'), 'date': os.environ.get('DATE'), 'last_seen': os.environ.get('LAST_SEEN', None)},
         system_prompt: str = _SYSTEM_PROMPT_,
-        instruction: str = _INSTRUCTION_PROMPT_
+        instruction: str = _INSTRUCTION_PROMPT_,
     ):
     _history = []
     for t in history:
@@ -127,7 +128,7 @@ def convert_data_to_text(
                 _history.append(f"""<|im_start|>user
 {user_message}<|im_stop|>
 <|im_start|>assistant
-{assistant_message}<|im_stop|>""")
+{assistant_message}{"<|im_stop|>"if assistant_message else ""}""")
     conversation = "\n".join(_history)
     _scratchpad = json.dumps(scratchpad, ensure_ascii=False)
     _output = f"""{{
@@ -143,6 +144,7 @@ def convert_data_to_text(
         scratchpad=_scratchpad,
         output=_output,
         environ=_ENV_FORMAT_.format(**env),
+        guide=guide or "No relevant guide was found in the book. Do your best to answer the User's Input.",
         BOS=BOS,
         EOS=EOS,
         BOSYS=BOSYS,
@@ -153,58 +155,155 @@ def convert_data_to_text(
 
     return text
 
+
+def format_training_example(
+        system: str,
+        history: list,
+        instruction: str,
+        scratchpad: list,
+        output: str
+    ):
+    hist = '\n'.join(history) + '\n' if history else ""
+    scratch = '\n' + '\n'.join(scratchpad) if scratchpad else ""
+    return f"""{system}
+{hist}{instruction}{scratch}
+{output}"""
+
 def convert_dataset_to_text(dataset):
 
     text_data = []
-
+    
     for conversation in dataset:
         lang = conversation.get('lang', 'en')
         env = conversation.get('env', {'username': os.environ.get('USER'), 'home': os.environ.get('HOME'), 'pwd': os.environ.get('PWD'), 'lang': f"{lang}_{lang.upper()}.UTF-8", 'date': subprocess.check_output("date").decode().strip(), 'last_seen': os.environ.get('LAST_SEEN', None)})
         _sys, _inst = conversation.get('system', ""), conversation.get('instruction', "")
         system = _SYSTEM_PROMPT_.format(env=_ENV_FORMAT_.format(**env)) if not _sys or len(_sys) < 0 else _sys
         instruction =  _INSTRUCTION_PROMPT_ if not _inst or len(_inst) < 0 else _inst
-
-        history = []
+        _history = []
         _scratchpad = []
         _query = None
-        _text_conversation = f"""<|im_start|>system
-{system}
-<|im_stop|>"""
-
+        
         for message in conversation.get('conversation', []):
             message_role = message.get('role', None)
             if not message_role:
                 continue
             elif message_role == 'human':
                 _query = message.get('message', None)
+                guide = message.get('guide', None)
             elif message_role == 'assistant' and _query:
-                #_history = history[:-1] or []
+                # _history = history[:-1] or []
                 # message['message'] = paraphrase_assistant_message(message, system, history)
-                for scratchpad in message['scratchpad']:
-                    _action = scratchpad.get('action', None)
-                    _action_input = scratchpad.get('action_input', None)
-                    _observation = scratchpad.get('observation', None)
-                    if _action and _action_input:
-                        if _action == "final_answer":
-                            _observation = "User has seen this message."
-                            _action = "Final Answer"
-                        _scratchpad.append(f"""<|im_start|>user
-{_query}<|im_stop|>
-<|im_start|>assistant
+                for scratchpad in message['scratchpad']:                 
+                    _action = scratchpad.get('function', "")
+                    _action_input = scratchpad.get('parameters', None)
+                    assert _action, f"Function is missing in scratchpad: {scratchpad}"
+                    _observation = scratchpad.get('observation', "\n")
+#                     _scratchpad.append(f"""
+# <|im_start|>user
+# {_query}<|im_stop|>
+# <|im_start|>assistant
+# {{
+#     "function": "{_action}",
+#     "parameters": {json.dumps(_action_input)}
+# }}<|im_stop|>
+# """)
+#                     if _observation:
+#                         _scratchpad.append('<|im_start|>observation\n'+f'''You and the User have observed the following from {_action}.
+
+# ```{_action}
+# {_observation}
+# ```
+
+# Use this information to comment it in context of the User input.<|im_end|>\n''')
+#                 _text_conversation += ("\n".join(_history)) if _history else ""
+#                 _text_conversation += f"""<|im_start|>user
+# {instruction}
+
+# Input: {_query}
+
+# Availible functions:
+# {_TOOLS_}
+
+# Guidebook:
+# Use the following guide to anwser only if relevant to the Input from the User.
+# {guide or "No relevant guide was found in the book. Do your best to answer the User's Input."}
+# <|im_stop|>"""
+#                 _text_conversation += ("\n" + "\n".join(_scratchpad)) if _scratchpad else ""
+                    
+#                 _text_conversation += f"""
+# <|im_start|>assistant
+# {{
+#     "function": "{_action}",
+#     "parameters": {json.dumps(_action_input)}
+# }}<|im_stop|>"""
+#                 _text_conversation = _text_conversation.replace('\n\n\n', "\n")
+#                 _text_conversation = _text_conversation.replace('<|im_stop|><|im_start|>', '<|im_stop|>\n<|im_start|>')
+                    _system = f"""<|im_start|>system
+{system}<|im_stop|>"""
+                    _instruction = f"""<|im_start|>user
+{instruction}
+
+Input: {_query}
+
+Availible functions:
+{_TOOLS_}
+Guidebook:
+Use the following guide to anwser only if relevant to the Input from the User.
+{guide or "No relevant guide was found in the book. Do your best to answer the User's Input."}
+<|im_stop|>"""
+                    _output = f"""<|im_start|>assistant
 {{
     "function": "{_action}",
-    "parameters": {_action_input},
-}}<|im_stop|>""")
-                #     text_data.append(convert_data_to_text(history=_history, query=_query, scratchpad=_scratchpad, action=_action, action_input=_action_input, system_prompt=system, instruction=instruction, env=env))
-                #     _scratchpad.append(scratchpad)
-                _text_conversation += "\n".join(_scratchpad)
+    "parameters": {json.dumps(_action_input, ensure_ascii=False, indent=2)}
+}}<|im_stop|>"""
+                    te = format_training_example(
+                        system=_system,
+                        history=_history,
+                        instruction=_instruction,
+                        scratchpad=_scratchpad,
+                        output=_output
+                    )
+                    if te and te != "":
+                        text_data.append(te)
+                    observ = '\n' + f"""<|im_start|>observation
+You and the User have observed the following from {_action}.
+```{_action}
+{_observation}
+```
+
+Use this information to comment it in context of the User input.<|im_stop|>"""
+                    _scratchpad.append(f"""<|im_start|>assistant
+{{
+    "function": "{_action}",
+    "parameters": {json.dumps(_action_input)}
+}}<|im_stop|>{observ}""")
+                _history.append(f"""<|im_start|>user
+{_query}<|im_stop|>
+<|im_start|>assistant
+{message['message']}<|im_stop|>""")
                 _scratchpad = []
-                _text_conversation += "\n"
-            #history.append(message)
-        history = []
-        print(_text_conversation)
-        text_data.append(_text_conversation.removesuffix("\n"))
-    
+            # history.append(message)
+        
+        # history = []
+        # text_data.append(
+        #     _TEMPLATE_FORMAT_.format(
+        #         system_prompt=system,
+        #         instruction=instruction,
+        #         tools=_TOOLS_,
+        #         conversation=_text_conversation,
+        #         query=_query,
+        #         scratchpad=json.dumps(_scratchpad, ensure_ascii=False),
+        #         output=json.dumps(conversation.get('output', ""), ensure_ascii=False),
+        #         environ=_ENV_FORMAT_.format(**env),
+        #         guide=guide,
+        #         BOS=BOS,
+        #         EOS=EOS,
+        #         BOSYS=BOSYS,
+        #         EOSYS=EOSYS,
+        #         BOI=BOI,
+        #         EOI=EOI
+        #     )
+        # )
     return text_data
 
 def get_assistant_text_data():
@@ -216,3 +315,4 @@ def get_assistant_text_data():
 
 if __name__ == "__main__":
     text_data = get_assistant_text_data()
+    print(text_data[1:3])

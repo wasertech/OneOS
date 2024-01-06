@@ -2,7 +2,7 @@ import random
 
 pwd_data = {}
 
-# Bash Output: /
+# Shell Output: /
 # English: You are at the root of your directories.
 # French: Vous êtes à la racine de vos dossiers.
 
@@ -35,7 +35,7 @@ pwd_data[path] = {
     ]
 }
 
-# Bash Output: /home/user/documents
+# Shell Output: /home/user/documents
 # English: You are in the "documents" folder in your home directory.
 # French: Vous êtes dans le dossier "documents" de votre répertoire personnel.
 
@@ -66,7 +66,7 @@ pwd_data["/home/user/documents"] = {
     ]
 }
 
-# Bash Output: /var/www/html
+# Shell Output: /var/www/html
 # English: You are in the "html" folder inside the "/var/www" directory.
 # French: Vous êtes dans le dossier "html" dans le répertoire "/var/www".
 
@@ -97,7 +97,7 @@ pwd_data["/var/www/html"] = {
     ]
 }
 
-# Bash Output: /etc
+# Shell Output: /etc
 # English: You are in the "/etc" directory.
 # French: Vous êtes dans le répertoire "/etc".
 
@@ -128,7 +128,7 @@ pwd_data["/etc"] = {
     ]
 }
 
-# Bash Output: /home/user/Pictures/Family\ Vacation
+# Shell Output: /home/user/Pictures/Family\ Vacation
 # English: You are in the "Family Vacation" folder inside the "Pictures" folder in your home directory.
 # French: Vous êtes dans le dossier "Vacances en famille" dans le dossier "Images" de votre répertoire personnel.
 
@@ -159,7 +159,7 @@ pwd_data["/home/user/Pictures/Family\\ Vacation"] = {
     ]
 }
 
-# Bash Output: /usr/local/bin
+# Shell Output: /usr/local/bin
 # English: You are in the "bin" folder inside the "/usr/local" directory.
 # French: Vous êtes dans le dossier "bin" dans le répertoire "/usr/local".
 
@@ -190,7 +190,7 @@ pwd_data["/usr/local/bin"] = {
     ]
 }
 
-# Bash Output: /mnt/external_drive
+# Shell Output: /mnt/external_drive
 # English: You are in the "external_drive" folder inside the "/mnt" directory.
 # French: Vous êtes dans le dossier "external_drive" dans le répertoire "/mnt".
 
@@ -221,7 +221,7 @@ pwd_data["/mnt/external_drive"] = {
     ]
 }
 
-# Bash Output: /home/user/Downloads/../Videos
+# Shell Output: /home/user/Downloads/../Videos
 # English: You are in the "Videos" folder inside your home directory, regardless of the current location.
 # French: Vous êtes dans le dossier "Vidéos" de votre répertoire personnel, peu importe l'emplacement actuel.
 
@@ -252,7 +252,7 @@ pwd_data["/home/user/Videos"] = {
     ]
 }
 
-# Bash Output: /var/log/apache2
+# Shell Output: /var/log/apache2
 # English: You are in the "apache2" folder inside the "/var/log" directory.
 # French: Vous êtes dans le dossier "apache2" dans le répertoire "/var/log".
 
@@ -283,7 +283,7 @@ pwd_data["/var/log/apache2"] = {
     ]
 }
 
-# Bash Output: /home/user
+# Shell Output: /home/user
 # English: You are in your home directory.
 # French: Vous êtes dans votre répertoire personnel.
 
@@ -364,6 +364,17 @@ trigger_sentences['fr'] = [
 ]
 
 
+guides = {
+    'en': """# Tell the current working directory or where the user is located
+
+When the user inquires about the current working directory (or its current position - in the system), use the `shell` tool to print the absolute path of the current working directory; either by using the `pwd` shell built-in command or indirectly by `echo`ing `$PWD` (or `~`) and then give an acknowledgment of your actions and observations in your final answer (once you have observed the successful execution of the command - your final answer should never contain the absolute path; the User can oberserve the shell, they see the path at the same time as you. Just acknowlege the fact that you have printed the path and maybe describe the path naturally like you would say it outloud - i.e `$PWD==$HOME` -> "You are at home.", `$PWD==$HOME/Documents` -> "Currently you find yourself in your Documents directory.", `$PWD==/lib/wine` -> "From the root directory, you are located in the wine library.", etc.)
+""",
+    'fr': """# Indiquer le répertoire de travail actuel ou l'emplacement de l'utilisateur
+
+Lorsque l'utilisateur s'enquiert du répertoire de travail actuel (ou de sa position actuelle - dans le système), utilisez l'outil `shell` pour imprimer le chemin absolu du répertoire de travail actuel; soit en utilisant la commande `pwd` shell intégrée ou indirectement par `echo`ing `$PWD` (ou `~`) et ensuite donner un accusé de réception de vos actions et observations dans votre réponse finale (une fois que vous avez observé l'exécution réussie de la commande - votre réponse finale ne devrait jamais contenir le chemin absolu; l'utilisateur peut oberver le shell, ils voient le chemin en même temps que vous. Il suffit de reconnaître le fait que vous avez imprimé le chemin et peut-être décrire le chemin naturellement comme vous le diriez - c'est-à-dire `$PWD==$HOME` -> "Vous êtes à la maison.", `$PWD==$HOME/Documents` -> "Actuellement vous vous trouvez dans votre répertoire de documents.", `$PWD==/lib/wine` -> "À partir du répertoire racine, vous êtes situé dans la bibliothèque de vin, etc.
+"""
+}
+
 def get_pwd_data():
     data = []
     for path in pwd_data:
@@ -372,13 +383,13 @@ def get_pwd_data():
                 user_msg = random.choice(trigger_sentences[lang])
                 
                 conversation = [
-                    { 'role': 'human', 'message': user_msg },
+                    { 'role': 'human', 'message': user_msg, 'guide': guides.get(lang) },
                     {
                         'role': 'assistant',
                         'message': assistant_reply,
                         'scratchpad': [
-                            { 'action': 'Bash', 'action_input': 'pwd', 'observation': path },
-                            { 'action': 'final_answer', 'action_input': assistant_reply, 'observation': "" }
+                            { 'function': 'shell', 'parameters': {'code': 'pwd'}, 'observation': path },
+                            { 'function': 'final_answer', 'parameters': {'answer': assistant_reply}, 'observation': "" }
                         ]
                     }
                 ]

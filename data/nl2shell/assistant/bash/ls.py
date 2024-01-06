@@ -83,8 +83,8 @@ _ls_examples = [
 
 # English Query: List what's in the current directory.
 # French Query: Liste ce qu'il y a dans ce répertoire.
-# Bash: ls
-# Bash Output:
+# Shell: ls
+# Shell Output:
 # English Answer: There is nothing in the current directory.
 # French Answer: Le dossier est vide.
 
@@ -103,8 +103,8 @@ ls_data.append({
 
 # English Query: List the contents of the "Documents" folder.
 # French Query: Liste le contenu du dossier "Documents".
-# Bash: ls Documents
-# Bash Output:
+# Shell: ls Documents
+# Shell Output:
 # English Answer: No files or folders found in "Documents".
 # French Answer: Aucun fichier ou dossier trouvé dans "Documents".
 
@@ -123,8 +123,8 @@ ls_data.append({
 
 # English Query: List all files and folders, including hidden ones (starting with a dot).
 # French Query: Liste tous les fichiers et dossiers, y compris les fichiers cachés (commençant par un point).
-# Bash: ls -a
-# Bash Output:
+# Shell: ls -a
+# Shell Output:
 # English Answer: There are no visible files or folders in this directory, only hidden ones.
 # French Answer: Il n'y a pas de fichiers ou de dossiers visibles dans ce répertoire, seulement des fichiers cachés.
 
@@ -143,8 +143,8 @@ ls_data.append({
 
 # English Query: List the contents of the "/var/www" directory.
 # French Query: Liste le contenu du répertoire "/var/www".
-# Bash: ls /var/www
-# Bash Output:
+# Shell: ls /var/www
+# Shell Output:
 # English Answer: The "/var/www" directory is empty.
 # French Answer: Le répertoire "/var/www" est vide.
 
@@ -163,8 +163,8 @@ ls_data.append({
 
 # English Query: List the contents of the parent directory.
 # French Query: Liste le contenu du répertoire parent.
-# Bash: ls ..
-# Bash Output:
+# Shell: ls ..
+# Shell Output:
 # English Answer: There are no files or folders in the parent directory.
 # French Answer: Il n'y a pas de fichiers ou de dossiers dans le répertoire parent.
 
@@ -183,8 +183,8 @@ ls_data.append({
 
 # English Query: List the contents of the home directory.
 # French Query: Liste le contenu du répertoire personnel.
-# Bash: ls ~
-# Bash Output:
+# Shell: ls ~
+# Shell Output:
 # English Answer: The home directory is empty.
 # French Answer: Le répertoire personnel est vide.
 
@@ -203,8 +203,8 @@ ls_data.append({
 
 # English Query: List the contents of a directory with detailed information (permissions, owner, size, etc.).
 # French Query: Liste le contenu d'un répertoire avec des informations détaillées (permissions, propriétaire, taille, etc.).
-# Bash: ls -l
-# Bash Output:
+# Shell: ls -l
+# Shell Output:
 # English Answer: There are no files or folders in this directory.
 # French Answer: Il n'y a pas de fichiers ou de dossiers dans ce répertoire.
 
@@ -223,8 +223,8 @@ ls_data.append({
 
 # English Query: List only directories (excluding files).
 # French Query: Liste uniquement les dossiers (excluant les fichiers).
-# Bash: ls -d */
-# Bash Output:
+# Shell: ls -d */
+# Shell Output:
 # English Answer: There are no directories in this directory.
 # French Answer: Il n'y a pas de dossiers dans ce répertoire.
 
@@ -243,8 +243,8 @@ ls_data.append({
 
 # English Query: List only files (excluding directories).
 # French Query: Liste uniquement les fichiers (excluant les dossiers).
-# Bash: ls -p | grep -v /
-# Bash Output:
+# Shell: ls -p | grep -v /
+# Shell Output:
 # English Answer: There are no files in this directory.
 # French Answer: Il n'y a pas de fichiers dans ce répertoire.
 
@@ -263,8 +263,8 @@ ls_data.append({
 
 # English Query: List only files and directories that start with "a".
 # French Query: Liste uniquement les fichiers et dossiers qui commencent par "a".
-# Bash: ls -d a*
-# Bash Output:
+# Shell: ls -d a*
+# Shell Output:
 # English Answer: There are no files or directories that start with "a" in this directory.
 # French Answer: Il n'y a pas de fichiers ou de dossiers qui commencent par "a" dans ce répertoire.
 
@@ -283,8 +283,8 @@ ls_data.append({
 
 # English Query: List only files and directories that end with ".txt".
 # French Query: Liste uniquement les fichiers et dossiers qui se terminent par ".txt".
-# Bash: ls -d *.txt
-# Bash Output:
+# Shell: ls -d *.txt
+# Shell Output:
 # English Answer: There are no files or directories that end with ".txt" in this directory.
 # French Answer: Il n'y a pas de fichiers ou de dossiers qui se terminent par ".txt" dans ce répertoire.
 
@@ -303,8 +303,8 @@ ls_data.append({
 
 # English Query: List only files and directories that contain "a".
 # French Query: Liste uniquement les fichiers et dossiers qui contiennent "a".
-# Bash: ls -d *a*
-# Bash Output:
+# Shell: ls -d *a*
+# Shell Output:
 # English Answer: There are no files or directories that contain "a" in this directory.
 # French Answer: Il n'y a pas de fichiers ou de dossiers qui contiennent "a" dans ce répertoire.
 
@@ -323,8 +323,8 @@ ls_data.append({
 
 # English Query: List only files and directories that start with "a" and end with ".txt".
 # French Query: Liste uniquement les fichiers et dossiers qui commencent par "a" et se terminent par ".txt".
-# Bash: ls -d a*.txt
-# Bash Output:
+# Shell: ls -d a*.txt
+# Shell Output:
 # English Answer: There are no files or directories that start with "a" and end with ".txt" in this directory.
 # French Answer: Il n'y a pas de fichiers ou de dossiers qui commencent par "a" et se terminent par ".txt" dans ce répertoire.
 
@@ -344,8 +344,8 @@ ls_data.append({
 
 # English Query: List only files and directories that start with "a" or end with ".txt".
 # French Query: Liste uniquement les fichiers et dossiers qui commencent par "a" ou se terminent par ".txt".
-# Bash: ls -d a* *.txt
-# Bash Output:
+# Shell: ls -d a* *.txt
+# Shell Output:
 # English Answer: There are no files or directories that start with "a" or end with ".txt" in this directory.
 # French Answer: Il n'y a pas de fichiers ou de dossiers qui commencent par "a" ou se terminent par ".txt" dans ce répertoire.
 
@@ -378,8 +378,8 @@ def get_ls_examples():
                 'role': 'assistant',
                 'message': f"{answer_en}",
                 'scratchpad': [
-                    { 'action': 'Bash', 'action_input': f"{cmd}", 'observation': f"{stdout}" },
-                    { 'action': 'final_answer', 'action_input': f"{answer_en}", 'observation': '' }
+                    { 'function': 'shell', 'parameters': {'code': f"{cmd}"}, 'observation': f"{stdout}" },
+                    { 'function': 'final_answer', 'parameters': {'answer': f"{answer_en}"}, 'observation': '' }
                 ]
             }
         ]
@@ -390,8 +390,8 @@ def get_ls_examples():
                 'role': 'assistant',
                 'message': f"{answer_fr}",
                 'scratchpad': [
-                    { 'action': 'Bash', 'action_input': cmd, 'observation': stdout },
-                    { 'action': 'final_answer', 'action_input': f"{answer_fr}", 'observation': ''}
+                    { 'function': 'shell', 'parameters': {'code': cmd}, 'observation': stdout },
+                    { 'function': 'final_answer', 'parameters': {'answer': f"{answer_fr}"}, 'observation': ''}
                 ]
             }
         ]
@@ -409,6 +409,17 @@ def get_ls_examples():
         })
     return data
 
+guides = {
+    'en': """# Print files and directories
+
+When the User ask for the files and directories of a parent directory to be printed, use the `shell` command `ls` to do it and then give an acknowledgment of your actions and observations in your final answer (once you have observed the successful execution of the command - your final answer should never contain a list of the files requested; the User can oberserve the shell, they see the files at the same time as you. Just acknowlege the fact that you have printed the list).
+""",
+    'fr': """# Imprimer des fichiers et des répertoires
+
+Lorsque l'utilisateur demande l'impression des fichiers et des répertoires d'un répertoire parent, utilisez la commande `shell` `ls` pour le faire et donnez ensuite une reconnaissance de vos actions et observations dans votre réponse finale (une fois que vous avez observé l'exécution réussie de la commande - votre réponse finale ne devrait jamais contenir une liste des fichiers demandés; l'utilisateur peut oberver le shell, ils voient les fichiers en même temps que vous. Il suffit de reconnaître le fait que vous avez imprimé la liste).
+"""
+}
+
 def get_ls_data(_data=ls_data):
     data = get_ls_examples()
     for example in _data:
@@ -420,25 +431,25 @@ def get_ls_data(_data=ls_data):
         answer_fr = example.get('fr').get('answer')
 
         conversation_en = [
-            { 'role': 'human', 'message': f"{query_en}" },
+            { 'role': 'human', 'message': f"{query_en}", 'guide': guides.get('en') },
             {
                 'role': 'assistant',
                 'message': f"{answer_en}",
                 'scratchpad': [
-                    { 'action': 'Bash', 'action_input': f"{cmd}", 'observation': f"{stdout}" },
-                    { 'action': 'final_answer', 'action_input': f"{answer_en}", 'observation': '' }
+                    { 'function': 'Shell', 'parameters': {'code': f"{cmd}"}, 'observation': f"{stdout}" },
+                    { 'function': 'final_answer', 'parameters': {'answer': f"{answer_en}"}, 'observation': '' }
                 ]
             }
         ]
 
         conversation_fr = [
-            { 'role': 'human', 'message': query_fr },
+            { 'role': 'human', 'message': query_fr, 'guide': guides.get('fr') },
             {
                 'role': 'assistant',
                 'message': f"{answer_fr}",
                 'scratchpad': [
-                    { 'action': 'Bash', 'action_input': cmd, 'observation': stdout },
-                    { 'action': 'final_answer', 'action_input': f"{answer_fr}", 'observation': ''}
+                    { 'function': 'Shell', 'parameters': {'code': cmd}, 'observation': stdout },
+                    { 'function': 'final_answer', 'parameters': {'answer': f"{answer_fr}"}, 'observation': ''}
                 ]
             }
         ]
