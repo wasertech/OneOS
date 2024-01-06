@@ -26,7 +26,6 @@ from transformers import AutoModelForCausalLM, BitsAndBytesConfig, HfArgumentPar
 from huggingface_hub import login
 
 from trl import SFTTrainer
-from unsloth import FastMistralModel
 
 from eval_prompt import get_prompt
 
@@ -104,51 +103,51 @@ script_args = parser.parse_args_into_dataclasses()[0]
 if script_args.load_in_8bit and script_args.load_in_4bit:
     raise ValueError("You can't load the model in 8 bits and 4 bits at the same time")
 elif script_args.load_in_8bit or script_args.load_in_4bit:
-    # quantization_config = BitsAndBytesConfig(
-    #     load_in_8bit=script_args.load_in_8bit, load_in_4bit=script_args.load_in_4bit
-    # )
+    quantization_config = BitsAndBytesConfig(
+        load_in_8bit=script_args.load_in_8bit, load_in_4bit=script_args.load_in_4bit
+    )
     # This means: fit the entire model on the GPU:0
     device_map = 'auto' #{"": 0}
     torch_dtype = torch.bfloat16
 else:
     device_map = 'auto' #None
-    # quantization_config = None
+    quantization_config = None
     torch_dtype = torch.bfloat16
 
 # Using the AutoModelForCausalLM class
-# model = AutoModelForCausalLM.from_pretrained(
-#     script_args.model_name,
-#     quantization_config=quantization_config,
-#     device_map=device_map,
-#     trust_remote_code=script_args.trust_remote_code,
-#     torch_dtype=torch_dtype,
-#     use_auth_token=script_args.use_auth_token,
-# )
+model = AutoModelForCausalLM.from_pretrained(
+    script_args.model_name,
+    quantization_config=quantization_config,
+    device_map=device_map,
+    trust_remote_code=script_args.trust_remote_code,
+    torch_dtype=torch_dtype,
+    use_auth_token=script_args.use_auth_token,
+)
 
 # Using the FastMistralModel class from unsloth
-model, tokenizer = FastMistralModel.from_pretrained(
-    model_name = "unsloth/llama-2-7b", # Supports any llama model eg meta-llama/Llama-2-7b-hf
-    max_seq_length = script_args.seq_length,
-    dtype = torch_dtype,
-    load_in_4bit = script_args.load_in_4bit,
-    load_in_8bit = script_args.load_in_8bit,
-    trust_remote_code = script_args.trust_remote_code,
-    use_auth_token = script_args.use_auth_token,
-    device_map = device_map,
-)
+# model, tokenizer = FastMistralModel.from_pretrained(
+#     model_name = script_args.model_name, # Supports any llama model eg meta-llama/Llama-2-7b-hf
+#     max_seq_length = script_args.seq_length,
+#     dtype = torch_dtype,
+#     load_in_4bit = script_args.load_in_4bit,
+#     load_in_8bit = script_args.load_in_8bit,
+#     trust_remote_code = script_args.trust_remote_code,
+#     use_auth_token = script_args.use_auth_token,
+#     device_map = device_map,
+# )
 
-model = FastMistralModel.get_peft_model(
-    model,
-    r = script_args.peft_lora_r,
-    target_modules = ["q_proj", "k_proj", "v_proj", "o_proj",
-                      "gate_proj", "up_proj", "down_proj",],
-    lora_alpha = script_args.peft_lora_alpha,
-    lora_dropout = 0, # Currently only supports dropout = 0
-    bias = "none",    # Currently only supports bias = "none"
-    use_gradient_checkpointing = True,
-    random_state = 3407,
-    max_seq_length = script_args.seq_length,
-)
+# model = FastMistralModel.get_peft_model(
+#     model,
+#     r = script_args.peft_lora_r,
+#     target_modules = ["q_proj", "k_proj", "v_proj", "o_proj",
+#                       "gate_proj", "up_proj", "down_proj",],
+#     lora_alpha = script_args.peft_lora_alpha,
+#     lora_dropout = 0, # Currently only supports dropout = 0
+#     bias = "none",    # Currently only supports bias = "none"
+#     use_gradient_checkpointing = True,
+#     random_state = 3407,
+#     max_seq_length = script_args.seq_length,
+# )
 
 # Step 2: Load the dataset
 dataset = load_dataset(script_args.dataset_name, split="train")
@@ -183,7 +182,6 @@ else:
 neft_alpha = script_args.neft_alpha
 
 # Step 5: Define the Trainer
-
 class PromptCallback(TrainerCallback):
     eval_step = 100
     def on_step_end(self, args, state, control, **kwargs):
