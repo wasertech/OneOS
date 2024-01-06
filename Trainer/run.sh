@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -xe
+
 echo You are in `pwd`
 
 ${HOMEDIR}/checks.sh

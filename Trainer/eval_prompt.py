@@ -1,6 +1,6 @@
 import os
 import subprocess
-from transformers import TrainerCallback
+# from transformers import TrainerCallback
 
 def get_prompt(sentence, system="You are Assistant, a sentient artificial intelligence."):
     USER = os.environ.get('USER')
@@ -9,10 +9,7 @@ def get_prompt(sentence, system="You are Assistant, a sentient artificial intell
     LAST_SEEN = os.environ.get('LAST_SEEN', None)
     DATE = subprocess.check_output(['date']).decode('utf-8').strip()
 
-    prompt = """# System
-
-<<SYS>>
-
+    prompt = """<|im_start|>system
 {system}
 
 Environment highlights:
@@ -24,16 +21,22 @@ LANG={LANG}
 DATE={DATE}
 LAST_SEEN={LAST_SEEN}
 ```
+<|im_stop|>
 
-Use the following tools to help you answer the user query:
+<|im_start|>user
+As my Assistant, please select the most suitable function and parameters from the list of available functions below, based on my input. Provide your response in JSON format.
 
+Input: {sentence}
+
+Available functions:
 {tools}
 
-Below is your latest conversation with the user.
-
-<</SYS>>
-
-<s>[INST] {sentence} [/INST] """
+Guidebook:
+Use the following guide to anser only if relevant to the Input from the User.
+No relevant guide for the query where found. Do what you can; with what you have.
+<|im_stop|>
+<|im_start|>assistant
+"""
 
     return prompt.format(
         system=system,
@@ -43,16 +46,34 @@ Below is your latest conversation with the user.
         LANG=LANG,
         DATE=DATE,
         LAST_SEEN=LAST_SEEN,
-        tools="""```json
-{
-    'Python': 'useful when you need to use logic in your answer. Input must be valid python code. You should always use print to output what you need to see.',
-    'Search': 'useful when you need more context to answer a question; you should use targeted search terms',
-    'Wikipedia': 'useful when you need to use an encyclopedia to answer a question; input will be used to search on wikipedia',
-    'Shell': 'useful when you need to use the system to achieve something; input must be valid bash code.',
-    'Exit': 'useful when you need to exit the shell or stop the conversation, don\'t forget to tell the user that you can\'t wait for your next conversation first.',
-    'Clear': 'useful when you need to clear the screen or start a fresh conversation. Don't forget to say something nice.',
-}
-```"""
+        tools="""python:
+    description: This tool allows you to execute and evaluate python code.
+    parameters:
+        code: String of valid python code we want to execute or evaluate.
+search_web:
+    description: This tool performs search on the web.
+    parameters:
+        terms: The word or phrase we want to search for.
+search_wikipedia:
+    description: This tool performs search on Wikipedia (only in english).
+    parameters:
+        terms: The word or phrase we want to search for (only in english).
+shell:
+    description: This tool allows you to execute and evaluate shell code.
+    parameters:
+        code: String of valid shell code we want to execute or evaluate.
+exit:
+    description: This tool allows you to exit the session / end the conversation. Use it only if the User ask you to.
+    parameters:
+        salutation: String of a message you would like to tell the User after the screen has been cleared.
+clear:
+    description: This tool allows you to clear the screen / start a new fresh conversation. Use it only if the User ask you to.
+
+final_answer:
+    description: User only sees your final answers. Use this tool to talk with the User. Always consider the `$LANG` environment variable to make sure to answer in the User language.
+        parameters:
+            answer: Anything you want to say to the User.
+            """
     )
 
 

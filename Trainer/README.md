@@ -18,7 +18,7 @@ docker run \
 --env BASE_MODEL_NAME="cognitivecomputations/dolphin-2.2.1-mistral-7b" \
 --env OUTPUT_MODEL_NAME="assistant-mistral-7b-dolphin-2.2.1" \
 --env BATCH_SIZE=4 \
---env GAS=8 \
+--env GAS=4 \
 --env SEQENCE_LENGTH=4096 \
 --env USE_PEFT=1 \
 --env USE_4BIT=1 \

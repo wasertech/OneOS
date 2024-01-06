@@ -84,7 +84,7 @@ class ScriptArguments:
     peft_lora_r: Optional[int] = field(default=DEFAULT_PEFT_LORA_R, metadata={"help": "the r parameter of the LoRA adapters"})
     peft_lora_alpha: Optional[int] = field(default=DEFAULT_PEFT_LORA_ALPHA, metadata={"help": "the alpha parameter of the LoRA adapters"})
     logging_steps: Optional[int] = field(default=DEFAULT_LOGGING_STEPS, metadata={"help": "the number of logging steps"})
-    use_auth_token: Optional[bool] = field(default=DEFAULT_USE_AUTH_TOKEN, metadata={"help": "Use HF auth token to access the model"})
+    token: Optional[bool] = field(default=DEFAULT_USE_AUTH_TOKEN, metadata={"help": "Use HF auth token to access the model"})
     num_train_epochs: Optional[int] = field(default=DEFAULT_NUM_TRAIN_EPOCHS, metadata={"help": "the number of training epochs"})
     max_steps: Optional[int] = field(default=DEFAULT_MAX_STEPS, metadata={"help": "the number of training steps"})
     save_steps: Optional[int] = field(
@@ -108,11 +108,11 @@ elif script_args.load_in_8bit or script_args.load_in_4bit:
     )
     # This means: fit the entire model on the GPU:0
     device_map = 'auto' #{"": 0}
-    torch_dtype = torch.bfloat16
+    torch_dtype = None #torch.bfloat16
 else:
     device_map = 'auto' #None
     quantization_config = None
-    torch_dtype = torch.bfloat16
+    torch_dtype = None #torch.bfloat16
 
 # Using the AutoModelForCausalLM class
 model = AutoModelForCausalLM.from_pretrained(
@@ -121,7 +121,7 @@ model = AutoModelForCausalLM.from_pretrained(
     device_map=device_map,
     trust_remote_code=script_args.trust_remote_code,
     torch_dtype=torch_dtype,
-    use_auth_token=script_args.use_auth_token,
+    token=script_args.token,
 )
 
 # Using the FastMistralModel class from unsloth
@@ -132,7 +132,7 @@ model = AutoModelForCausalLM.from_pretrained(
 #     load_in_4bit = script_args.load_in_4bit,
 #     load_in_8bit = script_args.load_in_8bit,
 #     trust_remote_code = script_args.trust_remote_code,
-#     use_auth_token = script_args.use_auth_token,
+#     token = script_args.token,
 #     device_map = device_map,
 # )
 
@@ -208,6 +208,8 @@ trainer = SFTTrainer(
     callbacks=[PromptCallback()],
     neftune_noise_alpha=neft_alpha,
 )
+
+trainer.tokenizer.padding_side = "right"
 
 trainer.train()
 
