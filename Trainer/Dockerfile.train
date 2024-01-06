@@ -198,8 +198,8 @@ RUN pip install autoawq
 RUN pip install tokenizers
 
 # Install UnSloth
-
-RUN pip install unsloth
+# only supports py38... :(
+# RUN pip install "unsloth[cu121_torch211] @ git+https://github.com/unslothai/unsloth.git"
 
 WORKDIR $WORKDIR
 
