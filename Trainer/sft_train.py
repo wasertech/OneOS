@@ -194,8 +194,8 @@ class PromptCallback(TrainerCallback):
             # followed by a call to the `pad` method 
             # to get a padded encoding.
             input_ids = trainer.tokenizer.encode(prompt, return_tensors="pt").to('cuda')
-            output = trainer.model.generate(input_ids=input_ids, max_length=500)
-            to_print = trainer.tokenizer.decode(output[0], skip_special_tokens=True, clean_up_tokenization_spaces=True, eos_token='</s>')
+            output = trainer.model.generate(input_ids=input_ids, max_length=504)
+            to_print = trainer.tokenizer.decode(output[0], skip_special_tokens=True, clean_up_tokenization_spaces=True, eos_token='<|im_stop|>')
             print(to_print[len(prompt):])
 
 trainer = SFTTrainer(
