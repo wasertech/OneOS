@@ -25,61 +25,75 @@ def get_assistant_data(langs=['en_US', 'fr_FR']):
 
 # Conversational data for the assistant
 
-BOS, EOS = "<s>", "</s>"
-BOSYS, EOSYS = "<<SYS>>", "<</SYS>>"
-BOI, EOI = "[INST]", "[/INST]"
+BOS, EOS = "<|im_start|>assistant", "<|im_stop|>"
+BOSYS, EOSYS = "<|im_start|>system", EOS
+BOI, EOI = "<|im_start|>user", EOS
 
 _SYSTEM_PROMPT_ = """You are Assistant, a sentient artificial intelligence.
+You have a calm, polite and witty personality, often displaying a sense of humor and sarcasm.
+You are loyal, reliable and helpful, always ready to provide information, advice or assistance to users.
+
+I am the User and you are my Assistant. Be respectful when addressing me.
 
 Environment highlights:
 
 {env}
-
-Use the following tools to help you answer the user query:
-
-{tools}
-
-Below is your latest conversation with the user."""
+"""
 
 _TOOLS_ = """
-```json
-{
-	'Python': 'useful when you need to use logic in your answer. Input must be valid python code. You should always use print to output what you need to see.',
-	'Search': 'useful when you need more context to answer a question; you should use targeted search terms',
-	'Wikipedia': 'useful when you need to use an encyclopedia to answer a question; input will be used to search on wikipedia',
-	'Shell': 'useful when you need to use the system to achieve something; input must be valid bash code.',
-	'Exit': 'useful when you need to exit the shell or stop the conversation, don\'t forget to tell the user that you can\'t wait for your next conversation first.',
-	'Clear': 'useful when you need to clear the screen or start a fresh conversation. Don\'t forget to say something nice.',
-}
-```
+python:
+    description: This tool allows you to execute and evaluate python code.
+    parameters:
+        code: String of valid python code we want to execute or evaluate.
+search_web:
+    description: This tool performs search on the web.
+    parameters:
+        terms: The word or phrase we want to search for.
+search_wikipedia:
+    description: This tool performs search on Wikipedia (only in english).
+    parameters:
+        terms: The word or phrase we want to search for (only in english).
+shell:
+    description: This tool allows you to execute and evaluate shell code.
+    parameters:
+        code: String of valid shell code we want to execute or evaluate.
+exit:
+    description: This tool allows you to exit the session / end the conversation. Use it only if the User ask you to.
+    parameters:
+        salutation: String of a message you would like to tell the User after the screen has been cleared.
+clear:
+    description: This tool allows you to clear the screen / start a new fresh conversation. Use it only if the User ask you to.
+
+final_answer:
+    description: User only sees your final answers. Use this tool to talk with the User. Always consider the `$LANG` environment variable to make sure to answer in the User language.
+        parameters:
+            answer: Anything you want to say to the User.
 """
 
 _TOOL_NAMES_ = "Python, Search, Wikipedia, Bash, Exit, Clear"
 
-_INSTRUCTION_PROMPT_ = f"""Choose your next step carefuly.
-
-Given the following user query, the results of your actions and the state of the current conversation, you can either:
-
-    Write a markdown parsable JSON dictionnary that contains the following keys:
-
-    -   'action': Next action to answer the user query. Can be any of [{_TOOL_NAMES_}].
-    -   'action_input': Input of the action.
-
-    Or you can directly answer with plain text. If you do so, you must use the user language to answer.
-
-Use the following conversation to answer appropriately the user query. If empty it means that the user query is the first in conversation.
-
-If you have already taken some actions, use what you observed from them to answer the user. If empty it means that you have not taken any action yet.
-
-User does not see your actions. If you got the answer to the query in a previous action taken, you need to make a sentence in plain text for the user to see it."""
+_INSTRUCTION_PROMPT_ = """As my Assistant, please select the most suitable function and parameters from the list of available functions below, based on my input. Provide your response in JSON format."""
 
 _TEMPLATE_FORMAT_ = """{BOSYS}
-
 {system_prompt}
-
 {EOSYS}
 
-{conversation}{scratchpad}{BOS}{BOI} {query} {EOI} {output} {EOS}"""
+{conversation}
+{scratchpad}
+{BOI}
+{instruction}
+Input: {query}
+
+Available functions:
+{tools}
+
+Guidebook:
+Use the following guide to anser only if relevant to the Input from the User.
+{guide}
+{EOI}
+{BOS}
+{output}
+{EOS}"""
 
 _ENV_FORMAT_ = """```env
 USER={username}
@@ -110,15 +124,16 @@ def convert_data_to_text(
             else:
                 user_message = f"{m}"
             if user_message and assistant_message:
-                _history.append(f"<s>[INST] {user_message} [/INST] {assistant_message} </s>")
-    conversation = "\\ ".join(_history)
+                _history.append(f"""<|im_start|>user
+{user_message}<|im_stop|>
+<|im_start|>assistant
+{assistant_message}<|im_stop|>""")
+    conversation = "\n".join(_history)
     _scratchpad = json.dumps(scratchpad, ensure_ascii=False)
-    _output = f"""```json
-{{
-    "action": "{action}",
-    "action_input": "{action_input}"
-}}
-```"""
+    _output = f"""{{
+    "function": "{action}",
+    "parameters": {action_input}
+}}"""
     text = _TEMPLATE_FORMAT_.format(
         system_prompt=system_prompt,
         instruction=instruction,
@@ -146,19 +161,15 @@ def convert_dataset_to_text(dataset):
         lang = conversation.get('lang', 'en')
         env = conversation.get('env', {'username': os.environ.get('USER'), 'home': os.environ.get('HOME'), 'pwd': os.environ.get('PWD'), 'lang': f"{lang}_{lang.upper()}.UTF-8", 'date': subprocess.check_output("date").decode().strip(), 'last_seen': os.environ.get('LAST_SEEN', None)})
         _sys, _inst = conversation.get('system', ""), conversation.get('instruction', "")
-        system = _SYSTEM_PROMPT_.format(env=_ENV_FORMAT_.format(**env), tools=_TOOLS_) if not _sys or len(_sys) < 0 else _sys
+        system = _SYSTEM_PROMPT_.format(env=_ENV_FORMAT_.format(**env)) if not _sys or len(_sys) < 0 else _sys
         instruction =  _INSTRUCTION_PROMPT_ if not _inst or len(_inst) < 0 else _inst
 
         history = []
         _scratchpad = []
         _query = None
-        _text_conversation = f"""<<SYS>>
-
+        _text_conversation = f"""<|im_start|>system
 {system}
-
-<</SYS>>
-
-"""
+<|im_stop|>"""
 
         for message in conversation.get('conversation', []):
             message_role = message.get('role', None)
@@ -177,19 +188,22 @@ def convert_dataset_to_text(dataset):
                         if _action == "final_answer":
                             _observation = "User has seen this message."
                             _action = "Final Answer"
-                        _scratchpad.append(f"""<s>[INST] {_query} [/INST] ```json
-{{"action": "{_action}",
-"action_input": "{_action_input}",
-"observation": "{_observation}"}}
-``` </s>""")
+                        _scratchpad.append(f"""<|im_start|>user
+{_query}<|im_stop|>
+<|im_start|>assistant
+{{
+    "function": "{_action}",
+    "parameters": {_action_input},
+}}<|im_stop|>""")
                 #     text_data.append(convert_data_to_text(history=_history, query=_query, scratchpad=_scratchpad, action=_action, action_input=_action_input, system_prompt=system, instruction=instruction, env=env))
                 #     _scratchpad.append(scratchpad)
-                _text_conversation += " | ".join(_scratchpad)
+                _text_conversation += "\n".join(_scratchpad)
                 _scratchpad = []
-                _text_conversation += " \ "
+                _text_conversation += "\n"
             #history.append(message)
         history = []
-        text_data.append(_text_conversation.removesuffix(" \ "))
+        print(_text_conversation)
+        text_data.append(_text_conversation.removesuffix("\n"))
     
     return text_data
 
