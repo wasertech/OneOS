@@ -94,6 +94,7 @@ class ScriptArguments:
     push_to_hub: Optional[bool] = field(default=DEFAULT_PUSH_TO_HUB, metadata={"help": "Push the model to HF Hub"})
     hub_model_id: Optional[str] = field(default=DEFAULT_HUB_MODEL_ID, metadata={"help": "The name of the model on HF Hub"})
     neft_alpha: Optional[float] = field(default=DEFAULT_NEFT_ALPHA, metadata={"help": "The alpha parameter of the Neftune noise"})
+    use_safetensors: Optional[bool] = field(default=False, metadata={"help": "Use SafeTensors for training"})
 
 
 parser = HfArgumentParser(ScriptArguments)
@@ -166,6 +167,7 @@ training_args = TrainingArguments(
     save_total_limit=script_args.save_total_limit,
     push_to_hub=script_args.push_to_hub,
     hub_model_id=script_args.hub_model_id,
+    save_safetensors=script_args.use_safetensors,
 )
 
 # Step 4: Define the LoraConfig
@@ -175,6 +177,7 @@ if script_args.use_peft:
         lora_alpha=script_args.peft_lora_alpha,
         bias="none",
         task_type="CAUSAL_LM",
+        target_modules=['k_proj', 'q_proj', 'v_proj', 'o_proj', "gate_proj", "down_proj", "up_proj"]
     )
 else:
     peft_config = None
@@ -211,11 +214,12 @@ trainer = SFTTrainer(
 
 trainer.tokenizer.padding_side = "right"
 
+# Step 6: Train the model
 trainer.train()
 
-# Step 6: Save the model
+# Step 7: Save the model
 trainer.save_model(script_args.output_dir)
 
-# Step 7: Push the model to the hub
+# Step 8: Push the model to the hub
 if script_args.push_to_hub and script_args.hub_model_id:
     trainer.push_to_hub(script_args.hub_model_id) # This might not be needed...

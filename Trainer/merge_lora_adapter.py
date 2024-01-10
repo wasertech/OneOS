@@ -5,6 +5,7 @@ Merge the lora adapter back into the base model
 print("Loading libraries...", end="")
 import os
 import time
+import torch
 from peft import PeftModel, PeftConfig
 from transformers import AutoModelForCausalLM
 from requests.exceptions import ConnectionError
@@ -13,16 +14,19 @@ print("Done.")
 
 hub_user = "wasertech"
 base_model = os.environ.get("BASE_MODEL_NAME")
+if not base_model:
+    raise ValueError("Please provide a base model name using the BASE_MODEL_NAME environment variable.")
+
 #adapter_model_name = "assistant-llama2-7b-qlora-bf16"
-merged_model_name = os.environ.get('OUTPUT_MODEL_NAME', "assistant-llama2-7b-merge-bf16")
+merged_model_name = os.environ.get('OUTPUT_MODEL_NAME', "merge-fp")
 
 print("Loading the base model and the LoRA adapter...")
 
 OUTPUT_MODEL_PATH = os.environ.get("OUTPUT_MODEL_PATH", "./output")
 
-config = PeftConfig.from_pretrained(f"{OUTPUT_MODEL_PATH}")
-model = AutoModelForCausalLM.from_pretrained(base_model)
-model = PeftModel.from_pretrained(model, f"{OUTPUT_MODEL_PATH}")
+config = PeftConfig.from_pretrained(f"{OUTPUT_MODEL_PATH}", torch_dtype=torch.float16)
+model = AutoModelForCausalLM.from_pretrained(pretrained_model_name_or_path=base_model, torch_dtype=torch.float16)
+model = PeftModel.from_pretrained(model, f"{OUTPUT_MODEL_PATH}", config=config)
 
 print("Loading the base model and the LoRA adapter...Done.")
 
@@ -30,12 +34,14 @@ print("Merging the LoRA adapter back into the base model...", end="")
 
 # Merge the LoRA weights into the base model
 merged_model = model.merge_and_unload()
+# merged_model = model.merge_adapter()
 
 print("Done.")
 
 print("Saving the merged model...", end="")
 
-# Save the merged model
+# Save the merged model (in the pytorch format for awq later)
+# merged_model.save_pretrained(merged_model_name, safe_serialization=False)
 merged_model.save_pretrained(merged_model_name)
 
 print("Done.")

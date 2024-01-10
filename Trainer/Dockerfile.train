@@ -173,9 +173,9 @@ ENV PATH=$HOMEDIR/$VIRTUAL_ENV_NAME/bin:$PATH
 
 WORKDIR $HOMEDIR
 
-RUN pip install trl
+RUN pip install 'git+https://github.com/huggingface/trl.git'
 
-RUN pip install 'transformers>=4.26.1'
+RUN pip install 'git+https://github.com/huggingface/transformers.git'
 
 RUN pip install accelerate
 
@@ -195,10 +195,9 @@ RUN pip install scipy
 
 RUN pip install autoawq
 
-RUN pip install tokenizers
+RUN pip install 'git+https://github.com/huggingface/tokenizers.git#egg=tokenizers'
 
 # Install UnSloth
-# only supports py38... :(
 # RUN pip install "unsloth[cu121_torch211] @ git+https://github.com/unslothai/unsloth.git"
 
 WORKDIR $WORKDIR
