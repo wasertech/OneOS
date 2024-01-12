@@ -36,7 +36,7 @@ ENV EPOCHS=$epochs
 ARG learning_rate="1.41e-5"
 ENV LEARNING_RATE=$learning_rate
 
-ARG seq_len=4096
+ARG seq_len=8192
 ENV SEQENCE_LENGTH=$seq_len
 
 ARG dropout=0.0
@@ -191,7 +191,7 @@ RUN pip install wandb
 
 RUN pip install scipy
 
-# Install AWQ
+# Install AutoAWQ
 
 RUN pip install autoawq
 

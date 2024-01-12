@@ -215,7 +215,7 @@ trainer = SFTTrainer(
 trainer.tokenizer.padding_side = "right"
 
 # Step 6: Train the model
-# trainer.train()
+trainer.train()
 
 # Step 7: Save the model
 trainer.save_model(script_args.output_dir)

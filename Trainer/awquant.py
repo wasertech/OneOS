@@ -29,5 +29,4 @@ model.quantize(tokenizer, quant_config=quant_config)
 model.save_quantized(quant_path)
 tokenizer.save_pretrained(quant_path)
 
-model.push_to_hub(f"{quant_path}")
 print("Done.")

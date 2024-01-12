@@ -48,4 +48,5 @@ python ${HOMEDIR}/sft_train.py \
             --output_dir "${OUTPUT_MODEL_PATH}" \
             ${WANDB_LOG_PARAMS} \
             ${HUB_PARAMS} && \
-${HOMEDIR}/export.sh || echo "Training failed." && exit 1
+${HOMEDIR}/export.sh && \
+${HOMEDIR}/quantize.sh || echo "Training failed." && exit 1

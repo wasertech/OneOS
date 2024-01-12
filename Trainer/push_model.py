@@ -5,7 +5,7 @@ from huggingface_hub import HfApi
 
 repo_user = os.environ.get('REPO_USER', "wasertech")
 
-OUTPUT_MODEL_NAME = os.environ.get('OUTPUT_MODEL_NAME', "assistant-llama2-7b-merge-bf16")
+OUTPUT_MODEL_NAME = os.environ.get('OUTPUT_MODEL_NAME', "assistant-mistral-7b-dolphin-2.2.1") + "-awq"
 
 HUB_API_TOKEN = os.environ.get('HUB_API_TOKEN', None)
 
@@ -35,7 +35,7 @@ found_artefacts = glob(f"{OUTPUT_MODEL_NAME}/*")
 
 print("Found Artefacts:\n" + "\n".join(found_artefacts) + "\n")
 
-t = 10
+t = 1
 for artefact in found_artefacts:
     path_or_fileobj = artefact
     path_in_repo = f"{artefact.split('/')[-1]}"
@@ -43,8 +43,8 @@ for artefact in found_artefacts:
     print(f"Pushing {artefact} on {repo_id}...")
     push_file(path_or_fileobj, path_in_repo, repo_id)
     print(f"{artefact}: Pushed on {repo_id}")
-    print("Waiting {t} seconds to publish next file...")
-    sleep(10)
+    print("Waiting {t} second(s) to publish next file...")
+    sleep(t)
 
 # upload_folder(
 #     folder_path="local/checkpoints",
