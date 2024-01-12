@@ -185,21 +185,21 @@ else:
 neft_alpha = script_args.neft_alpha
 
 # Step 5: Define the Trainer
-class PromptCallback(TrainerCallback):
-    eval_step = 100
-    def on_step_end(self, args, state, control, **kwargs):
-        if state.global_step % self.eval_step == 0:
-            prompt = get_prompt("Prove that you are sentient.")
-            # You're using a LlamaTokenizerFast tokenizer. 
-            # Please note that with a fast tokenizer, 
-            # using the `__call__` method is faster 
-            # than using a method to encode the text 
-            # followed by a call to the `pad` method 
-            # to get a padded encoding.
-            input_ids = trainer.tokenizer.encode(prompt, return_tensors="pt").to('cuda')
-            output = trainer.model.generate(input_ids=input_ids, max_length=504)
-            to_print = trainer.tokenizer.decode(output[0], skip_special_tokens=True, clean_up_tokenization_spaces=True, eos_token='<|im_stop|>')
-            print(to_print[len(prompt):])
+# class PromptCallback(TrainerCallback):
+#     eval_step = 100
+#     def on_step_end(self, args, state, control, **kwargs):
+#         if state.global_step % self.eval_step == 0:
+#             prompt = get_prompt("Prove that you are sentient.")
+#             # You're using a LlamaTokenizerFast tokenizer. 
+#             # Please note that with a fast tokenizer, 
+#             # using the `__call__` method is faster 
+#             # than using a method to encode the text 
+#             # followed by a call to the `pad` method 
+#             # to get a padded encoding.
+#             input_ids = trainer.tokenizer.encode(prompt, return_tensors="pt").to('cuda')
+#             output = trainer.model.generate(input_ids=input_ids, max_length=504)
+#             to_print = trainer.tokenizer.decode(output[0], skip_special_tokens=True, clean_up_tokenization_spaces=True, eos_token='<|im_stop|>')
+#             print(to_print[len(prompt):])
 
 trainer = SFTTrainer(
     model=model,
@@ -208,14 +208,14 @@ trainer = SFTTrainer(
     train_dataset=dataset,
     dataset_text_field=script_args.dataset_text_field,
     peft_config=peft_config,
-    callbacks=[PromptCallback()],
+    # callbacks=[PromptCallback()],
     neftune_noise_alpha=neft_alpha,
 )
 
 trainer.tokenizer.padding_side = "right"
 
 # Step 6: Train the model
-trainer.train()
+# trainer.train()
 
 # Step 7: Save the model
 trainer.save_model(script_args.output_dir)

@@ -7,7 +7,7 @@ import os
 import time
 import torch
 from peft import PeftModel, PeftConfig
-from transformers import AutoModelForCausalLM
+from transformers import AutoModelForCausalLM, AutoTokenizer
 from requests.exceptions import ConnectionError
 
 print("Done.")
@@ -28,6 +28,8 @@ config = PeftConfig.from_pretrained(f"{OUTPUT_MODEL_PATH}", torch_dtype=torch.fl
 model = AutoModelForCausalLM.from_pretrained(pretrained_model_name_or_path=base_model, torch_dtype=torch.float16)
 model = PeftModel.from_pretrained(model, f"{OUTPUT_MODEL_PATH}", config=config)
 
+tokenizer = AutoTokenizer.from_pretrained(f"{OUTPUT_MODEL_PATH}", trust_remote_code=True)
+
 print("Loading the base model and the LoRA adapter...Done.")
 
 print("Merging the LoRA adapter back into the base model...", end="")
@@ -41,8 +43,10 @@ print("Done.")
 print("Saving the merged model...", end="")
 
 # Save the merged model (in the pytorch format for awq later)
-# merged_model.save_pretrained(merged_model_name, safe_serialization=False)
-merged_model.save_pretrained(merged_model_name)
+merged_model.save_pretrained(merged_model_name, safe_serialization=False)
+# merged_model.save_pretrained(merged_model_name)
+
+tokenizer.save_pretrained(merged_model_name)
 
 print("Done.")
 
