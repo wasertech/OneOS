@@ -125,10 +125,14 @@ def convert_data_to_text(
             else:
                 user_message = f"{m}"
             if user_message and assistant_message:
-                _history.append(f"""<|im_start|>user
-{user_message}<|im_stop|>
-<|im_start|>assistant
-{assistant_message}{"<|im_stop|>"if assistant_message else ""}""")
+                _ht = f"""<|im_start|>user
+{user_message}
+<|im_stop|>"""
+                if assistant_message:
+                    _ht += '\n' + f"""<|im_start|>assistant
+{assistant_message}
+<|im_stop|>"""
+                _history.append(_ht)
     conversation = "\n".join(_history)
     _scratchpad = json.dumps(scratchpad, ensure_ascii=False)
     _output = f"""{{
@@ -239,7 +243,8 @@ def convert_dataset_to_text(dataset):
 #                 _text_conversation = _text_conversation.replace('\n\n\n', "\n")
 #                 _text_conversation = _text_conversation.replace('<|im_stop|><|im_start|>', '<|im_stop|>\n<|im_start|>')
                     _system = f"""<|im_start|>system
-{system}<|im_stop|>"""
+{system}
+<|im_stop|>"""
                     _instruction = f"""<|im_start|>user
 {instruction}
 
@@ -255,7 +260,8 @@ Use the following guide to anwser only if relevant to the Input from the User.
 {{
     "function": "{_action}",
     "parameters": {json.dumps(_action_input, ensure_ascii=False, indent=2)}
-}}<|im_stop|>"""
+}}
+<|im_stop|>"""
                     te = format_training_example(
                         system=_system,
                         history=_history,
@@ -271,16 +277,20 @@ You and the User have observed the following from {_action}.
 {_observation}
 ```
 
-Use this information to comment it in context of the User input.<|im_stop|>"""
+Use this information to comment it in context of the User input.
+<|im_stop|>"""
                     _scratchpad.append(f"""<|im_start|>assistant
 {{
     "function": "{_action}",
     "parameters": {json.dumps(_action_input)}
-}}<|im_stop|>{observ}""")
+}}
+<|im_stop|>{observ}""")
                 _history.append(f"""<|im_start|>user
-{_query}<|im_stop|>
+{_query}
+<|im_stop|>
 <|im_start|>assistant
-{message['message']}<|im_stop|>""")
+{message['message']}
+<|im_stop|>""")
                 _scratchpad = []
             # history.append(message)
         
