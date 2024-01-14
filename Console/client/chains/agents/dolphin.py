@@ -51,9 +51,11 @@ def format_intermediate_steps_to_agent_scratchpad(intermediate_steps):
     for action, observation in intermediate_steps:
         agent_scratchpad.extend([
             "<|im_start|>assistant",
-            "{{ 'action': '{action.tool}',  'action_input': '{action.tool_input}'}}<|im_stop|>",
+            "{{ 'action': '{action.tool}',  'action_input': '{action.tool_input}'}}",
+            "<|im_stop|>",
             "<|im_start|>observation",
-            "{observation}<|im_stop|>"
+            "{observation}",
+            "<|im_stop|>"
         ])
     
     return "\n".join(agent_scratchpad)
