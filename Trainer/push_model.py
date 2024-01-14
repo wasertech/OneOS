@@ -11,9 +11,8 @@ HUB_API_TOKEN = os.environ.get('HUB_API_TOKEN', None)
 
 api = HfApi(token=HUB_API_TOKEN)
 
-def push_file(path_or_fileobj, path_in_repo, repo_id):
+def push_file(path_or_fileobj, path_in_repo, repo_id, t=10):
     attempt_count = 1
-    t = 10
     while True:
         try:
             api.upload_file(
@@ -41,9 +40,9 @@ for artefact in found_artefacts:
     path_in_repo = f"{artefact.split('/')[-1]}"
     repo_id = f"{repo_user}/{OUTPUT_MODEL_NAME}"
     print(f"Pushing {artefact} on {repo_id}...")
-    push_file(path_or_fileobj, path_in_repo, repo_id)
+    push_file(path_or_fileobj, path_in_repo, repo_id, t=5)
     print(f"{artefact}: Pushed on {repo_id}")
-    print("Waiting {t} second(s) to publish next file...")
+    print(f"Waiting {t} second(s) to publish next file...")
     sleep(t)
 
 # upload_folder(
