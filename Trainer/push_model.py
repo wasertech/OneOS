@@ -34,6 +34,13 @@ found_artefacts = glob(f"{OUTPUT_MODEL_NAME}/*")
 
 print("Found Artefacts:\n" + "\n".join(found_artefacts) + "\n")
 
+api.create_repo(
+    repo_id=f"{repo_user}/{OUTPUT_MODEL_NAME}",
+    exist_ok=True,
+    private=False,
+    repo_type="model",
+)
+
 t = 1
 for artefact in found_artefacts:
     path_or_fileobj = artefact
