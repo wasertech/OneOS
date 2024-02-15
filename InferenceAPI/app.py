@@ -98,10 +98,13 @@ async def generate(request: Request) -> Response:
             # text_outputs = [
             #     prompt + output.text for output in request_output.outputs
             # ]
-            text_outputs = [
-                output.text for output in request_output.outputs[-1]
-            ]
-            ret = {"text": text_outputs}
+            text_buffer = ""
+            text_outputs = []
+            for output in request_output.outputs:
+                text_outputs.append(output.text.removeprefix(text_buffer))
+                text_buffer = output.text
+            
+            ret = {"text": text_outputs[-1]}
             yield (json.dumps(ret) + "\0").encode("utf-8")
 
     async def abort_request() -> None:
