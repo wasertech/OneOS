@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:22.12-py3
+FROM nvcr.io/nvidia/pytorch:23.12-py3
 # RUN apt-get update && apt-get install -y git
 # RUN pip install --upgrade --no-input pip
 # RUN pip uninstall -y torch
@@ -12,9 +12,10 @@ FROM nvcr.io/nvidia/pytorch:22.12-py3
 
 # For embedding with langchain using sentence-transformers
 RUN pip install --no-input "langchain>=0.0.340"
+RUN pip install --no-input langchain-community
 RUN pip install --no-input "sentence-transformers>=2.2.2"
 
-RUN pip install --no-input "vllm>=0.2.0"
+RUN pip install --no-input "vllm>=0.3.0"
 # Try wasertech/vllm@awq-sm_75
 # RUN TORCH_CUDA_ARCH_LIST="7.0;7.5;8.0;8.6;8.9;9.0" pip install --no-input git+https://github.com/wasertech/vllm.git@awq-sm_75
 # Try vllm-lora

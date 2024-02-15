@@ -15,7 +15,8 @@ from vllm.sampling_params import SamplingParams
 from vllm.utils import random_uuid
 
 import sentence_transformers
-from langchain.embeddings import HuggingFaceEmbeddings
+# from langchain.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -98,7 +99,7 @@ async def generate(request: Request) -> Response:
             #     prompt + output.text for output in request_output.outputs
             # ]
             text_outputs = [
-                output.text for output in request_output.outputs
+                output.text for output in request_output.outputs[-1]
             ]
             ret = {"text": text_outputs}
             yield (json.dumps(ret) + "\0").encode("utf-8")
