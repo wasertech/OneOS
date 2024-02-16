@@ -5,12 +5,31 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "Module Python",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "nl2shell",
             "justMyCode": true,
             "cwd": "${workspaceFolder}/data"
+        },
+        {
+            "name": "Python: InferenceAPI",
+            "type": "debugpy",
+            "python": "python",
+            "request": "launch",
+            "program": "app.py",
+            "cwd": "${workspaceFolder}/InferenceAPI",
+            "console": "integratedTerminal",
+            "args": [
+                "--port", "80",
+            ]
         }
     ]
 }

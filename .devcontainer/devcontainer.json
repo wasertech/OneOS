@@ -1,0 +1,17 @@
+{
+    "name": "InferenceAPI",
+    "dockerFile": "../InferenceAPI/Dockerfile",
+    "forwardPorts": [5085],
+    "postCreateCommand": "echo 'InferenceAPI container created.'",
+    "runArgs": [
+        "--gpus", "all",
+        "--privileged",
+        "--shm-size=8g",
+        // "--ulimit", "memlock=-1",
+        // "--ulimit", "stack=67108864",
+        "--ipc=host",
+        "--mount", "type=bind,src=/home/waser/.cache,dst=/root/.cache",
+        "--env", "PORT=5085",
+        "--entrypoint", "bash"
+    ]
+}

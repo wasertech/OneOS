@@ -90,15 +90,16 @@ async def generate(request: Request) -> Response:
     sampling_params = SamplingParams(**request_dict)
     request_id = random_uuid()
     results_generator = engine.generate(prompt, sampling_params, request_id)
-
+    
     # Streaming case
     async def stream_results() -> AsyncGenerator[bytes, None]:
+        text_buffer = ""
         async for request_output in results_generator:
             # prompt = request_output.prompt
             # text_outputs = [
             #     prompt + output.text for output in request_output.outputs
             # ]
-            text_buffer = ""
+            
             text_outputs = []
             for output in request_output.outputs:
                 text_outputs.append(output.text.removeprefix(text_buffer))
@@ -135,7 +136,7 @@ async def generate(request: Request) -> Response:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--host", type=str, default="localhost")
+    parser.add_argument("--host", type=str, default="0.0.0.0")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--embed", type=str, default="intfloat/e5-large-v2", help="Embedding model to use")
     parser.add_argument("--embed-device", type=str, default="cuda", help="Embedding model device")
