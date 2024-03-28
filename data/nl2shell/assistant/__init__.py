@@ -316,6 +316,76 @@ Use this information to comment it in context of the User input.
         # )
     return text_data
 
+def convert_data_to_messages(data):
+    messages_data = []
+    for conversation in data:
+        lang = conversation.get('lang', 'en')
+        env = conversation.get('env', {'username': os.environ.get('USER'), 'home': os.environ.get('HOME'), 'pwd': os.environ.get('PWD'), 'lang': f"{lang}_{lang.upper()}.UTF-8", 'date': subprocess.check_output("date").decode().strip(), 'last_seen': os.environ.get('LAST_SEEN', None)})
+        _sys, _inst = conversation.get('system', ""), conversation.get('instruction', "")
+        system = _SYSTEM_PROMPT_.format(env=_ENV_FORMAT_.format(**env)) if not _sys or len(_sys) < 0 else _sys
+        instruction =  _INSTRUCTION_PROMPT_ if not _inst or len(_inst) < 0 else _inst
+        _history = []
+        _scratchpad = []
+        _query = None
+        for message in conversation.get('conversation', []):
+            message_role = message.get('role', None)
+            if not message_role:
+                continue
+            elif message_role == 'human':
+                _query = message.get('message', None)
+                guide = message.get('guide', None)
+            elif message_role == 'assistant' and _query:
+                for scratchpad in message['scratchpad']:                 
+                    _action = scratchpad.get('function', "")
+                    _action_input = scratchpad.get('parameters', None)
+                    assert _action, f"Function is missing in scratchpad: {scratchpad}"
+                    _observation = scratchpad.get('observation', "\n")
+                    
+                    _instruction = f"""{instruction}
+
+Input: {_query}
+
+Availible functions:
+{_TOOLS_}
+
+Guidebook:
+Use the following guide to anwser only if relevant to the Input from the User.
+{guide or "No relevant guide was found in the book. Do your best to answer the User's Input."}"""
+                    _output = f"""{{
+    "function": "{_action}",
+    "parameters": {json.dumps(_action_input, ensure_ascii=False, indent=2)}
+}}"""
+                    m = [
+                        {'role': 'system', 'content': system},
+                    ]
+                    for d in _history:
+                        m.append(d)
+                    m.append({'role': 'user', 'content': _instruction})
+                    for d in _scratchpad:
+                        m.append(d)
+                    m.append({'role': 'assistant', 'content': _output})
+                    if m and len(m) > 1:
+                        messages_data.append(m)
+                    observ = f"""
+You and the User have observed the following from {_action}.
+```{_action}
+{_observation}
+```
+
+Use this information to comment it in context of the User input."""
+                    _scratchpad.extend([
+                        {'role': "assistant", 'content': f"""{{
+    "function": "{_action}",
+    "parameters": {json.dumps(_action_input)}
+}}"""},
+                        {'role': "observation", 'content': f"""{observ}"""}
+                    ])
+                _history.extend([
+                    {'role': "user", 'content': f"""{_query}"""},
+                    {'role': "assistant", 'content': f"""{message['message']}"""}
+                ])
+                _scratchpad = []
+    return messages_data
 def get_assistant_text_data():
 
     data = get_assistant_data()
@@ -323,6 +393,12 @@ def get_assistant_text_data():
     print(f"Generated {len(text_data)} examples from {len(data)} conversations.")
     return text_data
 
+def get_assistant_messages_data():
+    data = get_assistant_data()
+    messages_data = convert_data_to_messages(data)
+    print(f"Generated {len(messages_data)} examples from {len(data)} conversations.")
+    return messages_data
+
 if __name__ == "__main__":
-    text_data = get_assistant_text_data()
-    print(text_data[1:3])
+    messages_data = get_assistant_messages_data()
+    print(messages_data[1:3])

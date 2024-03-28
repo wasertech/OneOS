@@ -1,4 +1,4 @@
-from nl2shell.assistant import get_assistant_text_data
+from nl2shell.assistant import get_assistant_text_data, get_assistant_messages_data
 from datasets import Dataset
 from huggingface_hub import login
 
@@ -14,22 +14,30 @@ def get_text_dataset():
     
     return text_data
 
+def get_messages_dataset():
+    messages_data = {}
+    messages_data['messages'] = []
+    messages_data['messages'].extend(get_assistant_messages_data())
+    
+    return messages_data
+
 def print_head_tail(dataset_dict):
-    for text_data in dataset_dict['text'][:10]:
-        print(text_data)
+    for data in dataset_dict['messages'][:10]:
+        print(data)
         print()
         print("_"*42)
         print()
     print("-"*42)
-    for text_data in dataset_dict['text'][:10]:
-        print(text_data)
+    for data in dataset_dict['messages'][:10]:
+        print(data)
         print()
         print("_"*42)
         print()
 
 if __name__ == "__main__":
     
-    dataset_dict = get_text_dataset()
+    # dataset_dict = get_text_dataset()
+    dataset_dict = get_messages_dataset()
 
     # print_head_tail(dataset_dict)
 
