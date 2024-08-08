@@ -5,7 +5,7 @@ set -xe
 
 HOST=${HOST:-0.0.0.0}
 PORT=${PORT:-5085}
-MODEL_ID=${MODEL_ID:-'TheBloke/dolphin-2.1-mistral-7B-AW'}
+MODEL_ID=${MODEL_ID:-'TheBloke/dolphin-2.1-mistral-7B-AWQ'}
 TOKENIZER_ID=${TOKENIZER_ID:-MODEL_ID}
 DTYPE=${DTYPE:-'half'} # 'auto', 'half', 'float', 'bfloat16'
 QUANT=${QUANT:-'awq'} # None, 'awq'
