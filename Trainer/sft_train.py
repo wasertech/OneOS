@@ -22,7 +22,7 @@ import torch
 from datasets import load_dataset
 from peft import LoraConfig
 from tqdm import tqdm
-from transformers import AutoModelForCausalLM, BitsAndBytesConfig, HfArgumentParser, TrainingArguments, TrainerCallback
+from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, HfArgumentParser, TrainingArguments, TrainerCallback
 from huggingface_hub import login
 
 from trl import SFTTrainer
@@ -124,6 +124,8 @@ model = AutoModelForCausalLM.from_pretrained(
     torch_dtype=torch_dtype,
     token=script_args.token,
 )
+tokenizer = AutoTokenizer.from_pretrained(script_args.model_name)
+tokenizer.chat_template = "{% for message in messages %}{{'<|im_start|>' + message['role'] + '\n' + message['content'] + '<|im_end|>' + '\n'}}{% endfor %}"
 
 # Using the FastMistralModel class from unsloth
 # model, tokenizer = FastMistralModel.from_pretrained(
@@ -201,18 +203,35 @@ neft_alpha = script_args.neft_alpha
 #             to_print = trainer.tokenizer.decode(output[0], skip_special_tokens=True, clean_up_tokenization_spaces=True, eos_token='<|im_stop|>')
 #             print(to_print[len(prompt):])
 
+def formatting_prompts_func(example):
+    output_texts = []
+    for e in example['messages']:
+        text = tokenizer.apply_chat_template(e, add_generation_prompt=True, tokenize=False, padding='max_length', max_length=script_args.seq_length, return_tensors='pt')
+        output_texts.append(text)
+    return {'text': output_texts}
+
+# collator = DataCollatorForCompletionOnlyLM(
+#     "", # This is the prompt that will be used to generate the text 
+#     # (empty because we use add_generation_prompt=True in the tokenizer.apply_chat_template method)
+#     tokenizer=tokenizer,
+# )
+
+ds = dataset.map(formatting_prompts_func, batched=True, remove_columns=['train'])['messages']
+
+tokenizer.padding_side = "right"
+tokenizer.pad_token_id = tokenizer.eos_token_id
+
 trainer = SFTTrainer(
     model=model,
+    tokenizer=tokenizer,
     args=training_args,
     max_seq_length=script_args.seq_length,
-    train_dataset=dataset,
-    dataset_text_field=script_args.dataset_text_field,
+    train_dataset=ds,
+    dataset_text_field='text',
     peft_config=peft_config,
     # callbacks=[PromptCallback()],
     neftune_noise_alpha=neft_alpha,
 )
-
-trainer.tokenizer.padding_side = "right"
 
 # Step 6: Train the model
 trainer.train()
