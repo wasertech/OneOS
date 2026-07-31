@@ -1,3 +1,20 @@
+# Python
 .venv/
-.chroma/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+
+# Generated curation / eval artifacts
+data/output/
+evals/output/
+eval_checkpoint.json
 *.log
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Tooling / local
+.kilo/
+.chroma/

@@ -1,0 +1,14 @@
+{"section":"Running Commands","syntax_type":"subprocess","command":"echo \"Yoo hoo\"","expected_output":"Yoo hoo","captured_output":"Yoo hoo\n","doc_ref":"tutorial.rst"}
+{"section":"Running Commands","syntax_type":"subprocess","command":"ls -la","expected_output":"directory listing","captured_output":"(directory listing varies)","doc_ref":"tutorial.rst"}
+{"section":"Running Commands","syntax_type":"subprocess","command":"cd /tmp && ls -la | head -5","expected_output":"directory listing","captured_output":"total 168\ndrwxrwxrwt 22 root root 860 ...","doc_ref":"tutorial.rst"}
+{"section":"Strings and Quoting","syntax_type":"quoting","command":"echo 'hello friend'","expected_output":"hello friend","captured_output":"hello friend\n","doc_ref":"tutorial.rst"}
+{"section":"Strings and Quoting","syntax_type":"quoting","command":"echo \"sp ace\"","expected_output":"sp ace","captured_output":"sp ace\n","doc_ref":"tutorial.rst"}
+{"section":"Captured Subprocess","syntax_type":"captured","command":"x = $(ls /tmp | head -2); print(type(x))","expected_output":"<class 'str'>","captured_output":"<class 'str'>","doc_ref":"tutorial.rst"}
+{"section":"Python Evaluation","syntax_type":"python_eval","command":"echo @(2+2)","expected_output":"4","captured_output":"4\n","doc_ref":"tutorial.rst"}
+{"section":"Python Evaluation","syntax_type":"python_eval","command":"echo @(['echo', 'hello', 'world'])","expected_output":"hello world","captured_output":"hello world\n","doc_ref":"tutorial.rst"}
+{"section":"Command Substitution","syntax_type":"cmd_sub","command":"@$(which ls) --help | head -5","expected_output":"ls help text","captured_output":"Utilisation : ls [OPTION]... [FICHIER]...","doc_ref":"tutorial.rst"}
+{"section":"Pipes","syntax_type":"pipe","command":"ls /tmp | grep ice | head -3","expected_output":"filtered listing","captured_output":"(filtered ice-containing files)","doc_ref":"tutorial.rst"}
+{"section":"Environment","syntax_type":"env_lookup","command":"echo ${'HOME'}","expected_output":"$HOME path","captured_output":"/home/waser\n","doc_ref":"tutorial.rst"}
+{"section":"Environment","syntax_type":"env_var","command":"echo $HOME","expected_output":"$HOME path","captured_output":"/home/waser\n","doc_ref":"tutorial.rst"}
+{"section":"Return Code","syntax_type":"return_code","command":"!(ls nonexistent 2>&1).rtn","expected_output":"non-zero exit code","captured_output":"2","doc_ref":"tutorial.rst"}
+{"section":"Return Code","syntax_type":"return_code","command":"x = !(ls nonexistent 2>&1); print(x.returncode == x.rtn)","expected_output":"True","captured_output":"True","doc_ref":"tutorial.rst"}

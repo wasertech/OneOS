@@ -216,7 +216,7 @@ def formatting_prompts_func(example):
 #     tokenizer=tokenizer,
 # )
 
-ds = dataset.map(formatting_prompts_func, batched=True, remove_columns=['train'])['messages']
+ds = dataset.map(formatting_prompts_func, batched=True, remove_columns=['messages'])
 
 tokenizer.padding_side = "right"
 tokenizer.pad_token_id = tokenizer.eos_token_id

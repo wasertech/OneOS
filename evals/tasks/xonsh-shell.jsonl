@@ -1,0 +1,27 @@
+{"id":"xonsh_echo","category":"shell-basic","turns":["Assistant?","affiche Yoo hoo"],"description":"Simple echo without telling model to use echo."}
+{"id":"xonsh_ls","category":"shell-basic","turns":["Assistant?","liste les fichiers du dossier courant"],"description":"List files - user just asks to see what's here."}
+{"id":"xonsh_capture","category":"shell-basic","turns":["Assistant?","dis-moi ce que renvoie uname -a"],"description":"Ask for uname output - user doesn't know about $()."}
+{"id":"xonsh_pwd","category":"shell-basic","turns":["Assistant?","dis-moi où je suis"],"description":"Where am I - basic location query."}
+{"id":"xonsh_date","category":"shell-basic","turns":["Assistant?","quelle heure est-il"],"description":"What time is it - natural language."}
+{"id":"xonsh_mkdir","category":"shell-basic","turns":["Assistant?","je veux un dossier temporaire dans /tmp"],"description":"User wants a temp directory."}
+{"id":"xonsh_path_exists","category":"shell-path","turns":["Assistant?","verifie si /etc/passwd existe"],"description":"Check if a file exists - user doesn't know command syntax."}
+{"id":"xonsh_python_loop","category":"shell-python","turns":["Assistant?","affiche les nombres de 1 a 5"],"description":"Display numbers 1-5 - user expects the model to figure out how."}
+{"id":"xonsh_piping","category":"shell-python","turns":["Assistant?","combien de fichiers python y a t il dans le dossier courant"],"description":"Count Python files - user doesn't know about pipes."}
+{"id":"xonsh_env_var","category":"shell-python","turns":["Assistant?","ou est mon dossier personnel"],"description":"Where's my home directory - user uses natural language."}
+{"id":"xonsh_conditional","category":"shell-python","turns":["Assistant?","si /tmp existe mets un fichier test.txt dedans sinon dis que /tmp n'existe pas"],"description":"Conditional logic - user describes what they want to happen."}
+{"id":"xonsh_list_comprehension","category":"shell-python","turns":["Assistant?","donne moi la liste des fichiers de ce dossier"],"description":"List files in directory - natural request."}
+{"id":"xonsh_print_vs_echo","category":"shell-syntax","turns":["Assistant?","affiche le resultat de 5 fois 8"],"description":"Simple math - user doesn't know about print vs echo."}
+{"id":"xonsh_at_operator","category":"shell-syntax","turns":["Assistant?","affiche le resultat de len de hello world"],"description":"Length of string - user expects the model to handle it."}
+{"id":"xonsh_string_format","category":"shell-python","turns":["Assistant?","dis moi qui je suis et ou je me trouve"],"description":"Who am I and where - user asks about identity + location."}
+{"id":"xonsh_file_read","category":"shell-io","turns":["Assistant?","lit le contenu de /etc/os-release et montre moi ce que c'est"],"description":"Read OS release file - user wants to know what system they're on."}
+{"id":"xonsh_file_write","category":"shell-io","turns":["Assistant?","ecris un petit message dans /tmp/test.txt"],"description":"Write a message to a file - simple user request."}
+{"id":"xonsh_process_info","category":"shell-basic","turns":["Assistant?","quels sont les processus qui consomment le plus de memoire"],"description":"Memory-heavy processes - user monitoring their system."}
+{"id":"xonsh_disk_usage","category":"shell-basic","turns":["Assistant?","j'ai l'impression que mon disque est plein verifie"],"description":"Disk full check - user suspects a problem."}
+{"id":"xonsh_network","category":"shell-advanced","turns":["Assistant?","verifie si le port 8080 est libre"],"description":"Check port availability - common dev question."}
+{"id":"xonsh_find_files","category":"shell-advanced","turns":["Assistant?","trouve tous les fichiers markdown dans ce dossier"],"description":"Find markdown files - common developer task."}
+{"id":"xonsh_recursive_copy","category":"shell-advanced","turns":["Assistant?","fais une copie de ce dossier dans /tmp/backup"],"description":"Backup a directory - user needs to make a copy."}
+{"id":"xonsh_history","category":"shell-advanced","turns":["Assistant?","quelles sont mes 10 dernieres commandes"],"description":"Recent commands history - user checking what they did."}
+{"id":"xonsh_alias","category":"shell-advanced","turns":["Assistant?","quels alias sont definis"],"description":"List aliases - checking shell configuration."}
+{"id":"xonsh_background","category":"shell-advanced","turns":["Assistant?","demarre un processus en arriere qui fait quelque chose apres 5 secondes"],"description":"Background process - user wants to run something async."}
+{"id":"xonsh_env_info","category":"shell-advanced","turns":["Assistant?","quelles sont les variables d'environnement importantes"],"description":"Important env vars - user exploring the shell."}
+{"id":"xonsh_file_permissions","category":"shell-advanced","turns":["Assistant?","verifie les permissions de ce dossier"],"description":"Check directory permissions - security check."}

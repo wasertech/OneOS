@@ -1,0 +1,3 @@
+{"id":"intro_base","category":"intro","turns":["Assistant?",""],"description":"Greeting handshake only. Expects French ready state."}
+{"id":"intro_system","category":"intro","turns":["Assistant?","Quelle heure est-il?"],"description":"Time query. Expects French greeting then real time via tool."}
+{"id":"intro_state","category":"intro","turns":["Assistant?","Donne-moi un aperçu de l'état du système"],"description":"System state. Expects French greeting then real info via tool."}

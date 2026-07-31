@@ -1,0 +1,38 @@
+# OneOS Simulator Configuration
+# Generates realistic training traces by simulating user interactions with Assistant
+
+simulator:
+  # llama-server (systemd), not LM Studio
+  base_url: "http://localhost:8080/v1"
+
+  # Two-model architecture for speed:
+  # - Small/fast model generates natural user prompts from scenario seeds
+  # - Quality model responds as Assistant with tool calls + reasoning
+  user_model: "google/gemma-4-26b-a4b"   # ~26B, better instruction following for role-play
+  agent_model: "grm-2.6-plus-0628-mtp-reasoning-i1"  # quality responses, tool calling
+
+  temperature: 0.7
+  max_tokens: 8192
+  timeout: null  # No timeout - let generation complete naturally
+
+  # Replication: resume from checkpoint — already have ~2.1 runs (129 traces)
+  # Need ~3 more runs to reach ~1000 total
+  num_runs: 3
+
+  # Session management
+  max_turns_per_scenario: 15
+  reset_between_scenarios: true
+  trace_dir: "~/.assistant/data/conversations"
+
+scenarios:
+  # Target distribution across categories (total ~1000 turns)
+  data_science: 150       # pandas, numpy, matplotlib workflows with shared state
+  natural_conversation: 120  # Discussions, explanations, brainstorming
+  debugging: 100          # Error analysis, code fixing, testing
+  git_workflow: 80        # Version control operations
+  file_management: 80     # File/directory operations with state persistence
+  system_monitoring: 60   # CPU/RAM/process monitoring and analysis
+  python_scripting: 70    # Function development, refactoring, documentation
+  web_research: 50        # Search, read, synthesize workflows
+  build_test: 40          # Environment setup, dependency management
+  env_shell: 30           # Variables, aliases, xonsh configuration

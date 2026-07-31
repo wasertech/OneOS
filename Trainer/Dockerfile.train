@@ -197,6 +197,8 @@ RUN pip install autoawq
 
 RUN pip install 'git+https://github.com/huggingface/tokenizers.git#egg=tokenizers'
 
+RUN pip install sentencepiece
+
 # Install UnSloth
 # RUN pip install "unsloth[cu121_torch211] @ git+https://github.com/unslothai/unsloth.git"
 

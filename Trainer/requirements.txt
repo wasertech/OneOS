@@ -1,11 +1,11 @@
 trl 
 transformers 
 accelerate 
-git+https://github.com/huggingface/peft.git
+peft
 datasets 
 bitsandbytes 
 einops 
 wandb
 scipy
 unsloth
-autoawq
+llmcompressor
